@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils import utils
 from utils.attack_utils import get_model_pred, get_model, is_true_pred, init_algorithm
-from algorithms.objective_functions.objective_functions import get_obj_function
+from objective_functions.objective_functions import get_obj_function
 
 # Number of samples to save from successful/non_successful attacks
 NUM_SAMPLES_STORE = 20
