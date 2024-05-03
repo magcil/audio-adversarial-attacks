@@ -1,0 +1,10 @@
+{
+"target_class" : null,
+"rangeOfBounds" : 0.01, 
+"pop_size" : 10, 
+"iter" : 5, 
+"F" : 0.5, 
+"cr" : 0.7, 
+"λ" : 0.005, 
+"perturbation_ratio" : 0.5
+}
