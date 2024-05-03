@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 pretrained_models/*.pt
-data/*
+data/valid_wav/*
