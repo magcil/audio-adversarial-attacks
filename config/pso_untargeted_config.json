@@ -15,7 +15,7 @@
         "enable_particle_generation": false,
         "enabled_early_stopping": false
 },
-    "true_labels": "data/audioset_val_true_labels.json",
+    "true_labels": "ontologies/audioset_val_true_labels.json",
     "hypercategory_mapping": "ontologies/hypercategory_from_ontology.json",
     "num_samples": 25,
     "grid_search": {

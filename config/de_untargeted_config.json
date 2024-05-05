@@ -13,7 +13,7 @@
         "λ" : 0.005, 
         "perturbation_ratio" : 0.5
 },
-    "true_labels": "data/audioset_val_true_labels.json",
+    "true_labels": "ontologies/audioset_val_true_labels.json",
     "hypercategory_mapping": "data/audioset_hypercategory_mapping.json",
     "num_samples": 25,
     "grid_search": {
