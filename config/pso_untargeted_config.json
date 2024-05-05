@@ -16,7 +16,7 @@
         "enabled_early_stopping": false
 },
     "true_labels": "data/audioset_val_true_labels.json",
-    "hypercategory_mapping": "data/audioset_hypercategory_mapping.json",
+    "hypercategory_mapping": "ontologies/hypercategory_from_ontology.json",
     "num_samples": 25,
     "grid_search": {
         "perturbation_ratio_start": 0.03,
