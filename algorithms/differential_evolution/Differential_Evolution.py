@@ -15,7 +15,13 @@ from objective_functions import objective_functions
 
 class DifferentialEvolutionAttacker:
 
-    def __init__(self, model, de_hyperparameters, verbosity=True, objective_function=None, target_class=None):
+    def __init__(self,
+                 model,
+                 de_hyperparameters,
+                 verbosity=True,
+                 objective_function=None,
+                 target_class=None,
+                 hypercategory_target=None):
         """Instantiate DE attacker
         
         model -- The model used for inference
@@ -28,6 +34,7 @@ class DifferentialEvolutionAttacker:
         self.model = model
         self.verbosity = verbosity
         self.target_class = target_class
+        self.hypercategory_target=hypercategory_target
         self.objective_function = objective_function
 
         self.de_hyperparameters = de_hyperparameters
@@ -38,6 +45,19 @@ class DifferentialEvolutionAttacker:
         self.cr = de_hyperparameters["cr"]
         self.λ = de_hyperparameters["λ"]
 
+        # Get the indexes of targeted hypercategory
+        if self.target_class and self.hypercategory_target:
+            self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
+        # Get the index of targeted label
+        elif self.target_class and not self.hypercategory_target:
+            for k, v in self.model.id2name.items():
+                if v == self.target_class:
+                    for l, m in self.model.label_dict.items():
+                        if m == k:
+                            self.target_class_index = l
+        else:
+            self.target_class_index = None
+
     def obj(self, noise, starting_class_index, starting_class_label):
 
         clipped_audio = np.clip(self.clean_audio + noise, -1.0, 1.0)
@@ -45,12 +65,9 @@ class DifferentialEvolutionAttacker:
         probs, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(clipped_audio)
 
         if len(self.model.hypercategory_mapping):
-            label = self.model.hypercategory_mapping[predicted_class_idx]
+            if self.hypercategory_target:
+                label = self.model.hypercategory_mapping[predicted_class_idx]
             starting_class_index = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
-            if self.target_class:
-                target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
-            else:
-                target_class_index = None
 
         # Termination Criteria
         if self.target_class:
@@ -67,7 +84,7 @@ class DifferentialEvolutionAttacker:
 
         objective_function_kwargs = {
             "starting_idx": starting_class_index,
-            "target_class_index": target_class_index,
+            "target_class_index": self.target_class_index,
             "probs": probs,
             "raw_audio": self.clean_audio,
             "noise": noise,

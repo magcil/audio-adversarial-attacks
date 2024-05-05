@@ -20,19 +20,27 @@ def get_model(model_str: str, model_pt_file: Optional[str] = None, hypercategory
     return model
 
 
-def init_algorithm(algorithm: str, model, hyperparameters, verbosity, objective_function=None, target_class=None):
+def init_algorithm(algorithm: str,
+                   model,
+                   hyperparameters,
+                   verbosity,
+                   objective_function=None,
+                   target_class=None,
+                   hypercategory_target=None):
     if algorithm == 'de':
         ATTACK_ALGORITHM = DifferentialEvolutionAttacker(model=model,
                                                          de_hyperparameters=hyperparameters,
                                                          verbosity=verbosity,
                                                          objective_function=objective_function,
-                                                         target_class=target_class)
+                                                         target_class=target_class,
+                                                         hypercategory_target=hypercategory_target)
     elif algorithm == 'pso':
         ATTACK_ALGORITHM = PSO_Attacker(model=model,
                                         pso_hyperparameters=hyperparameters,
                                         verbosity=verbosity,
                                         objective_function=objective_function,
-                                        target_class=target_class)
+                                        target_class=target_class,
+                                        hypercategory_target=hypercategory_target)
 
     return ATTACK_ALGORITHM
 

@@ -20,7 +20,8 @@ class Particle:
                  raw_audio,
                  verbosity=True,
                  objective_function=None,
-                 target_class=None):
+                 target_class=None,
+                 hypercategory_target=None):
         """Instantiate Particle object
 
         model -- The model used for inference
@@ -32,6 +33,7 @@ class Particle:
         self.model = model
         self.raw_audio = raw_audio
         self.target_class = target_class
+        self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
         self.starting_class_index = starting_class_index
         self.starting_class_label = starting_class_label
@@ -40,6 +42,20 @@ class Particle:
         self.velocity = velocity
         self.position = particle_position
         self.best_position = particle_position
+
+        # Get the indexes of targeted hypercategory
+        if self.target_class and self.hypercategory_target:
+            self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
+        # Get the index of targeted label
+        elif self.target_class and not self.hypercategory_target:
+            for k, v in self.model.id2name.items():
+                if v == self.target_class:
+                    for l, m in self.model.label_dict.items():
+                        if m == k:
+                            self.target_class_index = l
+        else:
+            self.target_class_index = None
+
         self.fitness_results = self.calculate_fitness()
         self.best_fitness = self.fitness_results["fitness"]
 
@@ -50,12 +66,10 @@ class Particle:
         scores, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(self.position)
 
         if len(self.model.hypercategory_mapping):
-            label = self.model.hypercategory_mapping[predicted_class_idx]
+            if self.hypercategory_target:
+                label = self.model.hypercategory_mapping[predicted_class_idx]
             self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
-            if self.target_class:
-                target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
-            else:
-                target_class_index = None
+
 
         if self.target_class:
             if (label == self.target_class):
@@ -71,7 +85,7 @@ class Particle:
 
         objective_function_kwargs = {
             "starting_idx": self.starting_class_index,
-            "target_class_index": target_class_index,
+            "target_class_index": self.target_class_index,
             "probs": scores,
             "raw_audio": self.raw_audio,
             "noise": self.position - self.raw_audio,

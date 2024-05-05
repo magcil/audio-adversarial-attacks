@@ -2,30 +2,30 @@ import os
 import csv
 import sys
 import json
-import librosa
-import tabulate
 import argparse
-import numpy as np
-from tqdm import tqdm
-import soundfile as sf
+from datetime import datetime
+from collections import Counter
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-from datetime import datetime
-from collections import Counter
 import plotly.graph_objects as go
+import numpy as np
+import librosa
+import tabulate
+from tqdm import tqdm
+import soundfile as sf
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils import utils
 from utils.attack_utils import get_model_pred, get_model, is_true_pred, init_algorithm
-from objective_functions.objective_functions import get_obj_function
 
 # Number of samples to save from successful/non_successful attacks
 NUM_SAMPLES_STORE = 20
 
 # Results folder's path
-RESULTS_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
+PROJECT_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+RESULTS_PATH = os.path.join(PROJECT_PATH, "results")
 
 
 def parse_args():
@@ -206,16 +206,18 @@ if __name__ == '__main__':
 
     if "target_class" not in config_file.keys():
         target_class = None
+        hypercategory_target = None
     else:
         target_class = config_file["target_class"]
+        hypercategory_target = config_file['hypercategory_target']
 
     # Get hypercategories if given
     if "hypercategory_mapping" in config_file.keys() and config_file["hypercategory_mapping"] is not None:
-        with open(config_file["hypercategory_mapping"], "r") as f:
+        with open(os.path.join(PROJECT_PATH, config_file["hypercategory_mapping"]), "r") as f:
             hypercategory_mapping = json.load(f)
         # Get balanced subset if given
         if 'balanced_subset' in config_file.keys() and config_file['balanced_subset'] is not None:
-            with open(config_file['balanced_subset'], 'r') as f:
+            with open(os.path.join(PROJECT_PATH, config_file['balanced_subset']), 'r') as f:
                 balanced_subset = json.load(f)
         else:
             balanced_subset = None
@@ -224,7 +226,7 @@ if __name__ == '__main__':
 
     # Get model
     model = get_model(model_str=config_file["model_name"],
-                      model_pt_file=config_file["model_pt_file"],
+                      model_pt_file=os.path.join(PROJECT_PATH, config_file["model_pt_file"]),
                       hypercategory_mapping=hypercategory_mapping)
 
     # Initialiation of algorithm
@@ -233,11 +235,12 @@ if __name__ == '__main__':
                                       hyperparameters=config_file['algorithm_hyperparameters'],
                                       verbosity=False,
                                       objective_function=objective_function,
-                                      target_class=target_class)
+                                      target_class=target_class,
+                                      hypercategory_target=hypercategory_target)
 
     # Check if true labels are given
     if "true_labels" in config_file.keys() and config_file["true_labels"] is not None:
-        with open(config_file["true_labels"], "r") as f:
+        with open(os.path.join(PROJECT_PATH, config_file["true_labels"]), "r") as f:
             true_labels = json.load(f)
     else:
         true_labels = None
@@ -253,11 +256,11 @@ if __name__ == '__main__':
         wav_files = []
         wav_names = list(balanced_subset.keys())
         for wav_name in wav_names:
-            wav_file_dir = config_file['input_path'] + "/" + wav_name
+            wav_file_dir = os.path.join(PROJECT_PATH, config_file['input_path'] + "/" + wav_name)
             wav_files.append(wav_file_dir)
     else:
         # Get input wav files
-        wav_files = utils.crawl_directory(directory=config_file["input_path"],
+        wav_files = utils.crawl_directory(directory=os.path.join(PROJECT_PATH, config_file["input_path"]),
                                           extension="wav",
                                           num_files=num_files_total)
 
@@ -277,7 +280,7 @@ if __name__ == '__main__':
     store_samples = config_file["store_samples"] if "store_samples" in config_file else True
     header_row = [
         'File', 'Status', 'Starting Class', 'Starting Class Confidence', 'Inferred Class',
-        'Final Confidence of Starting Class', 'Final Confidence of Inferred Class','Iterations', 'Queries', 'SNR'
+        'Final Confidence of Starting Class', 'Final Confidence of Inferred Class', 'Iterations', 'Queries', 'SNR'
     ]
     print_dict = {"Perturbation ratio": pt_list}
 

@@ -11,7 +11,13 @@ import numpy as np
 
 class PSO_Attacker:
 
-    def __init__(self, model, pso_hyperparameters, verbosity=True, objective_function=None, target_class=None):
+    def __init__(self,
+                 model,
+                 pso_hyperparameters,
+                 verbosity=True,
+                 objective_function=None,
+                 target_class=None,
+                 hypercategory_target=None):
         """Instantiate PSO attacker
         
         model -- The model used for inference
@@ -30,6 +36,7 @@ class PSO_Attacker:
         """
 
         self.target_class = target_class
+        self.hypercategory_target = hypercategory_target
         self.model = model
         self.objective_function = objective_function
         self.swarm = None
@@ -66,7 +73,8 @@ class PSO_Attacker:
                            starting_class_label,
                            verbosity=self.verbosity,
                            objective_function=self.objective_function,
-                           target_class=self.target_class)
+                           target_class=self.target_class,
+                           hypercategory_target=self.hypercategory_target)
 
         #---- Keep count of model queries ----#
         self.queries = len(self.swarm.particles)
