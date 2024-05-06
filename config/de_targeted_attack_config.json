@@ -17,9 +17,9 @@
     "hypercategory_mapping": "ontologies/hypercategory_from_ontology.json",
     "num_samples": 25,
     "grid_search": {
-        "perturbation_ratio_start": 0.5,
-        "perturbation_ratio_stop": 0.51,
-        "perturbation_ratio_step": 0.05
+        "perturbation_ratio_start": 0.03,
+        "perturbation_ratio_stop": 0.1,
+        "perturbation_ratio_step": 0.03
     },
     "balanced_subset": "data/full_split.json",
     "target_class": "Silence",
