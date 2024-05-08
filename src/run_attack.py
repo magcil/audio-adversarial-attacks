@@ -204,12 +204,15 @@ if __name__ == '__main__':
     else:
         objective_function = config_file["objective_function"]
 
-    if "target_class" not in config_file.keys():
-        target_class = None
+    if "hypercategory_target" not in config_file.keys():
         hypercategory_target = None
     else:
+        hypercategory_target = config_file["hypercategory_target"]
+
+    if "target_class" not in config_file.keys():
+        target_class = None
+    else:
         target_class = config_file["target_class"]
-        hypercategory_target = config_file['hypercategory_target']
 
     # Get hypercategories if given
     if "hypercategory_mapping" in config_file.keys() and config_file["hypercategory_mapping"] is not None:
