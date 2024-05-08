@@ -14,7 +14,7 @@
         "perturbation_ratio" : 0.5
 },
     "true_labels": "ontologies/audioset_val_true_labels.json",
-    "hypercategory_mapping": "ontologies/hypercategory_from_ontology.json",
+    "hypercategory_mapping": "ontologies/alerting_scenario_mapping.json",
     "num_samples": 25,
     "grid_search": {
         "perturbation_ratio_start": 0.03,
