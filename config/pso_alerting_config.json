@@ -23,5 +23,6 @@
         "perturbation_ratio_stop": 0.1,
         "perturbation_ratio_step": 0.03
     },
-    "balanced_subset": "data/full_split.json"
+    "balanced_subset": "data/full_split.json",
+    "hypercategory_target": true
 }
