@@ -161,3 +161,4 @@ cython_debug/
 
 pretrained_models/*.pt
 data/valid_wav/*
+results/*

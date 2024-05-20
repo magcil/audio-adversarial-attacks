@@ -1,0 +1,29 @@
+{
+    "input_path": "data/valid_wav",
+    "model_name": "beats",
+    "model_pt_file": "pretrained_models/BEATs_iter3_plus_AS2M.pt",
+    "algorithm": "pso",
+    "algorithm_hyperparameters": {
+        "initial_particles": 35,
+        "additional_particles": 2,
+        "max_iters": 10,
+        "max_inertia_w": 0.9,
+        "min_inertia_w": 0.1,
+        "memory_w": 0.3,
+        "information_w": 1.2,
+        "perturbation_ratio": 0.5,
+        "enable_particle_generation": false,
+        "enabled_early_stopping": false
+},
+    "true_labels": "ontologies/audioset_val_true_labels.json",
+    "hypercategory_mapping": "ontologies/hypercategory_from_ontology.json",
+    "num_samples": 25,
+    "grid_search": {
+        "perturbation_ratio_start": 0.03,
+        "perturbation_ratio_stop": 0.1,
+        "perturbation_ratio_step": 0.03
+    },
+    "balanced_subset": "data/full_split.json",
+    "target_class": "Silence",
+    "hypercategory_target": false
+}

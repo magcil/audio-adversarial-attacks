@@ -1,0 +1,25 @@
+{
+    "input_path": "data/valid_wav",
+    "model_name": "beats",
+    "model_pt_file": "pretrained_models/BEATs_iter3_plus_AS2M.pt",
+    "algorithm": "de",
+    "algorithm_hyperparameters": {
+        "target_class" : null,
+        "rangeOfBounds" : 0.01, 
+        "pop_size" : 15, 
+        "iter" : 10, 
+        "F" : 1.2, 
+        "cr" : 0.9, 
+        "λ" : 0.005, 
+        "perturbation_ratio" : 0.5
+},
+    "true_labels": "ontologies/audioset_val_true_labels.json",
+    "hypercategory_mapping": "data/audioset_hypercategory_mapping.json",
+    "num_samples": 25,
+    "grid_search": {
+        "perturbation_ratio_start": 0.1,
+        "perturbation_ratio_stop": 0.12,
+        "perturbation_ratio_step": 0.05
+    },
+    "balanced_subset": "data/full_split.json"
+}

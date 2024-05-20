@@ -21,7 +21,8 @@ class Swarm:
                  starting_class_label,
                  verbosity=True,
                  objective_function=None,
-                 target_class=None):
+                 target_class=None,
+                 hypercategory_target=None):
         """Instantiate Swarm object
         
         model -- The model used for inference
@@ -32,6 +33,7 @@ class Swarm:
         """
 
         self.target_class = target_class
+        self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
         self.sbf = float('-inf')
         self.sbf_history = [-1]
@@ -74,7 +76,8 @@ class Swarm:
                                 raw_audio=clean_audio,
                                 verbosity=self.verbosity,
                                 objective_function=self.objective_function,
-                                target_class=self.target_class)
+                                target_class=self.target_class,
+                                hypercategory_target=self.hypercategory_target)
             particles.append(particle)
 
             # TODO: Termination condition here??
