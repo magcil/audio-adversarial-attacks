@@ -16,13 +16,13 @@
         "enabled_early_stopping": false
 },
     "true_labels": "ontologies/audioset_val_true_labels.json",
-    "hypercategory_mapping": "ontologies/hypercategory_from_ontology.json",
+    "hypercategory_mapping": "ontologies/alerting_scenario_mapping.json",
     "num_samples": 25,
     "grid_search": {
         "perturbation_ratio_start": 0.03,
         "perturbation_ratio_stop": 0.1,
         "perturbation_ratio_step": 0.03
     },
-    "balanced_subset": "data/full_split.json",
+    "balanced_subset": "data/alerting_split.json",
     "hypercategory_target": true
 }

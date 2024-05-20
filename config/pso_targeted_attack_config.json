@@ -25,5 +25,6 @@
     },
     "balanced_subset": "data/full_split.json",
     "target_class": "Silence",
-    "hypercategory_target": false
+    "hypercategory_target": false,
+    "objective_function": "simple_minimization_targeted"
 }
