@@ -137,6 +137,52 @@ import soundfile as sf
 sf.write(file="adversary_example.wav", data=attack_results["adversary"], samplerate=16000, subtype="FLOAT")
 ```
 
+## 3. Reproducing the Experiments
+
+To reproduce the experiments for the three scenarios first download the validation subset of AudioSet from the following link: <a href="https://www.kaggle.com/datasets/zfturbo/audioset-valid">https://www.kaggle.com/datasets/zfturbo/audioset-valid</a>. Store all the wav files in a folder named `valid_wav` and place it inside `data` folder.
+
+### 3.1 Untargeted Scenario
+
+To run the experiment for the untargeted scenario using PSO use the command
+
+```bash
+python src/run_attack.py --config_file config/pso_untargeted_config.json
+```
+
+To run the experiment using DE use the command
+
+```bash
+python src/run_attack.py --config_file config/de_untargeted_config.json
+```
+
+### 3.2 Alarming to non-Alarming
+
+To run the experiment for the "alarming to non-alarming" case using PSO use the command
+
+```bash
+python src/run_attack.py --config_file config/pso_alerting_config.json
+```
+
+Similarly, for DE use
+
+```bash
+python src/run_attack.py --config_file config/de_alerting_config.json
+```
+
+### 3.3 Everything to Silence
+
+To reproduce the experiments for the scenario "everything to silence" use
+
+```bash
+python src/run_attack.py --config_file config/pso_targeted_attack_config.json
+```
+
+To use DE use the command
+
+```bash
+python src/run_attack.py --config_file config/de_targeted_attack_config.json
+```
+
 
 ## References
 [1] *<a href="https://arxiv.org/abs/2212.09058">BEATs: Audio Pre-Training with Acoustic Tokenizers</a>*
