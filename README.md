@@ -21,7 +21,7 @@ Now you ready to go!
 
 ## 2. Generating audio adversarial examples
 
-The model under attack is BEATs [1], a transformer-based deep neural network for detecting audio events. We use this model to generate audio adversarial attacks by utilizing two optimization algoriths: Particle Swarm Optimization [2], and Differential Evolution [3]. We operate in a black-box setting where the architecture and weights of the model are unknown to the attacker. To run the experiments with the BEATs model, download the weight of the pretrained model [here](https://github.com/microsoft/unilm/tree/master/beats).
+The model under attack is BEATs [1], a transformer-based deep neural network for detecting audio events. We use this model to generate audio adversarial attacks by utilizing two optimization algoriths: Particle Swarm Optimization [2], and Differential Evolution [3]. We operate in a black-box setting where the architecture and weights of the model are unknown to the attacker. To run the experiments with the BEATs model, download the weights of the pretrained model [here](https://github.com/microsoft/unilm/tree/master/beats) and add them on the pretrained_models folder.
 
 ### 2.1 Particle Swarm Optimization
 
