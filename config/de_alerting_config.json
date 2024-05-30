@@ -1,7 +1,7 @@
 {
     "input_path": "data/valid_wav",
     "model_name": "beats",
-    "model_pt_file": "pretrained_models/BEATs_iter3_plus_AS2M.pt",
+    "model_pt_file": "pretrained_models/BEATs_iter3_plus_AS2M_finetuned_on_AS2M_cpt2.pt",
     "algorithm": "de",
     "algorithm_hyperparameters": {
         "target_class" : null,
