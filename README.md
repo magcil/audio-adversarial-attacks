@@ -2,7 +2,6 @@
 Black Box Adversarial Attacks in Surveillance Sound Event Classification Scenarios
 
 
-
 ## Overview
 
 This project demonstrates audio adversarial attacks utilizing the BEATs model. The attacks are performed using two evolutionary algorithms: Particle Swarm Optimization (PSO) and Differential Evolution (DE). We explore three distinct attack scenarios:
@@ -11,6 +10,13 @@ This project demonstrates audio adversarial attacks utilizing the BEATs model. T
     2. Alarming to Non-Alarming
     3. Everything to Silence
 Additionally, we introduce a higher level of mapping using the Audioset mapping for hypercategories.
+
+## Table of Contents
+- [Overview](#overview)
+- [Environment Setup](#1-environment-setup)
+- [Generating Audio Adversarial Examples](#2-generating-audio-adversarial-examples)
+    - [Noise Control](#22-noise-control) 
+
 
 ## 1. Environment Setup
 
