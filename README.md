@@ -39,7 +39,7 @@ To conduct experiments utilizing the BEATs model, please follow these steps:
 
 ### 2.2 Particle Swarm Optimization
 
-To generate an adversarial example using PSO you'll need to first initialize the class responsible for making the attack. For example, to produce an adversarial example that misclassifies the file `example.wav` as "Silence",use the following procedure:
+To generate an adversarial example using PSO you'll need to first initialize the class responsible for making the attack. For example, to produce an adversarial example that misclassifies the file `example.wav` as "Silence", use the following procedure:
 
 ```python
 import json
