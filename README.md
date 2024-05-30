@@ -2,6 +2,16 @@
 Black Box Adversarial Attacks in Surveillance Sound Event Classification Scenarios
 
 
+
+## Overview
+
+This project demonstrates audio adversarial attacks utilizing the BEATs model. The attacks are performed using two evolutionary algorithms: Particle Swarm Optimization (PSO) and Differential Evolution (DE). We explore three distinct attack scenarios:
+
+    1. Untargeted Scenario
+    2. Alarming to Non-Alarming
+    3. Everything to Silence
+Additionally, we introduce a higher level of mapping using the Audioset mapping for hypercategories.
+
 ## 1. Environment Setup
 
 To reproduce the experiments or to perform attacks using any of the algorithms, first create a conda environment with python 3.9 by typing
@@ -36,8 +46,11 @@ To conduct experiments utilizing the BEATs model, please follow these steps:
     - <b>Hypercategories Ontology:</b> If you wish to run the experiment using the hypercategories ontology, you need to include the hypercategory mapping parameter in the get_model function.
     - <b>Without Hypercategories:</b> If you prefer not to use the hypercategories ontology, simply set the hypercategory mapping parameter in the get_model function to None. This will allow the model to operate without the additional ontology layer.
 
+### 2.2 Noise Control
 
-### 2.2 Particle Swarm Optimization
+To regulate the amount of perturbation added, it is necessary to adjust the perturbation ratio parameter within the algorithm's parameters dictionary. The perturbation ratio serves as a weight used in our noise initialization method.
+
+### 2.3 Particle Swarm Optimization
 
 To generate an adversarial example using PSO you'll need to first initialize the class responsible for making the attack. For example, to produce an adversarial example that misclassifies the file `example.wav` as "Silence", use the following procedure:
 
@@ -101,7 +114,7 @@ The variable `attack_results` is a python dictionary, containing the keys:
 
 - `Final Confidence`: Confidence of the inferred class.
 
-### 2.3 Differential Evolution
+### 2.4 Differential Evolution
 
 In similar manner you can use the Differential Evolution as an optimization algorithm to generate an adversarial example:
 
@@ -141,7 +154,7 @@ DE_ATTACKER = init_algorithm(algorithm="de",
 attack_results = DE_ATTACKER.generate_adversarial_example("example.wav")
 ```
 
-### 2.4 Inspecting the adversarial example
+### 2.5 Inspecting the adversarial example
 
 To hear the generated example you can `soundfile` to store the wav file:
 
