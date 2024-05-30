@@ -15,8 +15,16 @@ Additionally, we introduce a higher level of mapping using the Audioset mapping 
 - [Overview](#overview)
 - [Environment Setup](#1-environment-setup)
 - [Generating Audio Adversarial Examples](#2-generating-audio-adversarial-examples)
-    - [Noise Control](#22-noise-control) 
-
+  - [Model Initialization](#21-model-initialization)
+  - [Noise Control](#22-noise-control)
+  - [Particle Swarm Optimization](#23-particle-swarm-optimization)
+  - [Differential Evolution](#24-differential-evolution)
+  - [Inspecting the Adversarial Example](#25-inspecting-the-adversarial-example)
+- [Reproducing the Experiments](#3-reproducing-the-experiments)
+  - [Untargeted Scenario](#31-untargeted-scenario)
+  - [Alarming to Non-Alarming](#32-alarming-to-non-alarming)
+  - [Everything to Silence](#33-everything-to-silence)
+- [References](#references)
 
 ## 1. Environment Setup
 
