@@ -21,9 +21,23 @@ Now you ready to go!
 
 ## 2. Generating audio adversarial examples
 
-The model under attack is BEATs [1], a transformer-based deep neural network for detecting audio events. We use this model to generate audio adversarial attacks by utilizing two optimization algoriths: Particle Swarm Optimization [2], and Differential Evolution [3]. We operate in a black-box setting where the architecture and weights of the model are unknown to the attacker. To run the experiments with the BEATs model, download the weights of the pretrained model [here](https://github.com/microsoft/unilm/tree/master/beats) and add them on the pretrained_models folder.
 
-### 2.1 Particle Swarm Optimization
+The model under attack is BEATs [1], a transformer-based deep neural network for detecting audio events. We use this model to generate audio adversarial attacks by utilizing two optimization algoriths: Particle Swarm Optimization [2], and Differential Evolution [3]. We operate in a black-box setting where the architecture and weights of the model are unknown to the attacker.
+
+### 2.1 Model Initialization
+
+To conduct experiments utilizing the BEATs model, please follow these steps:
+
+1. <b>Download Model Weights: </b>Acquire the model weights that have been fine-tuned on the Audioset. These weights can be downloaded from the following [link](https://github.com/microsoft/unilm/tree/master/beats). In our scenario, we conduct experiments using the <b>Fine-tuned BEATs_iter3+ (AS2M) (cpt2)</b> pt file. To conduct experiments with various weights, you must configure the path to the appropriate file within the get_model function, as well as ensure that all corresponding configuration files are properly set for each specific case.
+
+2. <b> Add Weights to Pretrained Models Folder:</b> After downloading, place the weights into the <b>'pretrained_models directory'</b> within your project.
+3. <b> Running Experiments with Different Ontologies:</b>
+
+    - <b>Hypercategories Ontology:</b> If you wish to run the experiment using the hypercategories ontology, you need to include the hypercategory mapping parameter in the get_model function.
+    - <b>Without Hypercategories:</b> If you prefer not to use the hypercategories ontology, simply set the hypercategory mapping parameter in the get_model function to None. This will allow the model to operate without the additional ontology layer.
+
+
+### 2.2 Particle Swarm Optimization
 
 To generate an adversarial example using PSO you'll need to first initialize the class responsible for making the attack. For example, to generate an adversarial example that misclassifies the `example.wav` as "Silence" use:
 
@@ -52,8 +66,8 @@ with open("ontologies/hypercategory_from_ontology.json", "r") as f:
 
 # Load the model under attack
 model = get_model(model_str="beats",
-                  model_pt_file="pretrained_models/BEATs_iter3_plus_AS2M.pt",
-                  hypercategory_mapping=d)
+                  model_pt_file="pretrained_models/BEATs_iter3_plus_AS2M_finetuned_on_AS2M_cpt2.pt",
+                  hypercategory_mapping=hypercategory_mapping)
 
 # Initialize PSO Attacker
 PSO_ATTACKER = init_algorithm(algorithm="pso",
@@ -87,7 +101,7 @@ The variable `attack_results` is a python dictionary, containing the keys:
 
 - `Final Confidence`: Confidence of the inferred class.
 
-### 2.2 Differential Evolution
+### 2.3 Differential Evolution
 
 In similar manner you can use the Differential Evolution as an optimization algorithm to generate an adversarial example:
 
@@ -113,8 +127,8 @@ de_hyperparameters = {
 
 # Initialize model
 model = get_model(model_str="beats",
-                  model_pt_file="pretrained_models/BEATs_iter3_plus_AS2M.pt",
-                  hypercategory_mapping=d)
+                  model_pt_file="pretrained_models/BEATs_iter3_plus_AS2M_finetuned_on_AS2M_cpt2.pt",
+                  hypercategory_mapping=hypercategory_mapping)
 
 DE_ATTACKER = init_algorithm(algorithm="de",
                              model=model,
@@ -127,7 +141,7 @@ DE_ATTACKER = init_algorithm(algorithm="de",
 attack_results = DE_ATTACKER.generate_adversarial_example("example.wav")
 ```
 
-### 2.3 Inspecting the adversarial example
+### 2.4 Inspecting the adversarial example
 
 To hear the generated example you can `soundfile` to store the wav file:
 
@@ -189,5 +203,4 @@ python src/run_attack.py --config_file config/de_targeted_attack_config.json
 
 [2] *<a href="https://link.springer.com/article/10.1023/A:1008202821328">Differential Evolution – A Simple and Efficient Heuristic for global Optimization over Continuous Spaces</a>*
 
-[3] *<a href="https://link.springer.com/article/10.1007/s11831-021-09694-4">Particle Swarm Optimization Algorithm and Its Applications:
-A Systematic Review</a>*
+[3] *<a href="https://link.springer.com/article/10.1007/s11831-021-09694-4">Particle Swarm Optimization Algorithm and Its Applications: A Systematic Review</a>*
