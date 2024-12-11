@@ -13,27 +13,30 @@ class PSO_Attacker:
 
     def __init__(self,
                  model,
-                 pso_hyperparameters,
+                 initial_particles,
+                 max_iters,
+                 max_inertia_w,
+                 min_inertia_w,
+                 memory_w,
+                 information_w,
+                 perturbation_ratio,
                  verbosity=True,
                  objective_function=None,
                  target_class=None,
                  hypercategory_target=None):
-        """Instantiate PSO attacker
         
-        model -- The model used for inference
-        clean_audio -- Clean audio file
-        initial_particles -- The number of initial Swarm particles
-        enable_particle_generation -- Switch for enabling particle generation
-        additional_particles -- The number of generated particles
-        max_iters -- Maximum number of iterations
-        max_inertia_w -- Maximum PSO inertia weight
-        min_inertia_w -- Minimum PSO inertia weight
-        memory_w -- PSO memory weight
-        information_w -- PSO iformation weight
-        perturbation_ratio -- Ratio of added perturbation
-        starting_class_index -- The model index of the starting class
-        enabled_early_stopping -- Switch for enabling early stopping
-        """
+        """TODO"""
+
+        # Initialize PSO Hyperparameters
+        self.pso_hyperparameters = {
+            "initial_particles": initial_particles,
+            "max_iters": max_iters,
+            "max_inertia_w": max_inertia_w,
+            "min_inertia_w": min_inertia_w,
+            "memory_w": memory_w,
+            "information_w": information_w,
+            "perturbation_ratio": perturbation_ratio
+        }
 
         self.target_class = target_class
         self.hypercategory_target = hypercategory_target
@@ -42,19 +45,6 @@ class PSO_Attacker:
         self.swarm = None
 
         # ---- Unfold PSO Hyperparameters ----
-        self.initial_particles = pso_hyperparameters["initial_particles"]
-        self.added_particles = 0
-        self.enable_particle_generation = pso_hyperparameters["enable_particle_generation"]
-        self.enabled_early_stop = pso_hyperparameters["enabled_early_stopping"]
-        self.additional_particles = pso_hyperparameters["additional_particles"]
-
-        self.max_iters = pso_hyperparameters["max_iters"]
-        self.max_inertia_w = pso_hyperparameters["max_inertia_w"]
-        self.min_inertia_w = pso_hyperparameters["min_inertia_w"]
-        self.inertia_w = None
-        self.memory_w = pso_hyperparameters["memory_w"]
-        self.information_w = pso_hyperparameters["information_w"]
-        self.perturbation_ratio = pso_hyperparameters["perturbation_ratio"]
         self.verbosity = verbosity
 
     def initialization(self, starting_class_index, starting_class_label):
@@ -66,9 +56,9 @@ class PSO_Attacker:
 
         #---- Initialize Swarm ----#
         self.swarm = Swarm(self.model,
-                           self.initial_particles,
+                           self.pso_hyperparameters['initial_particles'],
                            self.clean_audio,
-                           self.perturbation_ratio,
+                           self.pso_hyperparameters['perturbation_ratio'],
                            starting_class_index,
                            starting_class_label,
                            verbosity=self.verbosity,
@@ -92,9 +82,13 @@ class PSO_Attacker:
             print("\033[91m STAGE 2: Optimisation. \033[0m")
 
         #---- Start iterations ----#
-        for i in range(1, self.max_iters + 1):
+        for i in range(1, self.pso_hyperparameters["max_iters"] + 1):
+
             # Linearly decrease inertia w
-            self.inertia_w = self.max_inertia_w - i * ((self.max_inertia_w - 0.0) / self.max_iters)
+            inertia_w = self.pso_hyperparameters["max_inertia_w"] - i * (
+                self.pso_hyperparameters["max_inertia_w"] -
+                self.pso_hyperparameters["min_inertia_w"]) / self.pso_hyperparameters["max_iters"]
+
             if self.verbosity:
                 print(f'----------- Iteration: {i} -----------')
 
@@ -106,7 +100,8 @@ class PSO_Attacker:
                     print(f' ----------- Particle: {particles_counter} -----------')
                 particles_counter += 1
 
-                p.update_velocity_and_position(self.inertia_w, self.memory_w, self.information_w, self.swarm.sbp)
+                p.update_velocity_and_position(inertia_w, self.pso_hyperparameters["memory_w"],
+                                               self.pso_hyperparameters["information_w"], self.swarm.sbp)
                 fitness_results = p.calculate_fitness()
                 self.queries += 1
 

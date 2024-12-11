@@ -43,13 +43,3 @@ def init_algorithm(algorithm: str,
                                         hypercategory_target=hypercategory_target)
 
     return ATTACK_ALGORITHM
-
-
-def get_model_pred(model, waveform):
-    _, idx, inferred_class_name, confidence = model.make_inference_with_waveform(waveform)
-
-    return inferred_class_name, idx, confidence
-
-
-def is_true_pred(filename, true_labels, inferred_class_name) -> bool:
-    return True if inferred_class_name in true_labels[filename] else False

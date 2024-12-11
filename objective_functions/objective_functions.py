@@ -7,18 +7,18 @@ import numpy as np
 from utils import utils
 
 
-def get_obj_function(obj_func_name):
+# def get_obj_function(obj_func_name):
 
-    if obj_func_name == "simple_minimization" or obj_func_name is None:
-        return simple_minimization
+#     if obj_func_name == "simple_minimization" or obj_func_name is None:
+#         return simple_minimization
 
-    elif obj_func_name == "auditory_masking_minimization":
-        return auditory_masking_minimization
+#     elif obj_func_name == "auditory_masking_minimization":
+#         return auditory_masking_minimization
 
-    elif obj_func_name == "simple_minimization_targeted":
-        return simple_minimization_targeted
-    else:
-        return L2_minimization
+#     elif obj_func_name == "simple_minimization_targeted":
+#         return simple_minimization_targeted
+#     else:
+#         return L2_minimization
 
 
 def get_fitness(obj_func_name, **kwargs):
@@ -32,9 +32,7 @@ def get_fitness(obj_func_name, **kwargs):
     elif obj_func_name == "simple_minimization_targeted":
         return simple_minimization_targeted(kwargs["starting_idx"], kwargs["target_class_index"], kwargs["probs"])
     else:
-        return L2_minimization(kwargs["raw_audio"], kwargs["raw_audio"] + kwargs["noise"], kwargs["starting_idx"],
-                               kwargs["probs"], kwargs["λ"])
-
+        raise ValueError(f"{obj_func_name} not implemented")
 
 #  ----- Untargeted -----
 def simple_minimization(starting_idx, probs):
@@ -62,21 +60,6 @@ def auditory_masking_minimization(raw_audio, noise, starting_idx, probs, λ):
 
     Q1 = noise / (np.abs(raw_audio) + 0.0000001)
     fitness = Q0 + λ * sum(Q1)
-
-    return fitness
-
-
-def L2_minimization(raw_audio, perturbed_audio, starting_idx, probs, λ):
-    """
-        Use of L2 distance regularization term.
-
-        Parameters:
-            λ (int): Weight of the regularization term.
-    """
-
-    Q0 = simple_minimization(starting_idx, probs)
-
-    fitness = Q0 + λ * utils.calculate_euclidean_distance(raw_audio, perturbed_audio)
 
     return fitness
 

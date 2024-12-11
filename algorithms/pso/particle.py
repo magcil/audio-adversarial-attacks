@@ -22,6 +22,7 @@ class Particle:
                  objective_function=None,
                  target_class=None,
                  hypercategory_target=None):
+        
         """Instantiate Particle object
 
         model -- The model used for inference
