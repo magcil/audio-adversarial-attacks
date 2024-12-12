@@ -27,19 +27,21 @@ def init_algorithm(algorithm: str,
                    objective_function=None,
                    target_class=None,
                    hypercategory_target=None):
+    
     if algorithm == 'de':
         ATTACK_ALGORITHM = DifferentialEvolutionAttacker(model=model,
-                                                         de_hyperparameters=hyperparameters,
                                                          verbosity=verbosity,
                                                          objective_function=objective_function,
                                                          target_class=target_class,
-                                                         hypercategory_target=hypercategory_target)
+                                                         hypercategory_target=hypercategory_target,
+                                                         **hyperparameters)
     elif algorithm == 'pso':
         ATTACK_ALGORITHM = PSO_Attacker(model=model,
                                         pso_hyperparameters=hyperparameters,
                                         verbosity=verbosity,
                                         objective_function=objective_function,
                                         target_class=target_class,
-                                        hypercategory_target=hypercategory_target)
+                                        hypercategory_target=hypercategory_target,
+                                        **hyperparameters)
 
     return ATTACK_ALGORITHM

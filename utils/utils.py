@@ -1,12 +1,6 @@
 import os
 import math
-import random
-import wave
-
 import numpy as np
-import librosa
-import pyaudio
-
 
 # ----- Constraints -----
 # TODO: Add L0 constraints.
