@@ -20,7 +20,7 @@ class BEATs_Model:
                  path_to_checkpoint: str,
                  path_to_ontology: str = os.path.join(DIR_PATH, "ontology.json"),
                  device: Optional[str] = None,
-                 hypercategory_mapping: Optional[Dict] = None):
+                 hypercategory_mapping: Optional[os.PathLike] = None):
         """
         Initalize the BEATs model
 
@@ -77,7 +77,7 @@ class BEATs_Model:
         label = self.id2name[label]
         predicted_class_idx = max_idx
 
-        return probs, predicted_class_idx, label, best_score
+        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
 
     def make_inference_with_waveform(self, waveform: np.ndarray):
         """Method to make a prediction using a waveform
@@ -87,7 +87,7 @@ class BEATs_Model:
 
         # Load waveform
         waveform = torch.Tensor(waveform).unsqueeze(0).to(self.device)
-        
+
         # Make prediction
         with torch.no_grad():
             probs = self.model.extract_features(waveform)[0][0]
@@ -101,8 +101,8 @@ class BEATs_Model:
         label = self.id2name[label]
         predicted_class_idx = max_idx
 
-        return probs, predicted_class_idx, label, best_score
-    
+        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
+
     def map_to_hypercategories(self, hypercategory_mapping: Dict):
         self.hypercategory_mapping = np.array(
             [hypercategory_mapping[self.id2name[self.label_dict[i]]] for i in range(len(self.label_dict))])
@@ -116,5 +116,3 @@ def parse_ontology(path_to_ontology):
     id2name = {elem['id']: elem['name'] for elem in ontology_lst}
 
     return id2name
-
-
