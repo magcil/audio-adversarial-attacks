@@ -254,4 +254,7 @@ class DifferentialEvolutionAttacker:
         results["Final Starting Class Confidence"] = max_prob
         results["Final Confidence"] = final_confidence
 
+        # Append starting class label to results
+        results['starting_class'] = starting_class_label
+
         return results

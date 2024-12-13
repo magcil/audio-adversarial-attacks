@@ -10,3 +10,4 @@ seaborn==0.13.2
 torchaudio==2.3.0
 plotly==5.22.0
 kaleido==0.2.1
+prettytable==3.12.0

@@ -5,9 +5,12 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 from typing import List, Dict, Tuple
 
+from sklearn.metrics import classification_report
+import numpy as np
 
-def filter_on_correct_predictions(model, wav_files: List[os.PathLike], true_labels: Dict[str,
-                                                                                         str]) -> List[os.PathLike]:
+
+def filter_on_correct_predictions(model, wav_files: List[os.PathLike],
+                                  true_labels: Dict[str, str]) -> Tuple[List[os.PathLike], str]:
     """Keep the correct predictions by the model
     
     Args:
@@ -19,13 +22,24 @@ def filter_on_correct_predictions(model, wav_files: List[os.PathLike], true_labe
         filtered_wavs: Wav files correctly classified by the model.
     """
     filtered_wavs = []
+    y_true, y_pred = [], []
+
     for wav_file in wav_files:
         pred_results = model.make_inference_with_path(wav_file)
+        # Update y_true, y_pred
+        y_true.append(true_labels[os.path.basename(wav_file)])
+        y_pred.append(pred_results['label'])
+
         # If prediction is correct then keep
         if pred_results['label'] == true_labels[os.path.basename(wav_file)]:
             filtered_wavs.append(wav_files)
 
-    return filtered_wavs
+    return {
+        "filtered_wavs": filtered_wavs,
+        "classification_report": classification_report(y_true=y_true,
+                                                       y_pred=y_pred,
+                                                       labels=np.unique(true_labels.values()))
+    }
 
 
 def perform_single_attack(ATTACK_ALGORITHM, wav_file) -> Dict:

@@ -72,8 +72,6 @@ class PSO_Attacker:
         if self.verbosity:
             print(f'SBF after initialization: {self.swarm.sbf}')
 
-        return True
-
     def optimization(self):
         """Stage 2: Optimization"""
 
@@ -177,10 +175,9 @@ class PSO_Attacker:
         if len(self.model.hypercategory_mapping):
             starting_class_label = self.model.hypercategory_mapping[starting_class_index]
 
-        if not self.initialization(starting_class_index=starting_class_index,
-                                   starting_class_label=starting_class_label):
-            return False
-
+        self.initialization(starting_class_index=starting_class_index,
+                                   starting_class_label=starting_class_label)
+        
         results = self.optimization()
 
         # Make inference with perturbed waveform
@@ -200,5 +197,8 @@ class PSO_Attacker:
 
         results["Final Starting Class Confidence"] = max_prob
         results["Final Confidence"] = final_confidence
+        
+        # Append starting class label to results
+        results['starting_class'] = starting_class_label
 
         return results
