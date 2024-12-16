@@ -5,6 +5,7 @@ import logging
 import datetime
 import argparse
 import json
+import numpy as np
 
 # Initialize Project Path & Append to sys
 PROJECT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -14,7 +15,7 @@ from tqdm import tqdm
 from prettytable import PrettyTable
 
 from utils.init_utils import get_model, init_algorithm
-from utils.utils import crawl_directory
+from utils.utils import crawl_directory, calculate_snr
 from utils.attack_utils import filter_on_correct_predictions, perform_single_attack
 
 
@@ -84,13 +85,27 @@ if __name__ == "__main__":
     results_table = PrettyTable()
     results_table.field_names = [' ', *CLASS_NAMES, 'Success Rate (%)']
 
+    # Aggregation Results
+    aggregated_table_results = PrettyTable()
+    aggregated_table_results.field_names = ['Total Attacks', 'Success Rate', 'Avg. SNR', 'Std. SNR', 'Queries']
+
     # Initialize Class Dict / Information of Attack Distribution Per Class
     CLASSES_DICT = {classname: len(CLASS_NAMES) * [0] for classname in CLASS_NAMES}
+
+    aggregated_successes, aggregated_SNR, aggregated_queries = 0, [], 0
 
     # Loop through wav files
     for wav_file in tqdm(correct_wav_files, desc="Processing wav files", total=len(correct_wav_files)):
 
         attack_results = perform_single_attack(ATTACK_ALGORITHM=ATTACK_ALGORITHM, wav_file=wav_file)
+
+        # Update Aggregate successes & Queries
+        if attack_results["success"]:
+            aggregated_successes += 1
+            aggregated_queries += attack_results["queries"]
+
+        # Append SNR of adversarial example
+        aggregated_SNR.append(calculate_snr(attack_results["raw audio"], attack_results["noise"]))
 
         starting_class, predicted_class = attack_results["starting_class"], attack_results["inferred_class"]
 
@@ -104,8 +119,16 @@ if __name__ == "__main__":
         class_idx = CLASS_MAPPING[classname]
         succ_rate = (sum(class_distribution) - class_distribution[class_idx]) / sum(class_distribution)
 
-        results_table.add_row([classname, *class_distribution, format(100 * succ_rate, str=":.2f")])
-        
-    
-    # Log Table
-    logging.info(f"{results_table}")
+        results_table.add_row([classname, *class_distribution, f"{100 * succ_rate:.2f}"])
+
+    aggregated_table_results.add_row([
+        len(correct_wav_files), f"{100 * aggregated_successes / len(correct_wav_files):.2f}",
+        f"{np.mean(aggregated_SNR):.2f}", f"{np.std(aggregated_SNR):.2f}",
+        f"{100*aggregated_queries/len(aggregated_successes):.2f}"
+    ])
+
+    # Log Class Results Table
+    logging.info(f"Attack Distribution Table\n{results_table}")
+
+    # Log Aggregated Table
+    logging.info(f"Aggregated Result Table\n{aggregated_table_results}")
