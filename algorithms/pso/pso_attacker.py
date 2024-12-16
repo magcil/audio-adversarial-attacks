@@ -23,8 +23,8 @@ class PSO_Attacker:
                  verbosity=True,
                  objective_function=None,
                  target_class=None,
-                 hypercategory_target=None):
-        
+                 hypercategory_target=None,
+                 SNR_norm=None):
         """TODO"""
 
         # Initialize PSO Hyperparameters
@@ -43,6 +43,7 @@ class PSO_Attacker:
         self.model = model
         self.objective_function = objective_function
         self.swarm = None
+        self.SNR_norm = SNR_norm
 
         # ---- Unfold PSO Hyperparameters ----
         self.verbosity = verbosity
@@ -108,13 +109,21 @@ class PSO_Attacker:
                     self.swarm.sbf = float('inf')
                     self.swarm.sbp = p.position
                     return {
-                        "noise": self.swarm.sbp - self.clean_audio,
-                        "adversary": self.swarm.sbp,
-                        "raw audio": self.clean_audio,
-                        "iterations": i,
-                        "success": True,
-                        "queries": self.queries,
-                        "inferred_class": fitness_results["inferred_class"]
+                        "noise":
+                        self.swarm.sbp - self.clean_audio,
+                        "adversary":
+                        self.swarm.sbp if self.SNR_norm is None else utils.add_normalized_noise(
+                            self.clean_audio, self.swarm.sbp - self.clean_audio, self.SNR_norm),
+                        "raw audio":
+                        self.clean_audio,
+                        "iterations":
+                        i,
+                        "success":
+                        True,
+                        "queries":
+                        self.queries,
+                        "inferred_class":
+                        fitness_results["inferred_class"]
                     }
 
                 # Update partice BF and BP, if better found
@@ -151,13 +160,21 @@ class PSO_Attacker:
                     self.added_particles += self.additional_particles
 
         return {
-            "noise": self.swarm.sbp - self.clean_audio,
-            "adversary": self.swarm.sbp,
-            "raw audio": self.clean_audio,
-            "iterations": i,
-            "success": False,
-            "queries": self.queries,
-            "inferred_class": fitness_results["inferred_class"]
+            "noise":
+            self.swarm.sbp - self.clean_audio,
+            "adversary":
+            self.swarm.sbp if self.SNR_norm is None else utils.add_normalized_noise(self.clean_audio, self.swarm.sbp -
+                                                                                    self.clean_audio, self.SNR_norm),
+            "raw audio":
+            self.clean_audio,
+            "iterations":
+            i,
+            "success":
+            False,
+            "queries":
+            self.queries,
+            "inferred_class":
+            fitness_results["inferred_class"]
         }
 
     def generate_adversarial_example(self, source_audio):
@@ -175,9 +192,8 @@ class PSO_Attacker:
         if len(self.model.hypercategory_mapping):
             starting_class_label = self.model.hypercategory_mapping[starting_class_index]
 
-        self.initialization(starting_class_index=starting_class_index,
-                                   starting_class_label=starting_class_label)
-        
+        self.initialization(starting_class_index=starting_class_index, starting_class_label=starting_class_label)
+
         results = self.optimization()
 
         # Make inference with perturbed waveform
@@ -197,7 +213,7 @@ class PSO_Attacker:
 
         results["Final Starting Class Confidence"] = max_prob
         results["Final Confidence"] = final_confidence
-        
+
         # Append starting class label to results
         results['starting_class'] = starting_class_label
 

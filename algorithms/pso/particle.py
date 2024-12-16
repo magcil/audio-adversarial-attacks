@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import random
 
 import numpy as np
+from utils import utils
 
 from objective_functions import objective_functions
 
@@ -21,7 +22,8 @@ class Particle:
                  verbosity=True,
                  objective_function=None,
                  target_class=None,
-                 hypercategory_target=None):
+                 hypercategory_target=None,
+                 SNR_norm=None):
         
         """Instantiate Particle object
 
@@ -43,6 +45,7 @@ class Particle:
         self.velocity = velocity
         self.position = particle_position
         self.best_position = particle_position
+        self.SNR_norm = SNR_norm
 
         # Get the indexes of targeted hypercategory
         if self.target_class and self.hypercategory_target:
@@ -62,9 +65,15 @@ class Particle:
 
     def calculate_fitness(self):
         """Calculate fitness of the particle based on position"""
-
+            
+        
+        if self.SNR_norm is not None:
+            pred_audio = utils.add_normalized_noise(self.clean_audio, self.position - self.raw_audio, self.SNR_norm)
+        else:
+            pred_audio = self.position
+ 
         #---- Make inference ----#
-        scores, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(self.position)
+        scores, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(pred_audio)
 
         if len(self.model.hypercategory_mapping):
             if self.hypercategory_target:

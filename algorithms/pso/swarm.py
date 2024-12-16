@@ -21,7 +21,8 @@ class Swarm:
                  verbosity=True,
                  objective_function=None,
                  target_class=None,
-                 hypercategory_target=None):
+                 hypercategory_target=None,
+                 SNR_norm=None):
         
         """Instantiate Swarm object
         
@@ -41,6 +42,7 @@ class Swarm:
         self.perturbation_ratio = perturbation_ratio
         self.particles = self.generate_initial_particles(model, initial_particles, starting_class_index,
                                                          starting_class_label, clean_audio)
+        self.SNR_norm = SNR_norm
 
     def generate_initial_particles(self, model, initial_particles, starting_class_index, starting_class_label,
                                    clean_audio):
@@ -75,7 +77,8 @@ class Swarm:
                                 verbosity=self.verbosity,
                                 objective_function=self.objective_function,
                                 target_class=self.target_class,
-                                hypercategory_target=self.hypercategory_target)
+                                hypercategory_target=self.hypercategory_target,
+                                SNR_norm=self.SNR_norm)
             particles.append(particle)
 
             # TODO: Termination condition here??

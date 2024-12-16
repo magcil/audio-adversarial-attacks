@@ -17,7 +17,12 @@ class DifferentialEvolutionAttacker:
 
     def __init__(self,
                  model,
-                 de_hyperparameters,
+                 pop_size,
+                 iter,
+                 F,
+                 cr,
+                 perturbation_ratio,
+                 SNR_norm=None,
                  verbosity=True,
                  objective_function=None,
                  target_class=None,
@@ -34,16 +39,17 @@ class DifferentialEvolutionAttacker:
         self.model = model
         self.verbosity = verbosity
         self.target_class = target_class
-        self.hypercategory_target=hypercategory_target
+        self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
 
-        self.de_hyperparameters = de_hyperparameters
-        self.perturbation_ratio = de_hyperparameters["perturbation_ratio"]
-        self.pop_size = de_hyperparameters["pop_size"]
-        self.iter = de_hyperparameters["iter"]
-        self.F = de_hyperparameters["F"]
-        self.cr = de_hyperparameters["cr"]
-        self.λ = de_hyperparameters["λ"]
+        self.de_hyperparameters = {
+            "pop_size": pop_size,
+            "iter": iter,
+            "F": F,
+            "cr": cr,
+            "perturbation_ratio": perturbation_ratio
+        }
+        self.SNR_norm = SNR_norm
 
         # Get the indexes of targeted hypercategory
         if self.target_class and self.hypercategory_target:
@@ -60,7 +66,11 @@ class DifferentialEvolutionAttacker:
 
     def obj(self, noise, starting_class_index, starting_class_label):
 
-        clipped_audio = np.clip(self.clean_audio + noise, -1.0, 1.0)
+        if self.SNR_norm is not None:
+            clipped_audio = utils.add_normalized_noise(self.clean_audio, noise, self.SNR_norm)
+
+        else:
+            clipped_audio = np.clip(self.clean_audio + noise, -1.0, 1.0)
 
         probs, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(clipped_audio)
 
@@ -87,8 +97,7 @@ class DifferentialEvolutionAttacker:
             "target_class_index": self.target_class_index,
             "probs": probs,
             "raw_audio": self.clean_audio,
-            "noise": noise,
-            "λ": 0.001
+            "noise": noise
         }
 
         fitness = objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
@@ -99,7 +108,7 @@ class DifferentialEvolutionAttacker:
 
     def mutation(self, x):
         a, b, c = x
-        return a + self.F * (b - c)
+        return a + self.de_hyperparameters["F"] * (b - c)
 
     def check_bounds(self, mutated):
         mutated_bound = [clip(mutated[i], self.bounds[i, 0], self.bounds[i, 1]) for i in range(len(self.bounds))]
@@ -107,7 +116,7 @@ class DifferentialEvolutionAttacker:
 
     def crossover(self, mutated, target):
         p = rand(len(self.bounds))
-        trial = [mutated[i] if p[i] < self.cr else target[i] for i in range(len(self.bounds))]
+        trial = [mutated[i] if p[i] < self.de_hyperparameters["cr"] else target[i] for i in range(len(self.bounds))]
         return np.array(trial)
 
     def optimization(self, starting_class_index: int, starting_class_label: str):
@@ -118,8 +127,8 @@ class DifferentialEvolutionAttacker:
         # pop = self.bounds[:, 0] + (rand(self.pop_size, len(self.bounds)) * (self.bounds[:, 1] - self.bounds[:, 0]))
 
         pop = []
-        for _ in range(self.pop_size):
-            random_values = utils.generate_bounded_white_noise(self.clean_audio, self.perturbation_ratio)
+        for _ in range(self.de_hyperparameters["pop_size"]):
+            random_values = utils.generate_bounded_white_noise(self.clean_audio, self.de_hyperparameters["perturbation_ratio"])
             pop.append(random_values)
 
         pop = np.array(pop)
@@ -128,7 +137,7 @@ class DifferentialEvolutionAttacker:
 
         obj_all = [x['fitness'] for x in all_fitness_results]
         labels_all = [x['inferred_class'] for x in all_fitness_results]
-        self.queries += self.pop_size
+        self.queries += self.de_hyperparameters["pop_size"]
 
         best_vector = pop[argmin(obj_all)]
         best_obj = min(obj_all)
@@ -141,24 +150,32 @@ class DifferentialEvolutionAttacker:
             if self.verbosity:
                 print("----------- Attack Succeded from Initialisation -----------")
             return {
-                "noise": best_vector,
-                "adversary": np.clip(self.clean_audio + best_vector, -1.0, 1.0),
-                "raw audio": self.clean_audio,
-                "iterations": 0,
-                "success": True,
-                "queries": self.queries,
-                "inferred_class": labels_all[argmin(obj_all)]
+                "noise":
+                best_vector,
+                "adversary":
+                np.clip(self.clean_audio + best_vector, -1.0, 1.0)
+                if self.SNR_norm is None else utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm),
+                "raw audio":
+                self.clean_audio,
+                "iterations":
+                0,
+                "success":
+                True,
+                "queries":
+                self.queries,
+                "inferred_class":
+                labels_all[argmin(obj_all)]
             }
         if self.verbosity:
             print("----------- Iterations Loop Started -----------")
         # Loop for iterations.
-        for i in range(1, self.iter + 1):
+        for i in range(1, self.de_hyperparameters["iter"] + 1):
             print(f'----------- Iteration: {i} -----------')
             #  Loop for population.
-            for j in range(self.pop_size):
+            for j in range(self.de_hyperparameters["pop_size"]):
                 if self.verbosity:
                     print(f' ----------- Candidate Solution: {j} -----------')
-                candidates = [candidate for candidate in range(self.pop_size) if candidate != j]
+                candidates = [candidate for candidate in range(self.de_hyperparameters["pop_size"]) if candidate != j]
                 a, b, c = pop[choice(candidates, 3, replace=False)]
 
                 mutated = self.mutation([a, b, c])
@@ -177,13 +194,21 @@ class DifferentialEvolutionAttacker:
                     if self.verbosity:
                         print("----------- Attack Succeded -----------")
                     return {
-                        "noise": trial,
-                        "adversary": np.clip(self.clean_audio + trial, -1.0, 1.0),
-                        "raw audio": self.clean_audio,
-                        "iterations": i,
-                        "success": True,
-                        "queries": self.queries,
-                        "inferred_class": fitness_results_trial["inferred_class"]
+                        "noise":
+                        trial,
+                        "adversary":
+                        np.clip(self.clean_audio + trial, -1.0, 1.0) if self.SNR_norm is None else
+                        utils.add_normalized_noise(self.clean_audio, trial, self.SNR_norm),
+                        "raw audio":
+                        self.clean_audio,
+                        "iterations":
+                        i,
+                        "success":
+                        True,
+                        "queries":
+                        self.queries,
+                        "inferred_class":
+                        fitness_results_trial["inferred_class"]
                     }
 
                 if obj_trial < obj_target:
@@ -204,13 +229,21 @@ class DifferentialEvolutionAttacker:
                 prev_obj = best_obj
 
         return {
-            "noise": best_vector,
-            "adversary": np.clip(self.clean_audio + best_vector, -1.0, 1.0),
-            "raw audio": self.clean_audio,
-            "iterations": i,
-            "success": False,
-            "queries": self.queries,
-            "inferred_class": labels_all[argmin(obj_all)]
+            "noise":
+            best_vector,
+            "adversary":
+            np.clip(self.clean_audio + best_vector, -1.0, 1.0) if self.SNR_norm is None else utils.add_normalized_noise(
+                self.clean_audio, best_vector, self.SNR_norm),
+            "raw audio":
+            self.clean_audio,
+            "iterations":
+            i,
+            "success":
+            False,
+            "queries":
+            self.queries,
+            "inferred_class":
+            labels_all[argmin(obj_all)]
         }
 
     def generate_adversarial_example(self, source_audio):
