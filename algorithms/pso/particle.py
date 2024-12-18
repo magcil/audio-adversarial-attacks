@@ -52,11 +52,9 @@ class Particle:
             self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
         # Get the index of targeted label
         elif self.target_class and not self.hypercategory_target:
-            for k, v in self.model.id2name.items():
-                if v == self.target_class:
-                    for l, m in self.model.label_dict.items():
-                        if m == k:
-                            self.target_class_index = l
+            for k, v in self.model.ontology.items():
+                if v ==self.target_class:
+                    self.target_class_index = k
         else:
             self.target_class_index = None
 

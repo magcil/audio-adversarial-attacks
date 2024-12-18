@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import csv
 from typing import Optional, Dict
 
 import torch
@@ -10,45 +11,39 @@ import numpy as np
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-from beats_modules.BEATs import BEATsConfig, BEATs
+from hear21passt.base import load_model
 
 
-class BEATs_Model:
+class Passt_Model:
 
-    # Initialize BEATs Model
+    # Initialize PaSST Model
     def __init__(self,
-                 path_to_checkpoint: str,
-                 path_to_ontology: str = os.path.join(DIR_PATH, "ontology.json"), 
+                 path_to_ontology: str = os.path.join(DIR_PATH,
+                                                      "ontology.json"),
                  device: Optional[str] = None,
-                 hypercategory_mapping: Optional[os.PathLike] = None):
+                 hypercategory_mapping: Optional[Dict] = None):
         """
-        Initalize the BEATs model
+        
+        Initalize the PaSST model
 
         Args:
-            path_to_checkpoint (string): The path to the checkpont file that you downloaded.
             path_to_ontology (string): The path to the ontology file.
 
         Returns:
            
         """
-        self.path_to_checkpoint = path_to_checkpoint
-
-        # Parse Ontology
-        checkpoint = torch.load(self.path_to_checkpoint)
-        
-        # Dictionary containing 
         self.ontology = parse_ontology(path_to_ontology)
 
-        cfg = BEATsConfig(checkpoint['cfg'])
-        self.model = BEATs(cfg)
-        self.model.load_state_dict(checkpoint['model'])
+        self.model = load_model(mode="logits")
         self.model.eval()
 
         if device == "cuda" and torch.cuda.is_available():
             self.device = device
             self.model.to(device)
+
         else:
             self.device = "cpu"
+            self.model.to(self.device)
 
         if hypercategory_mapping is not None:
             self.map_to_hypercategories(hypercategory_mapping)
@@ -67,17 +62,17 @@ class BEATs_Model:
 
         # Make prediction
         with torch.no_grad():
-            probs = self.model.extract_features(audio)[0][0]
+            probs = self.model(audio)
             probs = probs.cpu().numpy()
 
         # Get Index and Class name of prediction
         max_idx = np.argmax(probs)
 
-        label = self.ontology[max_idx]
         best_score = probs[max_idx]
+        label = self.ontology[max_idx]
         predicted_class_idx = max_idx
 
-        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
+        return probs, predicted_class_idx, label, best_score
 
     def make_inference_with_waveform(self, waveform: np.ndarray):
         """Method to make a prediction using a waveform
@@ -86,12 +81,12 @@ class BEATs_Model:
         """
 
         # Load waveform
-        waveform = torch.Tensor(waveform).unsqueeze(0).to(self.device)
+        waveform = torch.Tensor(waveform).to(self.device)
 
         # Make prediction
         with torch.no_grad():
-            probs = self.model.extract_features(waveform)[0][0]
-            probs = probs.cpu().numpy()
+            probs = self.model(waveform)
+            probs = probs.squeeze(0).cpu().numpy()
 
         # Get Index and Class name of prediction
         max_idx = np.argmax(probs)
@@ -100,10 +95,11 @@ class BEATs_Model:
         best_score = probs[max_idx]
         predicted_class_idx = max_idx
 
-        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
+        return probs, predicted_class_idx, label, best_score
 
     def map_to_hypercategories(self, hypercategory_mapping: Dict):
         self.hypercategory_mapping = np.array([hypercategory_mapping[name] for idx,name in self.ontology.items()])
+
 
 def parse_ontology(path_to_ontology):
 
