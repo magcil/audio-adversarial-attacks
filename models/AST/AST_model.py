@@ -11,8 +11,7 @@ import numpy as np
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-from ast_modules.src.models import ASTModel
-
+from ast_modules.ast_models import ASTModel
 
 class AST_Model:
 
