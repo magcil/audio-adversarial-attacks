@@ -160,6 +160,7 @@ cython_debug/
 #.idea/
 
 pretrained_models/*.pt
+pretrained_models/*.pth
 data/valid_wav/*
 results/*
 data/*/*.csv
