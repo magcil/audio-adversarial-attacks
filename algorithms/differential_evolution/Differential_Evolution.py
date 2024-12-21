@@ -27,13 +27,15 @@ class DifferentialEvolutionAttacker:
                  objective_function=None,
                  target_class=None,
                  hypercategory_target=None):
+        
         """Instantiate DE attacker
         
-        model -- The model used for inference
-        clean_audio -- Clean audio file
-        starting_class_index -- Index of starting class.
-        starting_class_label -- Class label of input audio.
-        bounds -- L infinity boundaries.
+        model (Object) -- A pretrained model used for inference.
+        pop_size (int) -- The population size.
+        iter (int) -- Number of iterations.
+        F (float) -- Mutation Factor that scales the difference vector during mutation.
+        cr (float) -- Crossover probability in the range [0,1]. Defines the likelihogg of crossover.
+        
         """
 
         self.model = model
@@ -71,7 +73,8 @@ class DifferentialEvolutionAttacker:
         else:
             clipped_audio = np.clip(self.clean_audio + noise, -1.0, 1.0)
 
-        probs, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(clipped_audio)
+        inference_results = self.model.make_inference_with_waveform(clipped_audio)
+        probs, predicted_class_idx, label = inference_results["probs"], inference_results["predicted_class_idx"], inference_results["label"]
 
         if len(self.model.hypercategory_mapping):
             if self.hypercategory_target:
@@ -122,8 +125,6 @@ class DifferentialEvolutionAttacker:
         if self.verbosity:
             print("----------- Attack Started -----------")
             print("----------- Initialise Population -----------")
-
-        # pop = self.bounds[:, 0] + (rand(self.pop_size, len(self.bounds)) * (self.bounds[:, 1] - self.bounds[:, 0]))
 
         pop = []
         for _ in range(self.de_hyperparameters["pop_size"]):
@@ -178,7 +179,6 @@ class DifferentialEvolutionAttacker:
                 a, b, c = pop[choice(candidates, 3, replace=False)]
 
                 mutated = self.mutation([a, b, c])
-                # mutated = self.check_bounds(mutated)
                 trial = self.crossover(mutated, pop[j])
 
                 fitness_results_target = self.obj(pop[j], starting_class_index, starting_class_label)
@@ -253,11 +253,13 @@ class DifferentialEvolutionAttacker:
         else:
             self.clean_audio = source_audio
 
-        self.bounds = asarray([(-self.de_hyperparameters["rangeOfBounds"], self.de_hyperparameters["rangeOfBounds"])
+        self.bounds = asarray([(-1, 1)
                                for _ in range(len(self.clean_audio))])
 
         # Make inference to get index/label
-        _, starting_class_index, starting_class_label, _ = self.model.make_inference_with_waveform(self.clean_audio)
+        inference_results = self.model.make_inference_with_waveform(self.clean_audio)
+        starting_class_index, starting_class_label = inference_results["predicted_class_idx"], inference_results["label"]
+        
 
         if len(self.model.hypercategory_mapping):
             starting_class_label = self.model.hypercategory_mapping[starting_class_index]
@@ -270,7 +272,10 @@ class DifferentialEvolutionAttacker:
 
         # Make inference with perturbed waveform
         results["queries"] += 1
-        probs, _, _, final_confidence = self.model.make_inference_with_waveform(results["adversary"])
+
+        inference_results = self.model.make_inference_with_waveform(results["adversary"])
+        probs, final_confidence = inference_results["probs"], inference_results["best_score"]
+
 
         # Get final confidence of starting class
         if len(self.model.hypercategory_mapping):

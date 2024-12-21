@@ -41,6 +41,8 @@ def simple_minimization(starting_idx, probs):
         Defined as confidence of y_true minus the maximum confidence of all other classes except the starting one.
     """
 
+    print(f"probs type: {type(probs)}, probs content: {probs}")
+    print("Starting Idx", starting_idx)
     starting_class_score = np.max(probs[starting_idx])
     others_classes_scores = np.max(np.delete(probs, starting_idx))
 

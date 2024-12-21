@@ -71,7 +71,9 @@ class Particle:
             pred_audio = self.position
  
         #---- Make inference ----#
-        scores, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(pred_audio)
+
+        result = self.model.make_inference_with_waveform(pred_audio)
+        scores, predicted_class_idx, label = result["probs"], result["predicted_class_idx"], result["label"]
 
         if len(self.model.hypercategory_mapping):
             if self.hypercategory_target:

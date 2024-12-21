@@ -25,7 +25,18 @@ class PSO_Attacker:
                  target_class=None,
                  hypercategory_target=None,
                  SNR_norm=None):
-        """TODO"""
+        
+        """Instantiate PSO attacker
+
+           model (Object) -- A pretrained model used for inference.
+           initial_particles (int) -- THe number of particels used in the Swarm (Population Size).
+           max_iters (int) -- Maximum number of iterations.
+           max_inertia_w (float) -- Maximum inertia weight, which controls the influence of particle's velocity.
+           min_inertia_w (float) -- Minimum inertia weight.
+           memory_w (float) -- Weight of particle's own memory (Personal Best).
+           information_w (float) -- Weight for the global best information.
+           
+        """
 
         # Initialize PSO Hyperparameters
         self.pso_hyperparameters = {
@@ -142,23 +153,6 @@ class PSO_Attacker:
                     self.swarm.sbf = p.best_fitness
                     self.swarm.sbp = p.best_position
 
-            #---- Check for Stagnation ----#
-            stagnated = self.swarm.check_stable_sbf_stagnation()
-            if (stagnated):
-                # Early stop, if enabled
-                if (self.enabled_early_stop):
-                    if self.verbosity:
-                        print("Early Stopping")
-                    break
-                # Proceed to particles generation, if enabled
-                if (self.enable_particle_generation):
-                    if self.verbosity:
-                        print('Proceeding to Temporary Particles Generation stage')
-
-                    self.swarm.generate_additional_particles(self.additional_particles, self.target_wav,
-                                                             self.perturbed_file)
-                    self.added_particles += self.additional_particles
-
         return {
             "noise":
             self.swarm.sbp - self.clean_audio,
@@ -187,7 +181,8 @@ class PSO_Attacker:
             self.clean_audio = source_audio
 
         # Make inference to get index/label
-        _, starting_class_index, starting_class_label, _ = self.model.make_inference_with_waveform(self.clean_audio)
+        prediction_results = self.model.make_inference_with_waveform(self.clean_audio)
+        starting_class_index, starting_class_label = prediction_results["predicted_class_idx"], prediction_results["label"]
 
         if len(self.model.hypercategory_mapping):
             starting_class_label = self.model.hypercategory_mapping[starting_class_index]
@@ -198,7 +193,11 @@ class PSO_Attacker:
 
         # Make inference with perturbed waveform
         results["queries"] += 1
-        probs, _, _, final_confidence = self.model.make_inference_with_waveform(results["adversary"])
+
+        # Get probs and final confidence of adversarial sample.
+        prediction_results = self.model.make_inference_with_waveform(results["adversary"])
+
+        probs, final_confidence = prediction_results["probs"], prediction_results["best_score"]
 
         # Get final confidence of starting class
         if len(self.model.hypercategory_mapping):

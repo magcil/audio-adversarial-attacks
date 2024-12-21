@@ -40,9 +40,10 @@ class Swarm:
         self.sbp = clean_audio  # SBP is initially equal to the raw audio file
         self.verbosity = verbosity
         self.perturbation_ratio = perturbation_ratio
+        self.SNR_norm = SNR_norm
         self.particles = self.generate_initial_particles(model, initial_particles, starting_class_index,
                                                          starting_class_label, clean_audio)
-        self.SNR_norm = SNR_norm
+
 
     def generate_initial_particles(self, model, initial_particles, starting_class_index, starting_class_label,
                                    clean_audio):
