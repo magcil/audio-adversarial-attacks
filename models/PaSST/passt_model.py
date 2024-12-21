@@ -11,8 +11,7 @@ import numpy as np
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-from hear21passt.base import load_model
-
+from hear21passt.base import get_basic_model
 
 class Passt_Model:
 
@@ -34,7 +33,7 @@ class Passt_Model:
         """
         self.ontology = parse_ontology(path_to_ontology)
 
-        self.model = load_model(mode="logits")
+        self.model = get_basic_model(mode="logits")
         self.model.eval()
 
         if device == "cuda" and torch.cuda.is_available():
@@ -58,11 +57,13 @@ class Passt_Model:
 
         # Load waveform
         audio, _ = librosa.load(path_to_audio, sr=16000)
-        audio = torch.Tensor(audio).unsqueeze(0).to(self.device)
+        audio = torch.from_numpy(audio).unsqueeze(0).to(self.device)
 
+        
         # Make prediction
         with torch.no_grad():
             probs = self.model(audio)
+            probs = torch.nn.functional.softmax(probs, dim=0)
             probs = probs.cpu().numpy()
 
         # Get Index and Class name of prediction
@@ -81,11 +82,12 @@ class Passt_Model:
         """
 
         # Load waveform
-        waveform = torch.Tensor(waveform).to(self.device)
+        waveform = torch.from_numpy(waveform).unsqueeze(0).to(self.device)
 
         # Make prediction
         with torch.no_grad():
             probs = self.model(waveform)
+            probs = torch.nn.functional.softmax(probs, dim=1)
             probs = probs.squeeze(0).cpu().numpy()
 
         # Get Index and Class name of prediction
