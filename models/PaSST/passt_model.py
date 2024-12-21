@@ -63,7 +63,7 @@ class Passt_Model:
         # Make prediction
         with torch.no_grad():
             probs = self.model(audio)
-            probs = torch.nn.functional.softmax(probs, dim=0)
+            probs = torch.nn.functional.softmax(probs, dim=1)
             probs = probs.cpu().numpy()
 
         # Get Index and Class name of prediction
@@ -73,17 +73,18 @@ class Passt_Model:
         label = self.ontology[max_idx]
         predicted_class_idx = max_idx
 
-        return probs, predicted_class_idx, label, best_score
+        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
 
     def make_inference_with_waveform(self, waveform: np.ndarray):
         """Method to make a prediction using a waveform
 
         waveform -- The audio waveform
         """
+        waveform = waveform.astype(np.float32)
 
         # Load waveform
         waveform = torch.from_numpy(waveform).unsqueeze(0).to(self.device)
-
+        
         # Make prediction
         with torch.no_grad():
             probs = self.model(waveform)
@@ -97,7 +98,7 @@ class Passt_Model:
         best_score = probs[max_idx]
         predicted_class_idx = max_idx
 
-        return probs, predicted_class_idx, label, best_score
+        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
 
     def map_to_hypercategories(self, hypercategory_mapping: Dict):
         self.hypercategory_mapping = np.array([hypercategory_mapping[name] for idx,name in self.ontology.items()])
