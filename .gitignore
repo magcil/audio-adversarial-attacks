@@ -159,10 +159,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-pretrained_models/*.pt
-pretrained_models/*.pth
+pretrained_models/
 data/valid_wav/*
 results/*
 data/*/*.csv
 data/*/*/*.wav
 src/perform_attack.ipynb
+src/ast_attack.ipynb

@@ -11,8 +11,11 @@ import torch
 import torch.nn as nn
 from torch.cuda.amp import autocast
 import os
+import sys
 import wget
-os.environ['TORCH_HOME'] = '../../pretrained_models'
+
+DIR_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+os.environ['TORCH_HOME'] = os.path.join(DIR_PATH, 'pretrained_models')
 import timm
 from timm.models.layers import to_2tuple,trunc_normal_
 
@@ -50,8 +53,7 @@ class ASTModel(nn.Module):
 
         super(ASTModel, self).__init__()
         assert timm.__version__ == '0.4.5', 'Please use timm == 0.4.5, the code might not be compatible with newer versions.'
-
-        print("Hey")
+        
         if verbose == True:
             print('---------------AST Model Summary---------------')
             print('ImageNet pretraining: {:s}, AudioSet pretraining: {:s}'.format(str(imagenet_pretrain),str(audioset_pretrain)))

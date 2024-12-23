@@ -130,6 +130,9 @@ class AST_Model:
         waveform -- The audio waveform
         """
 
+        waveform = waveform.astype('float32')
+
+
         waveform = torch.from_numpy(waveform).unsqueeze(0)
 
         feats = self._make_features(waveform, mel_bins=128)

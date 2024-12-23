@@ -60,7 +60,7 @@ if __name__ == "__main__":
                                       verbosity=config.get("verbosity", None))
 
     # Get Wav Data
-    wav_files = crawl_directory(directory=config['data_path'], extension=".wav")
+    wav_files = crawl_directory(directory=config['data_path'], extension=".wav", num_files=5)
 
     # Get True Labels
     with open(config['true_labels'], 'r') as f:

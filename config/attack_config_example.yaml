@@ -1,7 +1,7 @@
 # Configuration file for the attacks
 
 model_architecture: "beats" # Which model to attack
-model_pretrained_weights: "path_to_pt_file.pt" # Pretrained weights
+model_pretrained_weights: "/home/vtheiou/adversarial_paper/audio-adversarial-attacks/pretrained_models/BEATs_iter3_plus_AS2M_finetuned_on_AS2M_cpt2.pt" # Pretrained weights
 
 # Algorithm Hyperparameters
 
@@ -9,8 +9,8 @@ algorithm: "PSO" # or DE
 algorithm_hyperparameters: { "initial_particles": 35, "max_iters": 20, "max_inertia_w": 0.9, "min_inertia_w": 0.1, "memory_w": 0.3, "information_w": 1.2, "perturbation_ratio": 0.5 }
 
 # Data Related Variables
-data_path: "path_to_data_wavs" # Abs Path to data containing wav files
-true_labels: "path_to_true_labels" # Abs Path containing the true labels in json format
+data_path: "/data/audioset/validation_set/valid_wav" # Abs Path to data containing wav files
+true_labels: "/home/vtheiou/adversarial_paper/audio-adversarial-attacks/ontologies/audioset_val_true_labels.json" # Abs Path containing the true labels in json format
 hypercategory_mapping: Null # [Optional] Abs Path of hypercategory mapping in json format
 
 # Logging Variables

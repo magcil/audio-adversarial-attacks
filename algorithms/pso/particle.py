@@ -63,7 +63,6 @@ class Particle:
 
     def calculate_fitness(self):
         """Calculate fitness of the particle based on position"""
-            
         
         if self.SNR_norm is not None:
             pred_audio = utils.add_normalized_noise(self.clean_audio, self.position - self.raw_audio, self.SNR_norm)
@@ -71,7 +70,6 @@ class Particle:
             pred_audio = self.position
  
         #---- Make inference ----#
-
         result = self.model.make_inference_with_waveform(pred_audio)
         scores, predicted_class_idx, label = result["probs"], result["predicted_class_idx"], result["label"]
 
@@ -85,13 +83,13 @@ class Particle:
             if (label == self.target_class):
                 if self.verbosity:
                     print(f'Attack Succeded from {self.starting_class_label} to {label}')
-                return {"fitness": float('inf'), "inferred_class": label}
+                return {"fitness": float('-inf'), "inferred_class": label}
 
         else:
             if (self.starting_class_label != label):
                 if self.verbosity:
                     print(f'Attack Succeded from {self.starting_class_label} to {label}')
-                return {"fitness": float('inf'), "inferred_class": label}
+                return {"fitness": float('-inf'), "inferred_class": label}
 
         objective_function_kwargs = {
             "starting_idx": self.starting_class_index,
@@ -101,21 +99,20 @@ class Particle:
             "noise": self.position - self.raw_audio,
             "λ": 0.001
         }
-
-        # SOS : - before objective functions because of maximization.
-        fitness = -objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
+        fitness = objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
 
         return {"fitness": fitness, "inferred_class": label}
 
     def update_velocity_and_position(self, inertia_w, memory_w, information_w, sbp):
-        """Calculate next velocity and position of particle
+        """
+        Calculate next velocity and position of particle
       
-      inertia_w -- The PSO inertia weight
-      memory_w -- The PSO memory weight
-      memory_r -- The PSO memory random multiplier
-      information_w -- The PSO information weight
-      sbp -- The best position within the Swarm
-      """
+            inertia_w -- The PSO inertia weight
+            memory_w -- The PSO memory weight
+            memory_r -- The PSO memory random multiplier
+            information_w -- The PSO information weight
+            sbp -- The best position within the Swarm
+        """
 
         inertia = inertia_w * self.velocity
         memory_r = random.uniform(0, 1)

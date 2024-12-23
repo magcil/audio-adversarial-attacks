@@ -116,8 +116,8 @@ class PSO_Attacker:
                 self.queries += 1
 
                 # Termination if attack succeded
-                if (fitness_results["fitness"] == float('inf')):
-                    self.swarm.sbf = float('inf')
+                if (fitness_results["fitness"] == float('-inf')):
+                    self.swarm.sbf = float('-inf')
                     self.swarm.sbp = p.position
                     return {
                         "noise":
@@ -138,7 +138,7 @@ class PSO_Attacker:
                     }
 
                 # Update partice BF and BP, if better found
-                if (fitness_results["fitness"] > p.best_fitness):
+                if (fitness_results["fitness"] < p.best_fitness):
                     if self.verbosity:
                         print("Better Personal Best found!")
                         print(f"Previous Best: {p.best_fitness}, Current Best {fitness_results['fitness']}")

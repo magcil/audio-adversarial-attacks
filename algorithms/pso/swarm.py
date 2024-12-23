@@ -36,7 +36,7 @@ class Swarm:
         self.target_class = target_class
         self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
-        self.sbf = float('-inf')
+        self.sbf = float('inf') 
         self.sbp = clean_audio  # SBP is initially equal to the raw audio file
         self.verbosity = verbosity
         self.perturbation_ratio = perturbation_ratio
@@ -62,7 +62,7 @@ class Swarm:
             print("------ Particle's Initialization ------")
         for p in range(0, initial_particles):
 
-            # TODO: Change initial velocity???
+            # TODO: Experiment with different initial velocity?
             initial_velocity = utils.generate_bounded_white_noise(target_waveform, self.perturbation_ratio)
             particle_position = np.clip(target_waveform + initial_velocity, -1.0, 1.0)
             if self.verbosity:
@@ -89,7 +89,7 @@ class Swarm:
             #     return
 
             #---- Update SBF and SBP, if better found ----#
-            if particle.best_fitness > self.sbf:
+            if particle.best_fitness < self.sbf:
                 self.sbf = particle.best_fitness
                 self.sbp = particle.best_position
 
