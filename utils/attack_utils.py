@@ -7,10 +7,10 @@ from typing import List, Dict, Tuple
 
 from sklearn.metrics import classification_report
 import numpy as np
-
+import json
 
 def filter_on_correct_predictions(model, wav_files: List[os.PathLike],
-                                  true_labels: Dict[str, str]) -> Tuple[List[os.PathLike], str]:
+                                  true_labels: Dict[str, str], hypercategory_mapping: List[os.PathLike]) -> Tuple[List[os.PathLike], str]:
     """Keep the correct predictions by the model
     
     Args:
@@ -24,21 +24,34 @@ def filter_on_correct_predictions(model, wav_files: List[os.PathLike],
     filtered_wavs = []
     y_true, y_pred = [], []
 
+
+    with open(hypercategory_mapping, 'r') as f:
+        hypercategory_dict = json.load(f)
+
     for wav_file in wav_files:
         pred_results = model.make_inference_with_path(wav_file)
+
+        # TODO: Check this! There are multiple categories in true labels
         # Update y_true, y_pred
-        y_true.append(true_labels[os.path.basename(wav_file)])
-        y_pred.append(pred_results['label'])
+        print(true_labels[os.path.basename(wav_file)[:-4]])
+        y_true.append(hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]][0]])
+        y_pred.append(hypercategory_dict[pred_results['label']])
 
         # If prediction is correct then keep
-        if pred_results['label'] == true_labels[os.path.basename(wav_file)]:
-            filtered_wavs.append(wav_files)
+        if hypercategory_dict[pred_results['label']] == hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]][0]]:
+            filtered_wavs.append(wav_file)
+
+
+    # unique_names = set(item for sublist in hypercategory_dict.values() for item in sublist)
+    # unique_names = np.array(list(unique_names))
+    unique_names = np.array(list(set(hypercategory_dict.values())))
 
     return {
         "filtered_wavs": filtered_wavs,
         "classification_report": classification_report(y_true=y_true,
                                                        y_pred=y_pred,
-                                                       labels=np.unique(true_labels.values()))
+                                                       labels= unique_names)
+
     }
 
 

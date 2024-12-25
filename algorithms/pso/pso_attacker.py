@@ -185,8 +185,9 @@ class PSO_Attacker:
         starting_class_index, starting_class_label = prediction_results["predicted_class_idx"], prediction_results["label"]
 
         if len(self.model.hypercategory_mapping):
-            starting_class_label = self.model.hypercategory_mapping[starting_class_index]
+            starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
 
+   
         self.initialization(starting_class_index=starting_class_index, starting_class_label=starting_class_label)
 
         results = self.optimization()
@@ -207,6 +208,8 @@ class PSO_Attacker:
 
             # Get maximum probability
             max_prob = max(probs[hypercategory_idxs])
+
+            # results["inferred_class"] = self.model.hypercategory
         else:
             max_prob = probs[starting_class_index]
 

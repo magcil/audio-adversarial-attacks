@@ -77,8 +77,8 @@ class DifferentialEvolutionAttacker:
         probs, predicted_class_idx, label = inference_results["probs"], inference_results["predicted_class_idx"], inference_results["label"]
 
         if len(self.model.hypercategory_mapping):
-            if self.hypercategory_target:
-                label = self.model.hypercategory_mapping[predicted_class_idx]
+            
+            label = str(self.model.hypercategory_mapping[predicted_class_idx])
             starting_class_index = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
 
         # Termination Criteria
@@ -262,7 +262,7 @@ class DifferentialEvolutionAttacker:
         
 
         if len(self.model.hypercategory_mapping):
-            starting_class_label = self.model.hypercategory_mapping[starting_class_index]
+            starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
 
         # Initialize queries counter
         self.queries = 0

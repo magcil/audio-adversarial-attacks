@@ -34,7 +34,7 @@ class BEATs_Model:
         self.path_to_checkpoint = path_to_checkpoint
 
         # Load checkpoint.
-        checkpoint = torch.load(self.path_to_checkpoint)
+        checkpoint = torch.load(self.path_to_checkpoint, weights_only=True)
         
         # Dictionary containing index and class name.
         self.ontology = parse_ontology(path_to_ontology)
@@ -51,7 +51,11 @@ class BEATs_Model:
             self.device = "cpu"
 
         if hypercategory_mapping is not None:
-            self.map_to_hypercategories(hypercategory_mapping)
+
+            with open(hypercategory_mapping, 'r') as f:
+                hypercategory_dict = json.load(f)
+
+            self.map_to_hypercategories(hypercategory_dict)
         else:
             self.hypercategory_mapping = np.array([])
 

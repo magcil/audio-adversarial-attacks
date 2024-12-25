@@ -46,7 +46,10 @@ class AST_Model:
 
 
         if hypercategory_mapping is not None:
-            self.map_to_hypercategories(hypercategory_mapping)
+            with open(hypercategory_mapping, 'r') as f:
+                hypercategory_dict = json.load(f)
+
+            self.map_to_hypercategories(hypercategory_dict)
         else:
             self.hypercategory_mapping = np.array([])
 

@@ -50,6 +50,7 @@ class Particle:
         # Get the indexes of targeted hypercategory
         if self.target_class and self.hypercategory_target:
             self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
+
         # Get the index of targeted label
         elif self.target_class and not self.hypercategory_target:
             for k, v in self.model.ontology.items():
@@ -74,8 +75,8 @@ class Particle:
         scores, predicted_class_idx, label = result["probs"], result["predicted_class_idx"], result["label"]
 
         if len(self.model.hypercategory_mapping):
-            if self.hypercategory_target:
-                label = self.model.hypercategory_mapping[predicted_class_idx]
+           
+            label = str(self.model.hypercategory_mapping[predicted_class_idx])
             self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
 
 

@@ -40,6 +40,8 @@ def init_algorithm(algorithm: str,
                    target_class=None,
                    hypercategory_target=None):
 
+
+
     if algorithm == 'de':
         ATTACK_ALGORITHM = DifferentialEvolutionAttacker(model=model,
                                                          verbosity=verbosity,
@@ -57,5 +59,6 @@ def init_algorithm(algorithm: str,
         
     else:
         print("Enter Valid Algorithm")
+        ATTACK_ALGORITHM = None
 
     return ATTACK_ALGORITHM
