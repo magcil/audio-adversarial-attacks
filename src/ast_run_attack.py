@@ -50,7 +50,8 @@ if __name__ == "__main__":
     # Initialize Model
     model = get_model(model_str=config['model_architecture'],
                       model_pt_file=config['model_pretrained_weights'],
-                      hypercategory_mapping=config['hypercategory_mapping'])
+                      hypercategory_mapping=config['hypercategory_mapping'],
+                      device=config.get('device', 'cpu'))
     # Initialize Algorithm
     ATTACK_ALGORITHM = init_algorithm(algorithm=config['algorithm'],
                                       hyperparameters=config['algorithm_hyperparameters'],

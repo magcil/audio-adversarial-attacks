@@ -13,10 +13,10 @@ from algorithms.pso.pso_attacker import PSO_Attacker
 
 def get_model(model_str: str,
               model_pt_file: Optional[str] = None,
-              hypercategory_mapping: Optional[Dict] = None):
+              hypercategory_mapping: Optional[Dict] = None,
+              device: str = "cpu"):
 
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     model = AST_Model(path_to_checkpoint=model_pt_file, device=device, hypercategory_mapping=hypercategory_mapping)
     return model
 

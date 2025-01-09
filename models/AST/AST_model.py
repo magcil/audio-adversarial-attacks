@@ -110,7 +110,7 @@ class AST_Model:
 
         input_tdim = feats.shape[0]
         
-        feats_data = feats.expand(1, input_tdim, 128)  
+        feats_data = feats.expand(1, input_tdim, 128).to(self.device)
         
         # Make prediction
         with torch.no_grad():
@@ -142,7 +142,7 @@ class AST_Model:
 
         input_tdim = feats.shape[0]
         
-        feats_data = feats.expand(1, input_tdim, 128)  
+        feats_data = feats.expand(1, input_tdim, 128).to(self.device)
 
         # Make prediction
         with torch.no_grad():

@@ -67,7 +67,7 @@ class Passt_Model:
         with torch.no_grad():
             probs = self.model(audio)
             probs = torch.nn.functional.softmax(probs, dim=1)
-            probs = probs.cpu().numpy()
+            probs=probs.squeeze(0).cpu().numpy()
 
         # Get Index and Class name of prediction
         max_idx = np.argmax(probs)
