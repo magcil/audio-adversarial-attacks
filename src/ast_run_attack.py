@@ -2,6 +2,7 @@ import os
 import sys
 import yaml
 import logging
+import datetime
 import argparse
 import json
 import numpy as np
@@ -11,10 +12,9 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, PROJECT_PATH)
 
 from tqdm import tqdm
-from datetime import datetime
 from prettytable import PrettyTable
 
-from utils.init_utils import get_model, init_algorithm
+from utils.ast_init import get_model, init_algorithm
 from utils.utils import crawl_directory, calculate_snr
 from utils.attack_utils import filter_on_correct_predictions, perform_single_attack
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                         format='%(asctime)s %(message)s')
 
     # Log configuration params
-    for k, v in config.items():
+    for k, v in config.keys():
         logging.info(f"{k}:{v}")
 
     # Initialize Model
@@ -54,7 +54,6 @@ if __name__ == "__main__":
                       device=config.get('device', 'cpu'))
     # Initialize Algorithm
     ATTACK_ALGORITHM = init_algorithm(algorithm=config['algorithm'],
-                                      model = model,
                                       hyperparameters=config['algorithm_hyperparameters'],
                                       objective_function=config['objective_function'],
                                       target_class=config.get("target_class", None),
@@ -69,13 +68,13 @@ if __name__ == "__main__":
         true_labels = json.load(f)
 
     # Filter Wavs and Keep those with 1 Hypercategory
-    filtered_wav_files = [wav_file for wav_file in wav_files if os.path.basename(wav_file) in list(true_labels.keys())]
+    filtered_wav_files = [wav_file for wav_file in wav_files if wav_file in true_labels.keys()]
 
     # Log the number of filtered wav files
     logging.info(f"Total Wav files: {len(wav_files)} | Belong to 1 Hypercategory: {len(filtered_wav_files)}")
 
     # Filter wav files
-    filter_results = filter_on_correct_predictions(model=model, wav_files=filtered_wav_files, true_labels=true_labels, hypercategory_mapping= config['hypercategory_mapping'])
+    filter_results = filter_on_correct_predictions(model=model, wav_files=filtered_wav_files, true_labels=true_labels)
     correct_wav_files = filter_results['filtered_wavs']
     logging.info(f"{filter_results['classification_report']}\n")
     logging.info(f"Correct: {len(correct_wav_files)} ({100*len(correct_wav_files)/len(filtered_wav_files):.2f} %)")
@@ -99,6 +98,7 @@ if __name__ == "__main__":
 
     # Loop through wav files
     for wav_file in tqdm(correct_wav_files, desc="Processing wav files", total=len(correct_wav_files)):
+
         attack_results = perform_single_attack(ATTACK_ALGORITHM=ATTACK_ALGORITHM, wav_file=wav_file)
 
         # Update Aggregate successes & Queries
@@ -116,16 +116,9 @@ if __name__ == "__main__":
         # Update Class Dict
         CLASSES_DICT[starting_class][predicted_class_idx] += 1
 
-    
     # Calculate Results Table
     for classname, class_distribution in CLASSES_DICT.items():
         class_idx = CLASS_MAPPING[classname]
-        
-        # Prevent Division by Zero
-        # TODO
-        if sum(class_distribution) == 0:
-            continue
-
         succ_rate = (sum(class_distribution) - class_distribution[class_idx]) / sum(class_distribution)
 
         results_table.add_row([classname, *class_distribution, f"{100 * succ_rate:.2f}"])
@@ -133,7 +126,7 @@ if __name__ == "__main__":
     aggregated_table_results.add_row([
         len(correct_wav_files), f"{100 * aggregated_successes / len(correct_wav_files):.2f}",
         f"{np.mean(aggregated_SNR):.2f}", f"{np.std(aggregated_SNR):.2f}",
-        f"{100*aggregated_queries/aggregated_successes:.2f}"
+        f"{100*aggregated_queries/len(aggregated_successes):.2f}"
     ])
 
     # Log Class Results Table

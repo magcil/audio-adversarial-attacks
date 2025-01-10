@@ -1,55 +1,70 @@
+# Utility functions for attacking experiments
 import os
 import sys
-from typing import Optional, Dict
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
+from typing import List, Dict, Tuple
 
-import torch
+from sklearn.metrics import classification_report
+import numpy as np
+import json
 
-from models.beats.beats_model import BEATs_Model
-from algorithms.differential_evolution.Differential_Evolution import DifferentialEvolutionAttacker
-from algorithms.pso.pso_attacker import PSO_Attacker
-
-
-def get_model(model_str: str, model_pt_file: Optional[str] = None, hypercategory_mapping: Optional[Dict] = None):
-    if model_str == 'beats':
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        model = BEATs_Model(path_to_checkpoint=model_pt_file,
-                            device=device,
-                            hypercategory_mapping=hypercategory_mapping)
-    return model
-
-
-def init_algorithm(algorithm: str,
-                   model,
-                   hyperparameters,
-                   verbosity,
-                   objective_function=None,
-                   target_class=None,
-                   hypercategory_target=None):
-    if algorithm == 'de':
-        ATTACK_ALGORITHM = DifferentialEvolutionAttacker(model=model,
-                                                         de_hyperparameters=hyperparameters,
-                                                         verbosity=verbosity,
-                                                         objective_function=objective_function,
-                                                         target_class=target_class,
-                                                         hypercategory_target=hypercategory_target)
-    elif algorithm == 'pso':
-        ATTACK_ALGORITHM = PSO_Attacker(model=model,
-                                        pso_hyperparameters=hyperparameters,
-                                        verbosity=verbosity,
-                                        objective_function=objective_function,
-                                        target_class=target_class,
-                                        hypercategory_target=hypercategory_target)
-
-    return ATTACK_ALGORITHM
+def filter_on_correct_predictions(model, wav_files: List[os.PathLike],
+                                  true_labels: Dict[str, str], hypercategory_mapping: List[os.PathLike]) -> Tuple[List[os.PathLike], str]:
+    """Keep the correct predictions by the model
+    
+    Args:
+        model: A model that implements the 'make_inference_with_path_method'
+        wav_files: List containing the paths of the wav files
+        true_labels: Correspondence wav_file -> class_name
+    
+    Returns:
+        filtered_wavs: Wav files correctly classified by the model.
+    """
+    filtered_wavs = []
+    y_true, y_pred = [], []
 
 
-def get_model_pred(model, waveform):
-    _, idx, inferred_class_name, confidence = model.make_inference_with_waveform(waveform)
+    with open(hypercategory_mapping, 'r') as f:
+        hypercategory_dict = json.load(f)
 
-    return inferred_class_name, idx, confidence
+    for wav_file in wav_files:
+        pred_results = model.make_inference_with_path(wav_file)
+
+        # TODO: Check this! There are multiple categories in true labels
+        # Update y_true, y_pred
+        print(true_labels[os.path.basename(wav_file)[:-4]])
+        y_true.append(hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]][0]])
+        y_pred.append(hypercategory_dict[pred_results['label']])
+
+        # If prediction is correct then keep
+        if hypercategory_dict[pred_results['label']] == hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]][0]]:
+            filtered_wavs.append(wav_file)
 
 
-def is_true_pred(filename, true_labels, inferred_class_name) -> bool:
-    return True if inferred_class_name in true_labels[filename] else False
+    # unique_names = set(item for sublist in hypercategory_dict.values() for item in sublist)
+    # unique_names = np.array(list(unique_names))
+    unique_names = np.array(list(set(hypercategory_dict.values())))
+
+    return {
+        "filtered_wavs": filtered_wavs,
+        "classification_report": classification_report(y_true=y_true,
+                                                       y_pred=y_pred,
+                                                       labels= unique_names)
+
+    }
+
+
+def perform_single_attack(ATTACK_ALGORITHM, wav_file) -> Dict:
+    """Perform an attack on a single wav file
+    
+    Args:
+        ATTACK_ALGORITHM: An instance of an attack algorithm
+        wav_file: Abs Path to of wav file
+    
+    Returns:
+        Dictionary of attack results returned by ATTACK_ALGORITHM
+    """
+    attack_results = ATTACK_ALGORITHM.generate_adversarial_example(wav_file)
+
+    return attack_results

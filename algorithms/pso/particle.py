@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import random
 
 import numpy as np
+from utils import utils
 
 from objective_functions import objective_functions
 
@@ -21,7 +22,8 @@ class Particle:
                  verbosity=True,
                  objective_function=None,
                  target_class=None,
-                 hypercategory_target=None):
+                 hypercategory_target=None,
+                 SNR_norm=None):
         """Instantiate Particle object
 
         model -- The model used for inference
@@ -42,17 +44,17 @@ class Particle:
         self.velocity = velocity
         self.position = particle_position
         self.best_position = particle_position
+        self.SNR_norm = SNR_norm
 
         # Get the indexes of targeted hypercategory
         if self.target_class and self.hypercategory_target:
             self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
+
         # Get the index of targeted label
         elif self.target_class and not self.hypercategory_target:
-            for k, v in self.model.id2name.items():
+            for k, v in self.model.ontology.items():
                 if v == self.target_class:
-                    for l, m in self.model.label_dict.items():
-                        if m == k:
-                            self.target_class_index = l
+                    self.target_class_index = k
         else:
             self.target_class_index = None
 
@@ -62,26 +64,32 @@ class Particle:
     def calculate_fitness(self):
         """Calculate fitness of the particle based on position"""
 
+        if self.SNR_norm is not None:
+            pred_audio = utils.add_normalized_noise(self.raw_audio, self.position - self.raw_audio,
+                                                    self.SNR_norm)["adversary"]
+        else:
+            pred_audio = self.position
+
         #---- Make inference ----#
-        scores, predicted_class_idx, label, _ = self.model.make_inference_with_waveform(self.position)
+        result = self.model.make_inference_with_waveform(pred_audio)
+        scores, predicted_class_idx, label = result["probs"], result["predicted_class_idx"], result["label"]
 
         if len(self.model.hypercategory_mapping):
-            if self.hypercategory_target:
-                label = self.model.hypercategory_mapping[predicted_class_idx]
+            label = str(self.model.hypercategory_mapping[predicted_class_idx])
             self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
 
+        print("label: ", label)
 
         if self.target_class:
             if (label == self.target_class):
                 if self.verbosity:
                     print(f'Attack Succeded from {self.starting_class_label} to {label}')
-                return {"fitness": float('inf'), "inferred_class": label}
-
+                return {"fitness": float('-inf'), "inferred_class": label}
         else:
             if (self.starting_class_label != label):
                 if self.verbosity:
                     print(f'Attack Succeded from {self.starting_class_label} to {label}')
-                return {"fitness": float('inf'), "inferred_class": label}
+                return {"fitness": float('-inf'), "inferred_class": label}
 
         objective_function_kwargs = {
             "starting_idx": self.starting_class_index,
@@ -91,21 +99,20 @@ class Particle:
             "noise": self.position - self.raw_audio,
             "λ": 0.001
         }
-
-        # SOS : - before objective functions because of maximization.
-        fitness = -objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
+        fitness = objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
 
         return {"fitness": fitness, "inferred_class": label}
 
     def update_velocity_and_position(self, inertia_w, memory_w, information_w, sbp):
-        """Calculate next velocity and position of particle
+        """
+        Calculate next velocity and position of particle
       
-      inertia_w -- The PSO inertia weight
-      memory_w -- The PSO memory weight
-      memory_r -- The PSO memory random multiplier
-      information_w -- The PSO information weight
-      sbp -- The best position within the Swarm
-      """
+            inertia_w -- The PSO inertia weight
+            memory_w -- The PSO memory weight
+            memory_r -- The PSO memory random multiplier
+            information_w -- The PSO information weight
+            sbp -- The best position within the Swarm
+        """
 
         inertia = inertia_w * self.velocity
         memory_r = random.uniform(0, 1)
@@ -115,6 +122,4 @@ class Particle:
         information = information_w * information_r * (sbp - self.position)
 
         self.velocity = inertia + memory + information
-        self.position = np.clip(self.position + self.velocity, -1.0, 1.0)
-
-        return True
+        self.position = self.position + self.velocity
