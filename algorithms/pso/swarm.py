@@ -23,7 +23,6 @@ class Swarm:
                  target_class=None,
                  hypercategory_target=None,
                  SNR_norm=None):
-        
         """Instantiate Swarm object
         
         model -- The model used for inference
@@ -36,14 +35,13 @@ class Swarm:
         self.target_class = target_class
         self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
-        self.sbf = float('inf') 
+        self.sbf = float('inf')
         self.sbp = clean_audio  # SBP is initially equal to the raw audio file
         self.verbosity = verbosity
         self.perturbation_ratio = perturbation_ratio
         self.SNR_norm = SNR_norm
         self.particles = self.generate_initial_particles(model, initial_particles, starting_class_index,
                                                          starting_class_label, clean_audio)
-
 
     def generate_initial_particles(self, model, initial_particles, starting_class_index, starting_class_label,
                                    clean_audio):
@@ -64,7 +62,7 @@ class Swarm:
 
             # TODO: Experiment with different initial velocity?
             initial_velocity = utils.generate_bounded_white_noise(target_waveform, self.perturbation_ratio)
-            particle_position = np.clip(target_waveform + initial_velocity, -1.0, 1.0)
+            particle_position = target_waveform + initial_velocity
             if self.verbosity:
                 print(f"------ Particle {p} ------")
 
@@ -83,7 +81,7 @@ class Swarm:
             particles.append(particle)
 
             # TODO: Termination condition here??
-            # if(particle.best_fitness == float('inf')):
+            # if(particle.best_fitness == float('-inf')):
             #     self.sbf = particle.best_fitness
             #     self.sbp = particle.best_position
             #     return

@@ -1,9 +1,7 @@
 import sys
 import os
 
-sys.path.append(
-    os.path.dirname(os.path.dirname(os.path.dirname(
-        os.path.abspath(__file__)))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import librosa
 from .swarm import Swarm
@@ -77,7 +75,8 @@ class PSO_Attacker:
                            verbosity=self.verbosity,
                            objective_function=self.objective_function,
                            target_class=self.target_class,
-                           hypercategory_target=self.hypercategory_target)
+                           hypercategory_target=self.hypercategory_target,
+                           SNR_norm=self.SNR_norm)
 
         #---- Keep count of model queries ----#
         self.queries = len(self.swarm.particles)
@@ -98,8 +97,7 @@ class PSO_Attacker:
             # Linearly decrease inertia w
             inertia_w = self.pso_hyperparameters["max_inertia_w"] - i * (
                 self.pso_hyperparameters["max_inertia_w"] -
-                self.pso_hyperparameters["min_inertia_w"]
-            ) / self.pso_hyperparameters["max_iters"]
+                self.pso_hyperparameters["min_inertia_w"]) / self.pso_hyperparameters["max_iters"]
 
             if self.verbosity:
                 print(f'----------- Iteration: {i} -----------')
@@ -109,14 +107,11 @@ class PSO_Attacker:
             for p in self.swarm.particles:
 
                 if self.verbosity:
-                    print(
-                        f' ----------- Particle: {particles_counter} -----------'
-                    )
+                    print(f' ----------- Particle: {particles_counter} -----------')
                 particles_counter += 1
 
-                p.update_velocity_and_position(
-                    inertia_w, self.pso_hyperparameters["memory_w"],
-                    self.pso_hyperparameters["information_w"], self.swarm.sbp)
+                p.update_velocity_and_position(inertia_w, self.pso_hyperparameters["memory_w"],
+                                               self.pso_hyperparameters["information_w"], self.swarm.sbp)
                 fitness_results = p.calculate_fitness()
                 self.queries += 1
 
@@ -126,74 +121,48 @@ class PSO_Attacker:
                     self.swarm.sbp = p.position
 
                     if self.SNR_norm is not None:
-                        adv_dict = utils.add_normalized_noise(
-                            self.clean_audio, self.swarm.sbp, self.SNR_norm)
+                        adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
 
                     return {
-                        "noise":
-                        self.swarm.sbp - self.clean_audio,
-                        "adversary":
-                        self.swarm.sbp
-                        if self.SNR_norm is None else adv_dict["adversary"],
-                        "raw audio":
-                        self.clean_audio,
-                        "iterations":
-                        i,
-                        "success":
-                        True,
-                        "queries":
-                        self.queries,
-                        "max_amp":
-                        None if self.SNR_norm is None else adv_dict["max_amp"],
-                        "snr_scale_factor":
-                        None,
-                        "inferred_class":
-                        fitness_results["inferred_class"]
+                        "noise": self.swarm.sbp - self.clean_audio,
+                        "adversary": self.swarm.sbp if self.SNR_norm is None else adv_dict["adversary"],
+                        "raw audio": self.clean_audio,
+                        "iterations": i,
+                        "success": True,
+                        "queries": self.queries,
+                        "max_amp": None if self.SNR_norm is None else adv_dict["max_amp"],
+                        "snr_scale_factor": None,
+                        "inferred_class": fitness_results["inferred_class"]
                     }
 
                 # Update partice BF and BP, if better found
                 if (fitness_results["fitness"] < p.best_fitness):
                     if self.verbosity:
                         print("Better Personal Best found!")
-                        print(
-                            f"Previous Best: {p.best_fitness}, Current Best {fitness_results['fitness']}"
-                        )
+                        print(f"Previous Best: {p.best_fitness}, Current Best {fitness_results['fitness']}")
                     p.best_fitness = fitness_results["fitness"]
                     p.best_position = p.position
 
                 # Update SBF and SBP, if better found
-                if (p.best_fitness > self.swarm.sbf):
+                if (p.best_fitness < self.swarm.sbf):
                     if self.verbosity:
                         print("Better Global Best found!")
-                        print(
-                            f"Previous Best: {self.swarm.sbf}, Current Best {p.best_fitness}"
-                        )
+                        print(f"Previous Best: {self.swarm.sbf}, Current Best {p.best_fitness}")
                     self.swarm.sbf = p.best_fitness
                     self.swarm.sbp = p.best_position
 
         if self.SNR_norm is not None:
-            adv_dict = utils.add_normalized_noise(self.clean_audio,
-                                                  self.swarm.sbp,
-                                                  self.SNR_norm)
+            adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
         return {
-            "noise":
-            self.swarm.sbp - self.clean_audio,
-            "adversary":
-            self.swarm.sbp if self.SNR_norm is None else adv_dict["adversary"],
-            "raw audio":
-            self.clean_audio,
-            "iterations":
-            i,
-            "success":
-            False,
-            "queries":
-            self.queries,
-            "max_amp":
-            None if self.SNR_norm is None else adv_dict["max_amp"],
-            "snr_scale_factor":
-            None,
-            "inferred_class":
-            fitness_results["inferred_class"]
+            "noise": self.swarm.sbp - self.clean_audio,
+            "adversary": self.swarm.sbp if self.SNR_norm is None else adv_dict["adversary"],
+            "raw audio": self.clean_audio,
+            "iterations": i,
+            "success": False,
+            "queries": self.queries,
+            "max_amp": None if self.SNR_norm is None else adv_dict["max_amp"],
+            "snr_scale_factor": None,
+            "inferred_class": fitness_results["inferred_class"]
         }
 
     def generate_adversarial_example(self, source_audio):
@@ -201,24 +170,19 @@ class PSO_Attacker:
 
         # Parse source audio. Either wav file or numpy array
         if (os.path.isfile(source_audio)):
-            self.clean_audio, _ = librosa.load(source_audio,
-                                               sr=16000,
-                                               mono=True)
+            self.clean_audio, _ = librosa.load(source_audio, sr=16000, mono=True)
         else:
             self.clean_audio = source_audio
 
         # Make inference to get index/label
-        prediction_results = self.model.make_inference_with_waveform(
-            self.clean_audio)
-        starting_class_index, starting_class_label = prediction_results[
-            "predicted_class_idx"], prediction_results["label"]
+        prediction_results = self.model.make_inference_with_waveform(self.clean_audio)
+        starting_class_index, starting_class_label = prediction_results["predicted_class_idx"], prediction_results[
+            "label"]
 
         if len(self.model.hypercategory_mapping):
-            starting_class_label = str(
-                self.model.hypercategory_mapping[starting_class_index])
+            starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
 
-        self.initialization(starting_class_index=starting_class_index,
-                            starting_class_label=starting_class_label)
+        self.initialization(starting_class_index=starting_class_index, starting_class_label=starting_class_label)
 
         results = self.optimization()
 
@@ -226,18 +190,15 @@ class PSO_Attacker:
         results["queries"] += 1
 
         # Get probs and final confidence of adversarial sample.
-        prediction_results = self.model.make_inference_with_waveform(
-            results["adversary"])
+        prediction_results = self.model.make_inference_with_waveform(results["adversary"])
 
-        probs, final_confidence = prediction_results[
-            "probs"], prediction_results["best_score"]
+        probs, final_confidence = prediction_results["probs"], prediction_results["best_score"]
 
         # Get final confidence of starting class
         if len(self.model.hypercategory_mapping):
 
             #Get indexes of all occurancies of the hyperclass
-            hypercategory_idxs = np.where(
-                self.model.hypercategory_mapping == starting_class_label)[0]
+            hypercategory_idxs = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
 
             # Get maximum probability
             max_prob = max(probs[hypercategory_idxs])

@@ -24,7 +24,6 @@ class Particle:
                  target_class=None,
                  hypercategory_target=None,
                  SNR_norm=None):
-        
         """Instantiate Particle object
 
         model -- The model used for inference
@@ -54,7 +53,7 @@ class Particle:
         # Get the index of targeted label
         elif self.target_class and not self.hypercategory_target:
             for k, v in self.model.ontology.items():
-                if v ==self.target_class:
+                if v == self.target_class:
                     self.target_class_index = k
         else:
             self.target_class_index = None
@@ -64,28 +63,28 @@ class Particle:
 
     def calculate_fitness(self):
         """Calculate fitness of the particle based on position"""
-        
+
         if self.SNR_norm is not None:
-            pred_audio = utils.add_normalized_noise(self.clean_audio, self.position - self.raw_audio, self.SNR_norm)["adversary"]
+            pred_audio = utils.add_normalized_noise(self.raw_audio, self.position - self.raw_audio,
+                                                    self.SNR_norm)["adversary"]
         else:
             pred_audio = self.position
- 
+
         #---- Make inference ----#
         result = self.model.make_inference_with_waveform(pred_audio)
         scores, predicted_class_idx, label = result["probs"], result["predicted_class_idx"], result["label"]
 
         if len(self.model.hypercategory_mapping):
-           
             label = str(self.model.hypercategory_mapping[predicted_class_idx])
             self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
 
+        print("label: ", label)
 
         if self.target_class:
             if (label == self.target_class):
                 if self.verbosity:
                     print(f'Attack Succeded from {self.starting_class_label} to {label}')
                 return {"fitness": float('-inf'), "inferred_class": label}
-
         else:
             if (self.starting_class_label != label):
                 if self.verbosity:
@@ -123,6 +122,4 @@ class Particle:
         information = information_w * information_r * (sbp - self.position)
 
         self.velocity = inertia + memory + information
-        self.position = np.clip(self.position + self.velocity, -1.0, 1.0)
-
-        return True
+        self.position = self.position + self.velocity
