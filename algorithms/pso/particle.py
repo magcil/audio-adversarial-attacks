@@ -66,7 +66,7 @@ class Particle:
         """Calculate fitness of the particle based on position"""
         
         if self.SNR_norm is not None:
-            pred_audio = utils.add_normalized_noise(self.clean_audio, self.position - self.raw_audio, self.SNR_norm)
+            pred_audio = utils.add_normalized_noise(self.clean_audio, self.position - self.raw_audio, self.SNR_norm)["adversary"]
         else:
             pred_audio = self.position
  

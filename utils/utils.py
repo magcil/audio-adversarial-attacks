@@ -71,10 +71,10 @@ def add_normalized_noise(y: np.ndarray, y_noise: np.ndarray, SNR: float) -> np.n
         y_noise = np.resize(y_noise, y.shape)
     snr = 10**(SNR / 10)
     E_y, E_n = np.sum(y**2), np.sum(y_noise**2)
+    scale_factor = np.sqrt((E_y / E_n) * (1 / snr))
+    z = y + scale_factor * y_noise
 
-    z = np.sqrt((E_n / E_y) * snr) * y + y_noise
-
-    return z / z.max()
+    return {"adversary": z / z.max(), "max_amp": z.max(), "snr_scale_factor": scale_factor}
 
 
 # Generate White Noise based on SNR
