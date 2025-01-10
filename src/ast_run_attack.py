@@ -107,7 +107,7 @@ if __name__ == "__main__":
             aggregated_queries += attack_results["queries"]
 
         # Append SNR of adversarial example
-        aggregated_SNR.append(calculate_snr(attack_results["raw audio"], attack_results["noise"]))
+        aggregated_SNR.append(calculate_snr(signal=attack_results['raw audio'] / attack_results["max_amp"], noise=attack_results["adversary"] - attack_results['raw audio'] / attack_results["max_amp"]))
 
         starting_class, predicted_class = attack_results["starting_class"], attack_results["inferred_class"]
 
