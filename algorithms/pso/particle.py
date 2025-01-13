@@ -64,21 +64,16 @@ class Particle:
     def calculate_fitness(self):
         """Calculate fitness of the particle based on position"""
 
-        if self.SNR_norm is not None:
-            pred_audio = utils.add_normalized_noise(self.raw_audio, self.position - self.raw_audio,
+        
+        pred_audio = utils.add_normalized_noise(self.raw_audio, self.position - self.raw_audio,
                                                     self.SNR_norm)["adversary"]
-        else:
-            pred_audio = self.position
 
         #---- Make inference ----#
         result = self.model.make_inference_with_waveform(pred_audio)
         scores, predicted_class_idx, label = result["probs"], result["predicted_class_idx"], result["label"]
 
-        if len(self.model.hypercategory_mapping):
-            label = str(self.model.hypercategory_mapping[predicted_class_idx])
-            self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
-
-        print("label: ", label)
+        label = str(self.model.hypercategory_mapping[predicted_class_idx])
+        self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
 
         if self.target_class:
             if (label == self.target_class):
