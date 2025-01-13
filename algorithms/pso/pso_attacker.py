@@ -119,14 +119,12 @@ class PSO_Attacker:
                 if (fitness_results["fitness"] == float('-inf')):
                     self.swarm.sbf = float('-inf')
                     self.swarm.sbp = p.position
-
-                    
                     adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
 
                     return {
-                        "noise": self.swarm.sbp - self.clean_audio,
+                        "noise": adv_dict["noise"],
                         "adversary": adv_dict["adversary"],
-                        "raw audio": self.clean_audio,
+                        "raw audio": adv_dict["clean_audio"],
                         "iterations": i,
                         "success": True,
                         "queries": self.queries,
@@ -151,9 +149,9 @@ class PSO_Attacker:
 
         adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
         return {
-            "noise": self.swarm.sbp - self.clean_audio,
+            "noise": adv_dict["noise"],
             "adversary": adv_dict["adversary"],
-            "raw audio": self.clean_audio,
+            "raw audio": adv_dict["clean_audio"],
             "iterations": i,
             "success": False,
             "queries": self.queries,

@@ -55,12 +55,6 @@ class DifferentialEvolutionAttacker:
         # Get the indexes of targeted hypercategory
         if self.target_class and self.hypercategory_target:
             self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
-
-        # Get the index of targeted label
-        elif self.target_class and not self.hypercategory_target:
-            for k, v in self.model.ontology.items():
-                if v == self.target_class:
-                    self.target_class_index = k
         else:
             self.target_class_index = None
 
@@ -88,12 +82,13 @@ class DifferentialEvolutionAttacker:
                     print(f'Attack Succeded from {starting_class_label} to {label}')
                 return {"fitness": float('-inf'), "inferred_class": label}
 
+        adv_dict = utils.add_normalized_noise(self.clean_audio, noise, self.SNR_norm)
         objective_function_kwargs = {
             "starting_idx": starting_class_index,
             "target_class_index": self.target_class_index,
             "probs": probs,
-            "raw_audio": self.clean_audio,
-            "noise": noise
+            "raw_audio": adv_dict["clean_audio"],
+            "noise": adv_dict["noise"]
         }
 
         fitness = objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
@@ -141,20 +136,19 @@ class DifferentialEvolutionAttacker:
         if self.verbosity:
             print(f"Init Best Obj: {best_obj}")
 
-      
-        adv_dict = utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm)
-
         # Early Stopping if attack succeds during initialisation
         if (best_obj == float('-inf')):
+            adv_dict = utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm)
+
             if self.verbosity:
                 print("----------- Attack Succeded from Initialisation -----------")
             return {
                 "noise":
-                best_vector,
+                adv_dict["noise"],
                 "adversary":
                 adv_dict["adversary"],
                 "raw audio":
-                self.clean_audio,
+                adv_dict["clean_audio"],
                 "iterations":
                 0,
                 "success":
@@ -194,11 +188,11 @@ class DifferentialEvolutionAttacker:
                         print("----------- Attack Succeded -----------")
                     return {
                         "noise":
-                        trial,
+                        adv_dict["noise"],
                         "adversary":
                         adv_dict["adversary"],
                         "raw audio":
-                        self.clean_audio,
+                        adv_dict["clean_audio"],
                         "iterations":
                         i,
                         "success":
@@ -231,11 +225,11 @@ class DifferentialEvolutionAttacker:
 
         return {
             "noise":
-            best_vector,
+            adv_dict["noise"],
             "adversary":
             adv_dict["adversary"],
             "raw audio":
-            self.clean_audio,
+            adv_dict["clean_audio"],
             "iterations":
             i,
             "success":
