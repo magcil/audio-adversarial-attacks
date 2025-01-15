@@ -119,19 +119,15 @@ class PSO_Attacker:
                 if (fitness_results["fitness"] == float('-inf')):
                     self.swarm.sbf = float('-inf')
                     self.swarm.sbp = p.position
-
-                    if self.SNR_norm is not None:
-                        adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
+                    adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
 
                     return {
-                        "noise": self.swarm.sbp - self.clean_audio,
-                        "adversary": self.swarm.sbp if self.SNR_norm is None else adv_dict["adversary"],
-                        "raw audio": self.clean_audio,
+                        "noise": adv_dict["noise"],
+                        "adversary": adv_dict["adversary"],
+                        "raw audio": adv_dict["clean_audio"],
                         "iterations": i,
                         "success": True,
                         "queries": self.queries,
-                        "max_amp": None if self.SNR_norm is None else adv_dict["max_amp"],
-                        "snr_scale_factor": None,
                         "inferred_class": fitness_results["inferred_class"]
                     }
 
@@ -151,17 +147,14 @@ class PSO_Attacker:
                     self.swarm.sbf = p.best_fitness
                     self.swarm.sbp = p.best_position
 
-        if self.SNR_norm is not None:
-            adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
+        adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
         return {
-            "noise": self.swarm.sbp - self.clean_audio,
-            "adversary": self.swarm.sbp if self.SNR_norm is None else adv_dict["adversary"],
-            "raw audio": self.clean_audio,
+            "noise": adv_dict["noise"],
+            "adversary": adv_dict["adversary"],
+            "raw audio": adv_dict["clean_audio"],
             "iterations": i,
             "success": False,
             "queries": self.queries,
-            "max_amp": None if self.SNR_norm is None else adv_dict["max_amp"],
-            "snr_scale_factor": None,
             "inferred_class": fitness_results["inferred_class"]
         }
 
@@ -179,8 +172,8 @@ class PSO_Attacker:
         starting_class_index, starting_class_label = prediction_results["predicted_class_idx"], prediction_results[
             "label"]
 
-        if len(self.model.hypercategory_mapping):
-            starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
+        
+        starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
 
         self.initialization(starting_class_index=starting_class_index, starting_class_label=starting_class_label)
 
@@ -194,18 +187,11 @@ class PSO_Attacker:
 
         probs, final_confidence = prediction_results["probs"], prediction_results["best_score"]
 
-        # Get final confidence of starting class
-        if len(self.model.hypercategory_mapping):
+        #Get indexes of all occurancies of the hyperclass
+        hypercategory_idxs = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
 
-            #Get indexes of all occurancies of the hyperclass
-            hypercategory_idxs = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
-
-            # Get maximum probability
-            max_prob = max(probs[hypercategory_idxs])
-
-            # results["inferred_class"] = self.model.hypercategory
-        else:
-            max_prob = probs[starting_class_index]
+        # Get maximum probability
+        max_prob = max(probs[hypercategory_idxs])
 
         results["Final Starting Class Confidence"] = max_prob
         results["Final Confidence"] = final_confidence

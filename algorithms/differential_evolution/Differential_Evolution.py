@@ -55,31 +55,19 @@ class DifferentialEvolutionAttacker:
         # Get the indexes of targeted hypercategory
         if self.target_class and self.hypercategory_target:
             self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
-
-        # Get the index of targeted label
-        elif self.target_class and not self.hypercategory_target:
-            for k, v in self.model.ontology.items():
-                if v == self.target_class:
-                    self.target_class_index = k
         else:
             self.target_class_index = None
 
     def obj(self, noise, starting_class_index, starting_class_label):
 
-        if self.SNR_norm is not None:
-            clipped_audio = utils.add_normalized_noise(self.clean_audio, noise, self.SNR_norm)["adversary"]
-
-        else:
-            clipped_audio = np.clip(self.clean_audio + noise, -1.0, 1.0)
+        clipped_audio = utils.add_normalized_noise(self.clean_audio, noise, self.SNR_norm)["adversary"]
 
         inference_results = self.model.make_inference_with_waveform(clipped_audio)
         probs, predicted_class_idx, label = inference_results["probs"], inference_results[
             "predicted_class_idx"], inference_results["label"]
 
-        if len(self.model.hypercategory_mapping):
-
-            label = str(self.model.hypercategory_mapping[predicted_class_idx])
-            starting_class_index = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
+        label = str(self.model.hypercategory_mapping[predicted_class_idx])
+        starting_class_index = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
 
         # Termination Criteria
         if self.target_class:
@@ -94,12 +82,13 @@ class DifferentialEvolutionAttacker:
                     print(f'Attack Succeded from {starting_class_label} to {label}')
                 return {"fitness": float('-inf'), "inferred_class": label}
 
+        adv_dict = utils.add_normalized_noise(self.clean_audio, noise, self.SNR_norm)
         objective_function_kwargs = {
             "starting_idx": starting_class_index,
             "target_class_index": self.target_class_index,
             "probs": probs,
-            "raw_audio": self.clean_audio,
-            "noise": noise
+            "raw_audio": adv_dict["clean_audio"],
+            "noise": adv_dict["noise"]
         }
 
         fitness = objective_functions.get_fitness(self.objective_function, **objective_function_kwargs)
@@ -147,30 +136,25 @@ class DifferentialEvolutionAttacker:
         if self.verbosity:
             print(f"Init Best Obj: {best_obj}")
 
-        if self.SNR_norm is not None:
-            adv_dict = utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm)
-
         # Early Stopping if attack succeds during initialisation
         if (best_obj == float('-inf')):
+            adv_dict = utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm)
+
             if self.verbosity:
                 print("----------- Attack Succeded from Initialisation -----------")
             return {
                 "noise":
-                best_vector,
+                adv_dict["noise"],
                 "adversary":
-                np.clip(self.clean_audio + best_vector, -1.0, 1.0) if self.SNR_norm is None else adv_dict["adversary"],
+                adv_dict["adversary"],
                 "raw audio":
-                self.clean_audio,
+                adv_dict["clean_audio"],
                 "iterations":
                 0,
                 "success":
                 True,
                 "queries":
                 self.queries,
-                "max_amp":
-                None if self.SNR_norm is None else adv_dict["max_amp"],
-                "snr_scale_factor":
-                None if self.SNR_norm is None else adv_dict["snr_scale_factor"],
                 "inferred_class":
                 labels_all[argmin(obj_all)]
             }
@@ -198,30 +182,23 @@ class DifferentialEvolutionAttacker:
 
                 # Early stop if the trial vector succeds
                 if (obj_trial == float('-inf')):
-
-                    if self.SNR_norm is not None:
-                        adv_dict = utils.add_normalized_noise(self.clean_audio, trial, self.SNR_norm)
+                    adv_dict = utils.add_normalized_noise(self.clean_audio, trial, self.SNR_norm)
 
                     if self.verbosity:
                         print("----------- Attack Succeded -----------")
                     return {
                         "noise":
-                        trial,
+                        adv_dict["noise"],
                         "adversary":
-                        np.clip(self.clean_audio +
-                                trial, -1.0, 1.0) if self.SNR_norm is None else adv_dict["adversary"],
+                        adv_dict["adversary"],
                         "raw audio":
-                        self.clean_audio,
+                        adv_dict["clean_audio"],
                         "iterations":
                         i,
                         "success":
                         True,
                         "queries":
                         self.queries,
-                        "max_amp":
-                        None if self.SNR_norm is None else adv_dict["max_amp"],
-                        "snr_scale_factor":
-                        None if self.SNR_norm is None else adv_dict["snr_scale_factor"],
                         "inferred_class":
                         fitness_results_trial["inferred_class"]
                     }
@@ -243,26 +220,22 @@ class DifferentialEvolutionAttacker:
                 best_vector = pop[argmin(obj_all)]
                 prev_obj = best_obj
 
-        if self.SNR_norm is not None:
-            adv_dict = utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm)
+
+        adv_dict = utils.add_normalized_noise(self.clean_audio, best_vector, self.SNR_norm)
 
         return {
             "noise":
-            best_vector,
+            adv_dict["noise"],
             "adversary":
-            np.clip(self.clean_audio + best_vector, -1.0, 1.0) if self.SNR_norm is None else adv_dict["adversary"],
+            adv_dict["adversary"],
             "raw audio":
-            self.clean_audio,
+            adv_dict["clean_audio"],
             "iterations":
             i,
             "success":
             False,
             "queries":
             self.queries,
-            "max_amp":
-            None if self.SNR_norm is None else adv_dict["max_amp"],
-            "snr_scale_factor":
-            None if self.SNR_norm is None else adv_dict["snr_scale_factor"],
             "inferred_class":
             labels_all[argmin(obj_all)]
         }
@@ -282,8 +255,8 @@ class DifferentialEvolutionAttacker:
         starting_class_index, starting_class_label = inference_results["predicted_class_idx"], inference_results[
             "label"]
 
-        if len(self.model.hypercategory_mapping):
-            starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
+        
+        starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
 
         # Initialize queries counter
         self.queries = 0
@@ -298,15 +271,12 @@ class DifferentialEvolutionAttacker:
         probs, final_confidence = inference_results["probs"], inference_results["best_score"]
 
         # Get final confidence of starting class
-        if len(self.model.hypercategory_mapping):
+        #Get indexes of all occurancies of the hyperclass
+        hypercategory_idxs = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
 
-            #Get indexes of all occurancies of the hyperclass
-            hypercategory_idxs = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
+        # Get maximum probability
+        max_prob = max(probs[hypercategory_idxs])
 
-            # Get maximum probability
-            max_prob = max(probs[hypercategory_idxs])
-        else:
-            max_prob = probs[starting_class_index]
 
         results["Final Starting Class Confidence"] = max_prob
         results["Final Confidence"] = final_confidence
