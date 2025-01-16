@@ -25,6 +25,7 @@ def init_algorithm(algorithm: str,
                    model,
                    hyperparameters,
                    verbosity,
+                   SNR_norm,
                    objective_function=None,
                    target_class=None,
                    hypercategory_target=None):
@@ -35,6 +36,7 @@ def init_algorithm(algorithm: str,
                                                          objective_function=objective_function,
                                                          target_class=target_class,
                                                          hypercategory_target=hypercategory_target,
+                                                         SNR_norm=SNR_norm,
                                                          **hyperparameters)
     elif algorithm == 'pso':
         ATTACK_ALGORITHM = PSO_Attacker(model=model,
@@ -42,6 +44,7 @@ def init_algorithm(algorithm: str,
                                         objective_function=objective_function,
                                         target_class=target_class,
                                         hypercategory_target=hypercategory_target,
+                                        SNR_norm=SNR_norm,
                                         **hyperparameters)
         
     else:

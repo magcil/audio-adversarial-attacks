@@ -45,13 +45,11 @@ class AST_Model:
         self.model = self._load_ast_model(path_to_checkpoint)
 
 
-        if hypercategory_mapping is not None:
-            with open(hypercategory_mapping, 'r') as f:
-                hypercategory_dict = json.load(f)
+        with open(hypercategory_mapping, 'r') as f:
+            hypercategory_dict = json.load(f)
 
-            self.map_to_hypercategories(hypercategory_dict)
-        else:
-            self.hypercategory_mapping = np.array([])
+        self.map_to_hypercategories(hypercategory_dict)
+
 
     def _load_ast_model(self, path_to_checkpoint):
         model = ASTModel(

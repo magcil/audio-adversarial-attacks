@@ -162,7 +162,8 @@ class DifferentialEvolutionAttacker:
             print("----------- Iterations Loop Started -----------")
         # Loop for iterations.
         for i in range(1, self.de_hyperparameters["iter"] + 1):
-            print(f'----------- Iteration: {i} -----------')
+            if self.verbosity:
+                print(f'----------- Iteration: {i} -----------')
             #  Loop for population.
             for j in range(self.de_hyperparameters["pop_size"]):
                 if self.verbosity:

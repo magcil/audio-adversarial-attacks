@@ -50,14 +50,11 @@ class BEATs_Model:
         else:
             self.device = "cpu"
 
-        if hypercategory_mapping is not None:
 
-            with open(hypercategory_mapping, 'r') as f:
-                hypercategory_dict = json.load(f)
+        with open(hypercategory_mapping, 'r') as f:
+            hypercategory_dict = json.load(f)
 
-            self.map_to_hypercategories(hypercategory_dict)
-        else:
-            self.hypercategory_mapping = np.array([])
+        self.map_to_hypercategories(hypercategory_dict)
 
     def make_inference_with_path(self, path_to_audio):
         """Method to make a prediction using a file path
