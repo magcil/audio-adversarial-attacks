@@ -44,7 +44,7 @@ class BEATs_Model:
         self.model.load_state_dict(checkpoint['model'])
         self.model.eval()
 
-        if device == "cuda" and torch.cuda.is_available():
+        if device.startswith("cuda") and torch.cuda.is_available():
             self.device = device
             self.model.to(device)
         else:

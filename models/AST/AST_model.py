@@ -36,14 +36,12 @@ class AST_Model:
         # Dictionary containing 
         self.ontology = parse_ontology(path_to_ontology)
 
-        if device == "cuda" and torch.cuda.is_available():
+        if device.startswith("cuda") and torch.cuda.is_available():
             self.device = device
-            self.model.to(device)
         else:
             self.device = "cpu"
 
-        self.model = self._load_ast_model(path_to_checkpoint)
-
+        self.model = self._load_ast_model(path_to_checkpoint).to(self.device)
 
         with open(hypercategory_mapping, 'r') as f:
             hypercategory_dict = json.load(f)

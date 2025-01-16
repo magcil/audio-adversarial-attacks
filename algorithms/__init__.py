@@ -11,12 +11,9 @@ default_pso_hyperparams = {
 }
 
 default_de_hyperparams = {
-    "target_class": None,
-    "rangeOfBounds": 0.01,
     "pop_size": 15,
     "iter": 10,
     "F": 1.2,
     "cr": 0.9,
-    "λ": 0.005,
     "perturbation_ratio": 0.5
 }

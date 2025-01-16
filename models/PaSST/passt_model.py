@@ -36,7 +36,7 @@ class Passt_Model:
         self.model = get_basic_model(mode="logits")
         self.model.eval()
 
-        if device == "cuda" and torch.cuda.is_available():
+        if device.startswith("cuda") and torch.cuda.is_available():
             self.device = device
             self.model.to(device)
 
