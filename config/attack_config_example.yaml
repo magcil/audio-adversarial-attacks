@@ -1,7 +1,7 @@
 # Configuration file for the attacks
 
-model_architecture: "ast" # Which model to attack
-model_pretrained_weights: "/home/vtheiou/adversarial_paper/audio-adversarial-attacks/pretrained_models/audioset_10_10_0.4593.pth" # Pretrained weights
+model_architecture: "beats" # Which model to attack
+model_pretrained_weights: "/home/vtheiou/adversarial_paper/audio-adversarial-attacks/pretrained_models/BEATs_iter3_plus_AS2M_finetuned_on_AS2M_cpt2.pt" # Pretrained weights
 
 # Algorithm Hyperparameters
 
@@ -21,4 +21,4 @@ log_file: "log_filename" # Filename of the log file / Should be descriptive to t
 
 # Attack Related Variables
 objective_function: "simple_minimization" # Objective function to be used
-verbosity: True # Control the verbosity of the algorithm
+verbosity: None # Control the verbosity of the algorithm
