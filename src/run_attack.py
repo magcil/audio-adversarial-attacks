@@ -183,5 +183,5 @@ if __name__ == "__main__":
         # Log Aggregated Table
         logging.info(f"Aggregated Result Table\n{aggregated_table_results}")
 
-        # Log SNR / Success rate table
-        logging.info(f"Aggregated Result Table\n{snr_succes_rate_table}")
+    # Log SNR / Success rate table
+    logging.info(f"Aggregated Result Table\n{snr_succes_rate_table}")
