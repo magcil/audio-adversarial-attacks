@@ -164,5 +164,6 @@ data/valid_wav/*
 results/*
 data/*/*.csv
 data/*/*/*.wav
+logs/
 src/perform_attack.ipynb
 src/ast_attack.ipynb

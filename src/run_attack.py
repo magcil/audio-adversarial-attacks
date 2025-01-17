@@ -52,11 +52,14 @@ if __name__ == "__main__":
                       model_pt_file=config['model_pretrained_weights'],
                       hypercategory_mapping=config['hypercategory_mapping'],
                       device=config.get('device', 'cpu'))
+    
+
     # Initialize Algorithm
     ATTACK_ALGORITHM = init_algorithm(algorithm=config['algorithm'],
                                       model = model,
                                       hyperparameters=config['algorithm_hyperparameters'],
                                       objective_function=config['objective_function'],
+                                      SNR_norm=config["SNR_norm"],
                                       target_class=config.get("target_class", None),
                                       hypercategory_target=config.get("hypercategory_target", None),
                                       verbosity=config.get("verbosity", None))
@@ -69,17 +72,19 @@ if __name__ == "__main__":
         true_labels = json.load(f)
 
     # Filter Wavs and Keep those with 1 Hypercategory
-    filtered_wav_files = [wav_file for wav_file in wav_files if os.path.basename(wav_file) in list(true_labels.keys())]
+    filtered_wav_files = [wav_file for wav_file in wav_files if os.path.basename(wav_file)[:-4] in list(true_labels.keys())]
 
-    # Log the number of filtered wav files
-    logging.info(f"Total Wav files: {len(wav_files)} | Belong to 1 Hypercategory: {len(filtered_wav_files)}")
 
     # Filter wav files
     filter_results = filter_on_correct_predictions(model=model, wav_files=filtered_wav_files, true_labels=true_labels, hypercategory_mapping= config['hypercategory_mapping'])
     correct_wav_files = filter_results['filtered_wavs']
+
+    # Log the number of filtered wav files
+    logging.info(f"Total Filtered Wav files: {len(filtered_wav_files)} | Belong to 1 Hypercategory: {len(filtered_wav_files)}")
+
     logging.info(f"{filter_results['classification_report']}\n")
     logging.info(f"Correct: {len(correct_wav_files)} ({100*len(correct_wav_files)/len(filtered_wav_files):.2f} %)")
-
+    
     # Get Unique Class Names
     CLASS_NAMES = sorted(list(set(true_labels.values())))
     CLASS_MAPPING = {class_name: i for i, class_name in enumerate(CLASS_NAMES)}
@@ -99,15 +104,15 @@ if __name__ == "__main__":
 
     # Loop through wav files
     for wav_file in tqdm(correct_wav_files, desc="Processing wav files", total=len(correct_wav_files)):
+        print(wav_file) 
         attack_results = perform_single_attack(ATTACK_ALGORITHM=ATTACK_ALGORITHM, wav_file=wav_file)
-
         # Update Aggregate successes & Queries
         if attack_results["success"]:
             aggregated_successes += 1
             aggregated_queries += attack_results["queries"]
 
         # Append SNR of adversarial example
-        aggregated_SNR.append(calculate_snr(signal=attack_results['raw audio'] / attack_results["max_amp"], noise=attack_results["adversary"] - attack_results['raw audio'] / attack_results["max_amp"]))
+        aggregated_SNR.append(calculate_snr(signal=attack_results['raw audio'], noise=attack_results["noise"]))
 
         starting_class, predicted_class = attack_results["starting_class"], attack_results["inferred_class"]
 
@@ -122,7 +127,6 @@ if __name__ == "__main__":
         class_idx = CLASS_MAPPING[classname]
         
         # Prevent Division by Zero
-        # TODO
         if sum(class_distribution) == 0:
             continue
 

@@ -18,7 +18,7 @@ def parse_args():
                         required=True,
                         type=int,
                         help='Number of samples per hypercategory')
-    parser.add_argument("-t", "--target_path", required=True, type=str, help="Target path to store json output file.")
+    parser.add_argument("-t", "--target_path", required=True, type=str, help="Target path and name to store json output file.")
 
     return parser.parse_args()
 
@@ -49,7 +49,7 @@ def create_data_subsets(hypercategory_json_path,
         if hypercategory_list and next(iter(hypercategories)) not in hypercategory_list:
             continue
 
-        wav = wav + ".wav"
+        # wav = wav + ".wav"
         row = {"wav_file": wav, 'hypercategory': next(iter(hypercategories))}
         subset_rows.append(row)
 

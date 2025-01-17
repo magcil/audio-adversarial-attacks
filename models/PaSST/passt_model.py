@@ -36,7 +36,7 @@ class Passt_Model:
         self.model = get_basic_model(mode="logits")
         self.model.eval()
 
-        if device == "cuda" and torch.cuda.is_available():
+        if device.startswith("cuda") and torch.cuda.is_available():
             self.device = device
             self.model.to(device)
 
@@ -44,13 +44,12 @@ class Passt_Model:
             self.device = "cpu"
             self.model.to(self.device)
 
-        if hypercategory_mapping is not None:
-            with open(hypercategory_mapping, 'r') as f:
-                hypercategory_dict = json.load(f)
+        
+        with open(hypercategory_mapping, 'r') as f:
+            hypercategory_dict = json.load(f)
 
-            self.map_to_hypercategories(hypercategory_dict)
-        else:
-            self.hypercategory_mapping = np.array([])
+        self.map_to_hypercategories(hypercategory_dict)
+    
 
     def make_inference_with_path(self, path_to_audio):
         """Method to make a prediction using a file path
