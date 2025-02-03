@@ -65,7 +65,7 @@ if __name__ == "__main__":
     # Filter Wavs and Keep those with 1 Hypercategory
     filtered_wav_files = [
         wav_file for wav_file in wav_files
-        if os.path.basename(wav_file)[:-4] in true_labels.keys()
+        if os.path.basename(wav_file)[:-4] in list(true_labels.keys())
     ]
 
     # Log the number of filtered wav files
@@ -80,6 +80,12 @@ if __name__ == "__main__":
         true_labels=true_labels,
         hypercategory_mapping=config['hypercategory_mapping'])
     correct_wav_files = filter_results['filtered_wavs']
+
+    # Log the number of filtered wav files
+    logging.info(
+        f"Total Filtered Wav files: {len(filtered_wav_files)} | Belong to 1 Hypercategory: {len(filtered_wav_files)}"
+    )
+
     logging.info(f"{filter_results['classification_report']}\n")
     logging.info(
         f"Correct: {len(correct_wav_files)} ({100*len(correct_wav_files)/len(filtered_wav_files):.2f} %)"
@@ -101,7 +107,7 @@ if __name__ == "__main__":
             model=model,
             hyperparameters=config['algorithm_hyperparameters'],
             objective_function=config['objective_function'],
-            SNR_norm=config["SNR_norm"],
+            SNR_norm=SNR_norm,
             target_class=config.get("target_class", None),
             hypercategory_target=config.get("hypercategory_target", None),
             verbosity=config.get("verbosity", None))
@@ -168,8 +174,7 @@ if __name__ == "__main__":
         aggregated_table_results.add_row([
             len(correct_wav_files),
             f"{100 * aggregated_successes / len(correct_wav_files):.2f}",
-            f"{np.nanmean(aggregated_SNR):.2f}",
-            f"{np.nanstd(aggregated_SNR):.2f}",
+            f"{np.nanmean(aggregated_SNR):.2f}", f"{np.nanstd(aggregated_SNR):.2f}",
             f"{100*aggregated_queries/aggregated_successes:.2f}"
         ])
 
