@@ -30,25 +30,13 @@ def filter_on_correct_predictions(model, wav_files: List[os.PathLike],
     for wav_file in wav_files:
         pred_results = model.make_inference_with_path(wav_file)
         
-        # print(hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]]])
-        # y_true.append(hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]]])
-        # y_pred.append(hypercategory_dict[pred_results['label']])
-
         y_true.append(true_labels[os.path.basename(wav_file)[:-4]])
         y_pred.append(hypercategory_dict[pred_results['label']])
-
-
-        # # If prediction is correct, then keep
-        # if hypercategory_dict[pred_results['label']] == hypercategory_dict[true_labels[os.path.basename(wav_file)[:-4]][0]]:
-        #     filtered_wavs.append(wav_file)
 
         # If prediction is correct, then keep
         if hypercategory_dict[pred_results['label']] == true_labels[os.path.basename(wav_file)[:-4]]:
             filtered_wavs.append(wav_file)
 
-
-    # unique_names = set(item for sublist in hypercategory_dict.values() for item in sublist)
-    # unique_names = np.array(list(unique_names))
     unique_names = np.array(list(set(hypercategory_dict.values())))
     
     return {

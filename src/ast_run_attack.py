@@ -168,7 +168,8 @@ if __name__ == "__main__":
         aggregated_table_results.add_row([
             len(correct_wav_files),
             f"{100 * aggregated_successes / len(correct_wav_files):.2f}",
-            f"{np.nanmean(aggregated_SNR):.2f}", f"{np.nanstd(aggregated_SNR):.2f}",
+            f"{np.nanmean(aggregated_SNR):.2f}",
+            f"{np.nanstd(aggregated_SNR):.2f}",
             f"{100*aggregated_queries/aggregated_successes:.2f}"
         ])
 
