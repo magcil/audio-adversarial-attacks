@@ -19,7 +19,7 @@ class BEATs_Model:
     def __init__(self,
                  path_to_checkpoint: str,
                  path_to_ontology: str = os.path.join(DIR_PATH, "ontology.json"), 
-                 device: Optional[str] = None,
+                 device: Optional[str] = "cpu",
                  hypercategory_mapping: Optional[os.PathLike] = None):
         """
         Initalize the BEATs model
