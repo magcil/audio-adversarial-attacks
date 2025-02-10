@@ -104,7 +104,8 @@ def training_loop(model,
     val_dloader = DataLoader(val_dset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
     # Initialize optimizer, learning rate shedulers and early stopping.
-    optim = Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    optim = Adam(model.classifier.parameters(), lr=learning_rate, weight_decay=weight_decay)
+
     lr_scheduler = CosineAnnealingLR(optimizer=optim, T_max=epochs, eta_min=1e-6)
     early_stopping = EarlyStopping(patience=patience,
                                    verbose=True,
@@ -162,6 +163,35 @@ def training_loop(model,
             break
         train_loss, val_loss = 0.0, 0.0
 
+
+def validation_loop(model, path_to_pt_file, test_dset, batch_size, num_workers, device = "cpu"):
+    """Validating the model on the validation set of AudioSet"""
+
+    model.load_state_dict(torch.load(path_to_pt_file))
+    model = model.to(device)
+    model.eval()
+
+    test_dloader = DataLoader(test_dset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+
+    y_true, y_pred, posteriors = [], [], []
+
+    with torch.no_grad():
+        with tqdm(test_dloader, unit="batch", leave=False, desc="Test set") as vbatch:
+            for i, item in enumerate(vbatch, 1):
+                X_spec = item['audio_features']
+                X_spec = X_spec.to(device)
+                label = item['label']
+
+                logits = model.forward(X_spec)
+                probs = torch.softmax(logits, dim = 1)
+
+                y_true.append(label.numpy())
+                y_pred.append(results['preds'].numpy())
+                posteriors.append(results['probs'].numpy())
+
+    y_true, y_pred, posteriors = np.concatenate(y_true), np.concatenate(y_pred), np.concatenate(posteriors)
+
+    return {"y_true": y_true, "y_pred": y_pred, "posteriors": posteriors}
 
 if __name__ == "__main__":
     pass
