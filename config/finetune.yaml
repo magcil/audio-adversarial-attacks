@@ -1,0 +1,25 @@
+# Configuration file for fine tune
+
+model_architecture:  "beats" # Which model to finetune beats or passt
+model_pretrained_weights: "" # Pretrained weights
+hypercategory_mapping: "" #Hypercategory mapping for AudioSet
+
+# Data Related Variables
+data_path: "" # Abs Path to data containing wav files
+esc_hypercategories: "" #Abs Path of hypercategory mapping in json format
+metadata_csv: "" # Abs Path to Metadata csv
+train_folds: [1] #Trainning folds
+test_folds: [2] #Test folds
+
+
+# Trainning Variables
+batch_size : 10
+epochs: 100
+learning_rate : 1e-4
+patience: 10
+pt_file: "test"
+num_workers: 2
+weight_decay: 0
+
+# Logging Variables
+device: "cuda:1" # or "cuda" or "cuda:0"
