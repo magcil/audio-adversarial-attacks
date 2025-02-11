@@ -21,6 +21,10 @@ from utils.init_utils import get_model
 from models.callbacks import EarlyStopping
 from datasets.datasets import ESC50Dataset
 
+# Models
+from models.beats.beats_modules.BEATs import BEATsConfig, BEATs
+from hear21passt.base import get_basic_model
+
 
 class FineTuneClassifier(nn.Module):
 
@@ -28,7 +32,6 @@ class FineTuneClassifier(nn.Module):
                  model_name,
                  num_classes=5,
                  weight_path=None,
-                 hypercategory_mapping=None,
                  freeze_backbone=True,
                  device="cpu"):
         super(FineTuneClassifier, self).__init__()
@@ -37,24 +40,23 @@ class FineTuneClassifier(nn.Module):
         self.device = device
 
         if model_name == "beats":
-            self.backbone = get_model(
-                model_str=model_name,
-                model_pt_file=weight_path,
-                hypercategory_mapping=hypercategory_mapping, device=device)
+            checkpoint = torch.load(weight_path, weights_only=True)
+            cfg = BEATsConfig(checkpoint['cfg'])
+            self.backbone = BEATs(cfg)
+            self.backbone.load_state_dict(checkpoint['model'])
+
             in_features = 768
             pass
         elif model_name == "passt":
-            self.backbone = get_model(
-                model_str=model_name,
-                hypercategory_mapping=hypercategory_mapping, device=device)
-            self.backbone.model.net.head = nn.Identity()
+            self.backbone = get_basic_model(mode="logits")
+            self.backbone.net.head = nn.Identity()
             in_features = 768
             pass
         else:
             raise ValueError(f"Unsupported model: {model_name}")
 
         if freeze_backbone:
-            for param in self.backbone.model.parameters():
+            for param in self.backbone.parameters():
                 param.requires_grad = False
 
         self.classifier = nn.Sequential(nn.Linear(in_features, 512),
@@ -68,19 +70,17 @@ class FineTuneClassifier(nn.Module):
     def forward(self, x):
 
         if self.model_name == "beats":
-            embeddings = self.get_embeddings_BEATs(x)
+            # embeddings = self.get_embeddings_BEATs(x)
+            with torch.no_grad():
+                _, _, embeddings = self.backbone.extract_features(x)
+                embeddings = embeddings.mean(dim=1)
         else:
             with torch.no_grad():
-                embeddings = self.backbone.model(x)
+                embeddings = self.backbone(x)
 
         output = self.classifier(embeddings)
         return output
 
-    def get_embeddings_BEATs(self, x):
-        with torch.no_grad():
-            _, _, embeddings = self.backbone.model.extract_features(x)
-        embeddings = embeddings.mean(dim=1)
-        return embeddings
 
 
 def training_loop(model,
@@ -226,13 +226,11 @@ if __name__ == "__main__":
 
     model_name = config["model_architecture"]
     path_to_checkpoint = config["model_pretrained_weights"]
-    hypercategories = config["hypercategory_mapping"]
     device = config.get('device', 'cpu')
 
     model = FineTuneClassifier(model_name=model_name,
                                num_classes=5,
                                weight_path=path_to_checkpoint,
-                               hypercategory_mapping=hypercategories,
                                freeze_backbone=True,
                                device=device)
 
