@@ -14,6 +14,8 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingLR
 import torch.nn.functional as F
 from finetune.callbacks import EarlyStopping
+
+
 def training_loop(model,
                   train_dset,
                   val_dset,
@@ -83,7 +85,7 @@ def training_loop(model,
 
                     val_loss += loss.item()
                     y_true.append(label.cpu().numpy())
-                    batch_preds = output.argmax(axis=1).detach().cpu().numpy()
+                    batch_preds = output.argmax(axis=1).cpu().numpy()
                     y_pred.append(batch_preds)
         y_true, y_pred = np.concatenate(y_true), np.concatenate(y_pred)
         val_loss /= len(val_dloader)
@@ -94,33 +96,3 @@ def training_loop(model,
             print("Early Stopping.")
             break
         train_loss, val_loss = 0.0, 0.0
-
-
-def validation_loop(model, path_to_pt_file, test_dset, batch_size, num_workers, device):
-    """Validating the model on the validation set of AudioSet"""
-
-    model.load_state_dict(torch.load(path_to_pt_file, weights_only=True))
-    model = model.to(device)
-
-    test_dloader = DataLoader(test_dset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-
-    model.eval()
-    y_true, y_pred, posteriors = [], [], []
-
-    with torch.no_grad():
-        with tqdm(test_dloader, unit="batch", leave=False, desc="Test set") as vbatch:
-            for i, item in enumerate(vbatch, 1):
-
-                X_wave = item['waveform'].to(device)
-                label = item['label'].to(device)
-
-                output = model.forward(X_wave)
-                
-                probs = F.softmax(output, dim=1)
-                y_true.append(label.cpu().numpy())
-                y_pred.append(output.cpu().numpy())
-                posteriors.append(probs.cpu().numpy())
-
-    y_true, y_pred, posteriors = np.concatenate(y_true), np.concatenate(y_pred), np.concatenate(posteriors)
-
-    return {"y_true": y_true, "y_pred": y_pred, "posteriors": posteriors}
