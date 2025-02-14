@@ -12,8 +12,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingLR
-
-from callbacks import EarlyStopping
+import torch.nn.functional as F
+from finetune.callbacks import EarlyStopping
 
 
 def training_loop(model,
@@ -85,7 +85,7 @@ def training_loop(model,
 
                     val_loss += loss.item()
                     y_true.append(label.cpu().numpy())
-                    batch_preds = output.argmax(axis=1).detach().cpu().numpy()
+                    batch_preds = output.argmax(axis=1).cpu().numpy()
                     y_pred.append(batch_preds)
         y_true, y_pred = np.concatenate(y_true), np.concatenate(y_pred)
         val_loss /= len(val_dloader)

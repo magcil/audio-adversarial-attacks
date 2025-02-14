@@ -1,11 +1,13 @@
 import os
 import sys
 import yaml
+import json
 from pathlib import Path
 
 PROJECT_PATH = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
+from typing import Optional, Dict
 import numpy as np
 import torch
 import torch.nn as nn
@@ -13,6 +15,7 @@ import torch.nn as nn
 # Models
 from models.beats.beats_modules.BEATs import BEATsConfig, BEATs
 from hear21passt.base import get_basic_model
+from datasets import ESC_CLASS_MAPPING, ESC_INV_CLASS_MAPPING
 
 
 class FineTuneClassifier(nn.Module):
@@ -53,11 +56,20 @@ class FineTuneClassifier(nn.Module):
                                         nn.ReLU(), nn.Linear(256, 128),
                                         nn.BatchNorm1d(128), nn.ReLU(),
                                         nn.Linear(128, num_classes))
+        
+        # Move model components to the specified device
+        self.backbone.to(self.device)
+        self.classifier.to(self.device)
+
+        self.map_to_hypercategories()
+
 
     def forward(self, x):
+        if isinstance(x, np.ndarray):
+            x = torch.from_numpy(x).float()
 
+        x = x.to(self.device)
         if self.model_name == "beats":
-            # embeddings = self.get_embeddings_BEATs(x)
             with torch.no_grad():
                 _, _, embeddings = self.backbone.extract_features(x)
                 embeddings = embeddings.mean(dim=1)
@@ -67,3 +79,31 @@ class FineTuneClassifier(nn.Module):
 
         output = self.classifier(embeddings)
         return output
+    
+    def make_inference_with_waveform(self, waveform: np.ndarray):
+        """Method to make a prediction using a waveform
+
+        waveform -- The audio waveform
+        """
+        self.backbone.eval()
+        self.classifier.eval()
+
+        # Load waveform
+        waveform = torch.Tensor(waveform).unsqueeze(0).to(self.device)
+
+        # Make prediction
+        with torch.no_grad():
+            probs = self.forward(waveform)[0]
+            probs = probs.cpu().numpy()
+
+        # Get Index and Class name of prediction
+        max_idx = np.argmax(probs)
+
+        label = ESC_INV_CLASS_MAPPING[max_idx]
+        best_score = probs[max_idx]
+        predicted_class_idx = max_idx
+        
+        return {"probs": probs, "predicted_class_idx": predicted_class_idx, "label": label, "best_score": best_score}
+    
+    def map_to_hypercategories(self):
+        self.hypercategory_mapping = np.array(list(ESC_INV_CLASS_MAPPING.values()))
