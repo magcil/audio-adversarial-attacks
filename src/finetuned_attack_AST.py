@@ -14,11 +14,10 @@ from tqdm import tqdm
 from datetime import datetime
 from prettytable import PrettyTable
 
-from utils.init_utils import init_algorithm
+from utils.ast_init import init_algorithm
 from utils.utils import calculate_snr
 from utils.attack_utils import perform_single_attack
 
-from models.classifier import FineTuneClassifier
 from models.classifier_ast import FineTuneClassifierAST
 from datasets.datasets import ESC50Dataset
 from finetune.loops import training_loop
@@ -84,11 +83,12 @@ if __name__ == "__main__":
         logging.info(f"{k}:{v}")
 
     # Initialize Model
-    model = FineTuneClassifier(model_name=config["model_architecture"],
-                    num_classes=config["num_classes"],
-                    weight_path=config.get('model_pretrained_weights', 'None'),
-                    freeze_backbone=True,
-                    device=config.get('device', 'cpu'))
+
+    model = FineTuneClassifierAST(model_name=config["model_architecture"],
+                                  num_classes=config["num_classes"],
+                                  weight_path=config.get('model_pretrained_weights', 'None'),
+                                  freeze_backbone=True,
+                                  device=config.get('device', 'cpu'))
 
     # Initialize datasets
     data_path, metadata_csv, json_hypercategory = config["data_path"], config["metadata_csv"], config[

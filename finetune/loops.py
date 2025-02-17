@@ -58,6 +58,7 @@ def training_loop(model,
                 X_wave = item['waveform'].to(device)
 
                 label = item['label'].to(device)
+                
                 output = model.forward(X_wave)
 
                 loss = criterion(output, label)

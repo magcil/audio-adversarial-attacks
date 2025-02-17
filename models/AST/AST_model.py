@@ -58,11 +58,12 @@ class AST_Model:
             input_tdim=1024,
             imagenet_pretrain=True,
             audioset_pretrain=False,
-            model_size='base384'
+            model_size='base384',
+            verbose=False
         )
 
-        checkpoint = torch.load(path_to_checkpoint, map_location='cuda')
-        audio_model = torch.nn.DataParallel(model, device_ids=[0])
+        checkpoint = torch.load(path_to_checkpoint, map_location= self.device)
+        audio_model = torch.nn.DataParallel(model)
         audio_model.load_state_dict(checkpoint)
         audio_model = audio_model.to(self.device)
       
