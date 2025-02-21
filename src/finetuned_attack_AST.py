@@ -161,7 +161,7 @@ if __name__ == "__main__":
 
         # Create directory based on SNR
         if config["num_examples_to_store"]:
-            snr_dict = os.path.join(PROJECT_PATH, "Examples", f"snr_{SNR_norm}")
+            snr_dict = os.path.join(PROJECT_PATH, "Examples", f"{config["model_architecture"]}",f"snr_{SNR_norm}")
             os.makedirs(snr_dict, exist_ok=True)
             files_counter = 0
 
