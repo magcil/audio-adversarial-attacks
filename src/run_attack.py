@@ -49,6 +49,9 @@ if __name__ == "__main__":
     # Log configuration params
     for k, v in config.items():
         logging.info(f"{k}:{v}")
+        
+    # Number of samples to store for inspection (if specified)
+    num_examples_to_store = config.get("num_examples_to_store", None)
 
     # Initialize Model
     model = get_model(model_str=config['model_architecture'],
@@ -98,14 +101,14 @@ if __name__ == "__main__":
     snr_succes_rate_table.field_names = ['SNR', 'Success Rate']
 
     # Create directory to store examples.
-    if config["num_examples_to_store"]:
+    if num_examples_to_store:
         os.makedirs(os.path.join(PROJECT_PATH, "Examples"), exist_ok=True)
 
     for SNR_norm in config["SNR_norm"]:
         logging.info(f"SNR: {SNR_norm}")
 
          # Create directory based on SNR
-        if config["num_examples_to_store"]:
+        if num_examples_to_store:
             snr_dict = os.path.join(PROJECT_PATH, "Examples", f"{config["model_architecture"]}",f"snr_{SNR_norm}")
             os.makedirs(snr_dict, exist_ok=True)
             files_counter = 0
@@ -163,15 +166,15 @@ if __name__ == "__main__":
             # Update Class Dict
             CLASSES_DICT[starting_class][predicted_class_idx] += 1
 
-            if config["num_examples_to_store"] and files_counter != int(config["num_examples_to_store"]) and attack_results["success"]:
+            if num_examples_to_store and files_counter != num_examples_to_store and attack_results["success"]:
                 filename = os.path.splitext(os.path.basename(wav_file))[0]
                 starting_class_store = re.sub(r"[ /,]", "_", starting_class)
                 pred_class_store = re.sub(r"[ /,]", "_", predicted_class)
 
                 sf.write(os.path.join(snr_dict, f"{filename}_{starting_class_store}.wav"), attack_results["raw audio"],
-                         16000)
+                         16000, subtype="FLOAT")
                 sf.write(os.path.join(snr_dict, f"{filename}_{pred_class_store}_adversarial.wav"),
-                         attack_results["adversary"], 16000)
+                         attack_results["adversary"], 16000, subtype="FLOAT")
                 files_counter += 1
 
         # Calculate Results Table
