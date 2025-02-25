@@ -119,8 +119,7 @@ class PSO_Attacker:
                 if (fitness_results["fitness"] == float('-inf')):
                     self.swarm.sbf = float('-inf')
                     self.swarm.sbp = p.position
-                    adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp - self.clean_audio,
-                                                          self.SNR_norm)
+                    adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
 
                     return {
                         "noise": adv_dict["noise"],
@@ -148,7 +147,7 @@ class PSO_Attacker:
                     self.swarm.sbf = p.best_fitness
                     self.swarm.sbp = p.best_position
 
-        adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp - self.clean_audio, self.SNR_norm)
+        adv_dict = utils.add_normalized_noise(self.clean_audio, self.swarm.sbp, self.SNR_norm)
         return {
             "noise": adv_dict["noise"],
             "adversary": adv_dict["adversary"],
@@ -173,6 +172,7 @@ class PSO_Attacker:
         starting_class_index, starting_class_label = prediction_results["predicted_class_idx"], prediction_results[
             "label"]
 
+        
         starting_class_label = str(self.model.hypercategory_mapping[starting_class_index])
 
         self.initialization(starting_class_index=starting_class_index, starting_class_label=starting_class_label)
