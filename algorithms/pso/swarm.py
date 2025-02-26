@@ -20,8 +20,6 @@ class Swarm:
                  starting_class_label,
                  verbosity=True,
                  objective_function=None,
-                 target_class=None,
-                 hypercategory_target=None,
                  SNR_norm=None):
         """Instantiate Swarm object
         
@@ -32,8 +30,6 @@ class Swarm:
         starting_class_index -- The model index of the starting class
         """
 
-        self.target_class = target_class
-        self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
         self.sbf = float('inf')
         self.sbp = clean_audio  # SBP is initially equal to the raw audio file
@@ -50,7 +46,6 @@ class Swarm:
         Attributes:
         initial_particles -- Number of initial particles
         starting_class_index -- Index of starting class
-        target_class_index -- Index of target class
         clean_audio -- Path of taregt wav file
         """
 
@@ -75,16 +70,8 @@ class Swarm:
                                 raw_audio=clean_audio,
                                 verbosity=self.verbosity,
                                 objective_function=self.objective_function,
-                                target_class=self.target_class,
-                                hypercategory_target=self.hypercategory_target,
                                 SNR_norm=self.SNR_norm)
             particles.append(particle)
-
-            # TODO: Termination condition here??
-            # if(particle.best_fitness == float('-inf')):
-            #     self.sbf = particle.best_fitness
-            #     self.sbp = particle.best_position
-            #     return
 
             #---- Update SBF and SBP, if better found ----#
             if particle.best_fitness < self.sbf:

@@ -22,8 +22,6 @@ class PSO_Attacker:
                  perturbation_ratio,
                  verbosity=True,
                  objective_function=None,
-                 target_class=None,
-                 hypercategory_target=None,
                  SNR_norm=None):
         """Instantiate PSO attacker
 
@@ -48,8 +46,6 @@ class PSO_Attacker:
             "perturbation_ratio": perturbation_ratio
         }
 
-        self.target_class = target_class
-        self.hypercategory_target = hypercategory_target
         self.model = model
         self.objective_function = objective_function
         self.swarm = None
@@ -74,8 +70,6 @@ class PSO_Attacker:
                            starting_class_label,
                            verbosity=self.verbosity,
                            objective_function=self.objective_function,
-                           target_class=self.target_class,
-                           hypercategory_target=self.hypercategory_target,
                            SNR_norm=self.SNR_norm)
 
         #---- Keep count of model queries ----#

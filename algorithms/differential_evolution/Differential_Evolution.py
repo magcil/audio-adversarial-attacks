@@ -24,9 +24,7 @@ class DifferentialEvolutionAttacker:
                  perturbation_ratio,
                  SNR_norm=None,
                  verbosity=True,
-                 objective_function=None,
-                 target_class=None,
-                 hypercategory_target=None):
+                 objective_function=None):
         """Instantiate DE attacker
         
         model (Object) -- A pretrained model used for inference.
@@ -39,8 +37,6 @@ class DifferentialEvolutionAttacker:
 
         self.model = model
         self.verbosity = verbosity
-        self.target_class = target_class
-        self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
 
         self.de_hyperparameters = {
@@ -52,11 +48,6 @@ class DifferentialEvolutionAttacker:
         }
         self.SNR_norm = SNR_norm
 
-        # Get the indexes of targeted hypercategory
-        if self.target_class and self.hypercategory_target:
-            self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
-        else:
-            self.target_class_index = None
 
     def obj(self, noise, starting_class_index, starting_class_label):
 
@@ -70,22 +61,14 @@ class DifferentialEvolutionAttacker:
         starting_class_index = np.where(self.model.hypercategory_mapping == starting_class_label)[0]
 
         # Termination Criteria
-        if self.target_class:
-            if (label == self.target_class):
-                if self.verbosity:
-                    print(f'Attack Succeded from {starting_class_label} to {label}')
-                return {"fitness": float('-inf'), "inferred_class": label}
-
-        else:
-            if (starting_class_label != label):
-                if self.verbosity:
-                    print(f'Attack Succeded from {starting_class_label} to {label}')
-                return {"fitness": float('-inf'), "inferred_class": label}
+        if (starting_class_label != label):
+            if self.verbosity:
+                print(f'Attack Succeded from {starting_class_label} to {label}')
+            return {"fitness": float('-inf'), "inferred_class": label}
 
         adv_dict = utils.add_normalized_noise(self.clean_audio, noise, self.SNR_norm)
         objective_function_kwargs = {
             "starting_idx": starting_class_index,
-            "target_class_index": self.target_class_index,
             "probs": probs,
             "raw_audio": adv_dict["clean_audio"],
             "noise": adv_dict["noise"]
