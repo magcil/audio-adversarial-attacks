@@ -43,13 +43,11 @@ class Passt_Model:
         else:
             self.device = "cpu"
             self.model.to(self.device)
-
         
         with open(hypercategory_mapping, 'r') as f:
             hypercategory_dict = json.load(f)
 
         self.map_to_hypercategories(hypercategory_dict)
-    
 
     def make_inference_with_path(self, path_to_audio):
         """Method to make a prediction using a file path

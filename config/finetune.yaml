@@ -1,0 +1,60 @@
+# Configuration File for Fine-Tuning
+# This YAML file contains parameters for fine-tuning a model under attack.
+
+# --------------------
+# 1. Model Configuration
+# --------------------
+model_architecture: ""  # (str) Model under attack. Options: "beats", "ast", "passt"
+model_pretrained_weights: ""  # (str) Path to pretrained weights (only for "beats" or "ast")
+
+# --------------------
+# 2. Data-Related Variables
+# --------------------
+data_path: ""  # (str) Absolute path to the directory containing WAV files
+esc_hypercategories: ""  # (str) Path to a JSON file mapping hypercategories
+metadata_csv: ""  # (str) Full path to the metadata CSV file
+
+train_folds: []  # (List[int]) Indices of training folds
+test_folds: []  # (List[int]) Indices of test folds
+num_classes:  # (int) Number of output classes
+
+# --------------------
+# 3. Training Variables
+# --------------------
+batch_size:  # (int) Number of samples per batch
+epochs:  # (int) Total number of training iterations
+learning_rate:  # (float) Learning rate for optimization
+patience:  # (int) Epochs to wait before early stopping
+pt_file:  # (str) Filename to save the trained model
+num_workers:  # (int) Number of workers for data loading
+weight_decay:  # (int) Regularization parameter to prevent overfitting
+
+# --------------------
+# 4. Algorithm Hyperparameters
+# --------------------
+algorithm: ""  # (str) Optimization algorithm. Options: "pso", "de"
+algorithm_hyperparameters: {
+    "initial_particles": ,  # (int) Number of initial particles in PSO
+    "max_iters": ,  # (int) Maximum number of iterations
+    "max_inertia_w": ,  # (float) Maximum inertia weight in PSO
+    "min_inertia_w": ,  # (float) Minimum inertia weight in PSO
+    "memory_w": ,  # (float) Memory weight coefficient
+    "information_w": ,  # (float) Information weight coefficient
+    "perturbation_ratio":  # (float) Perturbation ratio for particle updates
+}
+
+SNR_norm:  # (List[int]) List of SNR values to attack
+
+# --------------------
+# 5. Logging Variables
+# --------------------
+log_path: "logs/"  # (str) Directory to store logs (relative path)
+log_file: ""  # (str) Descriptive log filename (date will be appended)
+device: "cuda:1"  # (str) Device for training. Options: "cuda", "cuda:0", "cuda:1"
+
+# --------------------
+# 6. Attack-Related Variables
+# --------------------
+objective_function: "simple_minimization"  # (str) Objective function for the attack
+verbosity: false  # (bool) Enable verbose logging (true/false)
+num_examples_to_store:  # (int) Number of examples to save after attack
