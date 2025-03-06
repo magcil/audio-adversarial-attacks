@@ -1,9 +1,9 @@
 # audio-adversarial-examples
-Black Box Adversarial Attacks in Surveillance Sound Event Classification Scenarios
 
+Repository for the paper titled:
 
-## Overview
-This project represents an effort to evaluate the robustness of state-of-the-art transformer-based models for sound event classification against adversarial attacks. The attacks are performed using two evolutionary algorithms: Particle Swarm Optimization (PSO) and Differential Evolution (DE). We conduct experiments utilizing three deep learning models (BEATs, PaSST, AST) and two benchmark datasets (AudioSet, ESC-50).
+<i>On the Robustness of State-of-the-Art Transformers for Sound Event Classification against Black Box Adversarial Attacks</i>
+
 
 ## Table of Contents
 - [Overview](#overview)
@@ -19,6 +19,9 @@ This project represents an effort to evaluate the robustness of state-of-the-art
   - [Alarming to Non-Alarming](#32-alarming-to-non-alarming)
   - [Everything to Silence](#33-everything-to-silence)
 - [References](#references)
+
+## Overview
+This project represents an effort to evaluate the robustness of state-of-the-art transformer-based models for sound event classification against adversarial attacks. The attacks are performed using two evolutionary algorithms: Particle Swarm Optimization (PSO) and Differential Evolution (DE). We conduct experiments utilizing three deep learning models (BEATs, PaSST, AST) and two benchmark datasets (AudioSet, ESC-50).
 
 ## 1. Environment Setup
 
@@ -176,7 +179,7 @@ If you want to run attack on the AST model, you need to install other dependenci
 
 ### 2.5 Inspecting the adversarial example
 
-To hear the generated example you can `soundfile` to store the wav file:
+To hear the generated example you can use `soundfile` to store the wav file:
 
 ```python
 import soundfile as sf
