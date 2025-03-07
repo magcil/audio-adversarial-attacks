@@ -21,8 +21,6 @@ class Particle:
                  raw_audio,
                  verbosity=True,
                  objective_function=None,
-                 target_class=None,
-                 hypercategory_target=None,
                  SNR_norm=None):
         """Instantiate Particle object
 
@@ -34,8 +32,6 @@ class Particle:
 
         self.model = model
         self.raw_audio = raw_audio
-        self.target_class = target_class
-        self.hypercategory_target = hypercategory_target
         self.objective_function = objective_function
         self.starting_class_index = starting_class_index
         self.starting_class_label = starting_class_label
@@ -45,12 +41,6 @@ class Particle:
         self.position = particle_position
         self.best_position = particle_position
         self.SNR_norm = SNR_norm
-
-        # Get the indexes of targeted hypercategory
-        if self.target_class and self.hypercategory_target:
-            self.target_class_index = np.where(self.model.hypercategory_mapping == self.target_class)[0]
-        else:
-            self.target_class_index = None
 
         self.fitness_results = self.calculate_fitness()
         self.best_fitness = self.fitness_results["fitness"]
@@ -70,21 +60,15 @@ class Particle:
 
         self.starting_class_index = np.where(self.model.hypercategory_mapping == self.starting_class_label)[0]
 
-        if self.target_class:
-            if (label == self.target_class):
-                if self.verbosity:
-                    print(f'Attack Succeded from {self.starting_class_label} to {label}')
-                return {"fitness": float('-inf'), "inferred_class": label}
-        else:
-            if (self.starting_class_label != label):
-                if self.verbosity:
-                    print(f'Attack Succeded from {self.starting_class_label} to {label}')
-                return {"fitness": float('-inf'), "inferred_class": label}
+
+        if (self.starting_class_label != label):
+            if self.verbosity:
+                print(f'Attack Succeded from {self.starting_class_label} to {label}')
+            return {"fitness": float('-inf'), "inferred_class": label}
 
         adv_dict = utils.add_normalized_noise(self.raw_audio, self.position - self.raw_audio, self.SNR_norm)
         objective_function_kwargs = {
             "starting_idx": self.starting_class_index,
-            "target_class_index": self.target_class_index,
             "probs": scores,
             "raw_audio": adv_dict["clean_audio"],
             "noise": adv_dict["noise"]
