@@ -15,10 +15,10 @@ Repository for the paper titled:
   - [Differential Evolution](#24-differential-evolution)
   - [Inspecting the Adversarial Example](#25-inspecting-the-adversarial-example)
 - [Reproducing the Experiments](#3-reproducing-the-experiments)
-  - [Untargeted Scenario](#31-untargeted-scenario)
-  - [Alarming to Non-Alarming](#32-alarming-to-non-alarming)
-  - [Everything to Silence](#33-everything-to-silence)
+  - [Attacks on AudioSet](#31-experiments-on-audioset)
+  - [Attacks on ESC-50](#32-experiments-on-esc-50)
 - [References](#references)
+
 
 ## Overview
 This project represents an effort to evaluate the robustness of state-of-the-art transformer-based models for sound event classification against adversarial attacks. The attacks are performed using two evolutionary algorithms: Particle Swarm Optimization (PSO) and Differential Evolution (DE). We conduct experiments utilizing three deep learning models (BEATs, PaSST, AST) and two benchmark datasets (AudioSet, ESC-50).
@@ -196,7 +196,7 @@ To reproduce the experiments using the AudioSet dataset first download the valid
 ```bash
 python src/run_attack.py --config_file config/attack_config.yaml
 ```
-### 3.1 Experiments on ESC-50:
+### 3.2 Experiments on ESC-50:
 
 To run the experiments on the ESC-50 dataset, first download the dataset from <a href="https://www.kaggle.com/datasets/mmoreaux/environmental-sound-classification-50">https://www.kaggle.com/datasets/mmoreaux/environmental-sound-classification-50</a>. The models need to be finetuned on this dataset, thus run the script:
 
