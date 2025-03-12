@@ -174,7 +174,6 @@ if __name__ == "__main__":
                                           hyperparameters=config['algorithm_hyperparameters'],
                                           objective_function=config['objective_function'],
                                           SNR_norm=SNR_norm,
-                                          hypercategory_target=config.get("hypercategory_target", None),
                                           verbosity=config.get("verbosity", None))
 
         # Initialize Table to Calculate Aggregated Results
