@@ -71,8 +71,6 @@ class AST_Model:
         return model
     
     def _make_features(self, waveform, mel_bins = 128, target_length=1024, sr = 16000):
-        # waveform, sr = torchaudio.load(wav_name)
-
         fbank = torchaudio.compliance.kaldi.fbank(
             waveform, htk_compat=True, sample_frequency=sr, use_energy=False,
             window_type='hanning', num_mel_bins=mel_bins, dither=0.0,
