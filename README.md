@@ -6,18 +6,20 @@ Repository for the paper titled:
 
 
 ## Table of Contents
-- [Overview](#overview)
-- [Environment Setup](#1-environment-setup)
-- [Generating Audio Adversarial Examples](#2-generating-audio-adversarial-examples)
-  - [Model Initialization](#21-model-initialization)
-  - [Noise Control](#22-noise-control)
-  - [Particle Swarm Optimization](#23-particle-swarm-optimization)
-  - [Differential Evolution](#24-differential-evolution)
-  - [Inspecting the Adversarial Example](#25-inspecting-the-adversarial-example)
-- [Reproducing the Experiments](#3-reproducing-the-experiments)
-  - [Attacks on AudioSet](#31-experiments-on-audioset)
-  - [Attacks on ESC-50](#32-experiments-on-esc-50)
-- [References](#references)
+- [audio-adversarial-examples](#audio-adversarial-examples)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [1. Environment Setup](#1-environment-setup)
+  - [2. Generating audio adversarial examples](#2-generating-audio-adversarial-examples)
+    - [2.1 Model Initialization](#21-model-initialization)
+    - [2.2 Noise Control](#22-noise-control)
+    - [2.3 Particle Swarm Optimization](#23-particle-swarm-optimization)
+    - [2.4 Differential Evolution](#24-differential-evolution)
+    - [2.5 Inspecting the adversarial example](#25-inspecting-the-adversarial-example)
+  - [3. Reproducing the Experiments](#3-reproducing-the-experiments)
+    - [3.1 Experiments on AudioSet](#31-experiments-on-audioset)
+    - [3.2 Experiments on ESC-50:](#32-experiments-on-esc-50)
+  - [References](#references)
 
 
 ## Overview
@@ -196,6 +198,17 @@ To reproduce the experiments using the AudioSet dataset first download the valid
 ```bash
 python src/run_attack.py --config_file config/attack_config.yaml
 ```
+
+**Note**:
+To run the experiments on audioset you need to create an ontology that maps .wav filenames to hypercategories.
+This can be achieved by running the `create_subset_audioset.py` script. This script returns a json file containing the required format.
+
+Parameters of script:
+1. -hc : Hypercategory mapping found in `ontologies/hypercategory_from_ontology.json`
+2. -tl : True labels ontology in `ontologies/audioset_val_true_labels.json`
+3. -n : Number of desired samples.
+4. -t : Target path to store the new ontology.
+
 ### 3.2 Experiments on ESC-50:
 
 To run the experiments on the ESC-50 dataset, first download the dataset from <a href="https://www.kaggle.com/datasets/mmoreaux/environmental-sound-classification-50">https://www.kaggle.com/datasets/mmoreaux/environmental-sound-classification-50</a>. The models need to be finetuned on this dataset, thus run the script:
