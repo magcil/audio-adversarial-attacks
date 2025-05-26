@@ -1,0 +1,24 @@
+.waveform-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.waveform {
+  margin-bottom: 10px;
+}
+
+.play-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4353ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.play-button:hover {
+  background-color: #2e3cbf;
+}

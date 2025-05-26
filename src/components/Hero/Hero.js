@@ -26,12 +26,12 @@ const Hero = () => {
                     <div className="info-box">
                         <h3>Impact</h3>
                         <p>
-                        Highlighting security vulnerabilities in speech recognition systems used in voice assistants and security applications.
+                        Highlighting security vulnerabilities in sound classification systems used for security applications.
                         </p>
                     </div>
                 </div>
-            <hr/>
             </div>
+            <hr></hr>
         </div>
   );
 };
