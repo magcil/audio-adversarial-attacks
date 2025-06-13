@@ -31,9 +31,7 @@ def init_algorithm(algorithm: str,
                    verbosity,
                    SNR_norm,
                    hyperparameters=None,
-                   objective_function=None,
-                   target_class=None,
-                   hypercategory_target=None):
+                   objective_function=None):
 
     if algorithm == 'de':
         if hyperparameters is None:
