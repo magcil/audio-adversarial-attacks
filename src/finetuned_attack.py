@@ -6,6 +6,7 @@ import argparse
 import numpy as np
 import torch
 import re
+import json
 
 # Initialize Project Path & Append to sys
 PROJECT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -159,6 +160,7 @@ if __name__ == "__main__":
     if num_examples_to_store:
         os.makedirs(os.path.join(PROJECT_PATH, "Examples"), exist_ok=True)
 
+    successful_attacks = []
     for SNR_norm in config["SNR_norm"]:
         logging.info(f"SNR: {SNR_norm}")
 
@@ -174,7 +176,6 @@ if __name__ == "__main__":
                                           hyperparameters=config['algorithm_hyperparameters'],
                                           objective_function=config['objective_function'],
                                           SNR_norm=SNR_norm,
-                                          hypercategory_target=config.get("hypercategory_target", None),
                                           verbosity=config.get("verbosity", None))
 
         # Initialize Table to Calculate Aggregated Results
@@ -199,7 +200,7 @@ if __name__ == "__main__":
             if attack_results["success"]:
                 aggregated_successes += 1
                 aggregated_queries += attack_results["queries"]
-
+                successful_attacks.append({"wav_file": wav_file, "starting_class": attack_results["starting_class"]})
             # Append SNR of adversarial example
             aggregated_SNR.append(calculate_snr(signal=attack_results['raw audio'], noise=attack_results["noise"]))
 
@@ -215,10 +216,14 @@ if __name__ == "__main__":
                 starting_class_store = re.sub(r"[ /,]", "_", starting_class)
                 pred_class_store = re.sub(r"[ /,]", "_", predicted_class)
 
-                sf.write(os.path.join(snr_dict, f"{filename}_{starting_class_store}.wav"), attack_results["raw audio"],
-                         16000, subtype="FLOAT")
+                sf.write(os.path.join(snr_dict, f"{filename}_{starting_class_store}.wav"),
+                         attack_results["raw audio"],
+                         16000,
+                         subtype="FLOAT")
                 sf.write(os.path.join(snr_dict, f"{filename}_{pred_class_store}_adversarial.wav"),
-                         attack_results["adversary"], 16000, subtype="FLOAT")
+                         attack_results["adversary"],
+                         16000,
+                         subtype="FLOAT")
                 files_counter += 1
 
         # Calculate Results Table
@@ -247,5 +252,9 @@ if __name__ == "__main__":
         # Log Aggregated Table
         logging.info(f"Aggregated Result Table\n{aggregated_table_results}")
 
+        results_path = os.path.join(PROJECT_PATH,  "samples_esc_beats.json")
+
+        with open(results_path, 'w') as f:
+            json.dump(successful_attacks, f, indent=4)
     # Log SNR / Success rate table
     logging.info(f"Aggregated Result Table\n{snr_succes_rate_table}")
