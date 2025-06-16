@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/audio-adversarial-attacks/static/css/main.b2138678.css",
-    "main.js": "/audio-adversarial-attacks/static/js/main.d2b785d8.js",
+    "main.css": "/audio-adversarial-attacks/static/css/main.a51f82c5.css",
+    "main.js": "/audio-adversarial-attacks/static/js/main.96b72bbe.js",
     "static/js/453.c6dfdde9.chunk.js": "/audio-adversarial-attacks/static/js/453.c6dfdde9.chunk.js",
     "static/media/Logo.png": "/audio-adversarial-attacks/static/media/Logo.7cdb17cf01cfc06b53b9.png",
     "static/media/filter2.svg": "/audio-adversarial-attacks/static/media/filter2.8cf2c5a49f881204256d72f395a7cb33.svg",
@@ -11,12 +11,12 @@
     "static/media/filter3.svg": "/audio-adversarial-attacks/static/media/filter3.9b73987d10501bd78fd1d5b459ea1880.svg",
     "index.html": "/audio-adversarial-attacks/index.html",
     "static/media/pause.svg": "/audio-adversarial-attacks/static/media/pause.6b7b70946141d1c71bd4711f9d9ab807.svg",
-    "main.b2138678.css.map": "/audio-adversarial-attacks/static/css/main.b2138678.css.map",
-    "main.d2b785d8.js.map": "/audio-adversarial-attacks/static/js/main.d2b785d8.js.map",
+    "main.a51f82c5.css.map": "/audio-adversarial-attacks/static/css/main.a51f82c5.css.map",
+    "main.96b72bbe.js.map": "/audio-adversarial-attacks/static/js/main.96b72bbe.js.map",
     "453.c6dfdde9.chunk.js.map": "/audio-adversarial-attacks/static/js/453.c6dfdde9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b2138678.css",
-    "static/js/main.d2b785d8.js"
+    "static/css/main.a51f82c5.css",
+    "static/js/main.96b72bbe.js"
   ]
 }
