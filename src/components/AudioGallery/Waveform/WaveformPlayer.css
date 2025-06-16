@@ -1,24 +1,42 @@
-.waveform-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
-  text-align: center;
+.audio-player {
+  font-family: sans-serif;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.audio-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.audio-header p {
+  margin: 2px 0 10px 0;
+  color: #5f6c7b;
+  font-size: 14px;
 }
 
 .waveform {
-  margin-bottom: 10px;
+  background: #e9eaec;
+  height: 80px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
-.play-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4353ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.audio-icons{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.play-button:hover {
-  background-color: #2e3cbf;
+.icon-size{
+  width: 20px;
+  height: 20px;
 }
+
+
+
+
+

@@ -1,0 +1,10 @@
+.about-section{
+    display: flex;
+    flex-direction: column;
+    padding: 0% 10% 8% 10%;
+}
+
+.about-section p{
+    color: rgb(101, 117, 139);
+    font-size: 1.1rem;
+}

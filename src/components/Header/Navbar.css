@@ -79,10 +79,21 @@
     flex-direction: column;
     align-items: center;
     padding: 1.5rem;
-    background-color: #f8f9fa;
+    background-color: #fff;
   }
 
   .hamburger{
     display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar_menu.active {
+    padding: 1rem;
+  }
+
+  .navbar_menu a {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
   }
 }

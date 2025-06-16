@@ -14,10 +14,10 @@ const Navbar = () => {
     <nav className="navbar">
       <a className="navbar_logo" href="/"><img src={mylogo} alt="Logo" /></a>
       <ul className={`navbar_menu ${isOpen ? "active" : ""}`}>
-        <li><a href="#about" onClick={() => setIsOpen(false)}>About</a></li>
-        <li><a href="#skills" onClick={() => setIsOpen(false)}>Skills</a></li>
-        <li><a href="#projects" onClick={() => setIsOpen(false)}>Projects</a></li>
-        <li><a href="#contact" onClick={() => setIsOpen(false)}>Contact</a></li>
+        <li><a href="#home" onClick={() => setIsOpen(false)}>Home</a></li>
+        <li><a href="#contact" onClick={() => setIsOpen(false)}>Project Overview</a></li>
+        <li><a href="https://github.com/magcil/audio-adversarial-attacks" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Github</a></li>
+        {/* <li><a href="https://github.com/magcil/audio-adversarial-attacks" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Paper</a></li> */}
       </ul>
                   
       <div className="hamburger" onClick={toggleMenu}>

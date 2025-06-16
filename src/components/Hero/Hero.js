@@ -4,7 +4,7 @@ import "./Hero.css";
 const Hero = () => {
  
     return (
-        <div className="hero-section">
+        <div id = "#home" className="hero-section">
             <div className="hero-info">
                 <span className="tag">Research Project</span>
                 <h1>Audio Adversarial Attacks</h1>
@@ -20,7 +20,7 @@ const Hero = () => {
                     <div className="info-box">
                         <h3>Methodology</h3>
                         <p>
-                        Using gradient-based optimization to create imperceptible adversarial perturbations in audio samples.
+                        Using query-based attacks to create adversarial examples in audio samples with varying SNR values.
                         </p>
                     </div>
                     <div className="info-box">
@@ -31,7 +31,6 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
-            <hr></hr>
         </div>
   );
 };
