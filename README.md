@@ -110,9 +110,9 @@ model = get_model(model_str="beats",
 PSO_ATTACKER = init_algorithm(algorithm="pso",
                               model=model,
                               verbosity=False,
-                              SNR_norm= [5],
+                              SNR_norm= 5,
                               hyperparameters=algorithm_hyperparameters,
-                              objective_function="simple_minimization_targeted")
+                              objective_function="simple_minimization")
 
 
 # Start the attack / Generate adversarial example
@@ -168,9 +168,9 @@ model = get_model(model_str="beats",
 DE_ATTACKER = init_algorithm(algorithm="de",
                               model=model,
                               verbosity=False,
-                              SNR_norm= [5],
+                              SNR_norm= 5,
                               hyperparameters=algorithm_hyperparameters,
-                              objective_function="simple_minimization_targeted")
+                              objective_function="simple_minimization")
 
 
 attack_results = DE_ATTACKER.generate_adversarial_example("example.wav")
