@@ -1,0 +1,58 @@
+{
+  "Animal": {
+    "snr_5": "Silence",
+    "snr_10": "Silence",
+    "snr_15": "Silence",
+    "snr_20": "Silence",
+    "snr_25": "Silence",
+    "snr_30": "Silence"
+  },
+  "Source Sounds": {
+    "snr_5": "Silence",
+    "snr_10": "Silence",
+    "snr_15": "Silence",
+    "snr_20": "Silence",
+    "snr_25": "Silence",
+    "snr_30": "Silence"
+  },
+  "Channel, environment and background": {
+    "snr_5": "Silence",
+    "snr_10": "Sounds of things",
+    "snr_15": "Sounds of things",
+    "snr_20": "Sounds of things",
+    "snr_25": "Sounds of things",
+    "snr_30": "Sounds of things"
+  },
+  "Human Sounds": {
+    "snr_5": "Silence",
+    "snr_10": "Silence",
+    "snr_15": "Silence",
+    "snr_20": "Silence",
+    "snr_25": "Silence",
+    "snr_30": "Silence"
+  },
+  "Music": {
+    "snr_5": "Silence",
+    "snr_10": "Silence",
+    "snr_15": "Silence",
+    "snr_20": "Silence",
+    "snr_25": "Silence",
+    "snr_30": "Silence"
+  },
+  "Natural Sounds": {
+    "snr_5": "Silence",
+    "snr_10": "Silence",
+    "snr_15": "Silence",
+    "snr_20": "Silence",
+    "snr_25": "Silence",
+    "snr_30": "Silence"
+  },
+  "Sounds of things": {
+    "snr_5": "Silence",
+    "snr_10": "Silence",
+    "snr_15": "Silence",
+    "snr_20": "Silence",
+    "snr_25": "Music",
+    "snr_30": "Music"
+  }
+}

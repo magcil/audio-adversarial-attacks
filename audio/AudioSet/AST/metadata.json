@@ -1,0 +1,50 @@
+{
+    "Channel, environment and background": {
+        "snr_5": "Animal",
+        "snr_10": "Animal",
+        "snr_15": "Animal",
+        "snr_20": "Animal",
+        "snr_25": "Animal",
+        "snr_30": "Animal"
+    },
+    "Music": {
+        "snr_5": "Natural sounds",
+        "snr_10": "Natural sounds",
+        "snr_15": "Natural sounds",
+        "snr_20": "Natural sounds",
+        "snr_25": "Natural sounds",
+        "snr_30": "Natural sounds"
+    },
+    "Sounds of things": {
+        "snr_5": "Human sounds",
+        "snr_10": "Music",
+        "snr_15": "Human sounds",
+        "snr_20": "Music",
+        "snr_25": "Music",
+        "snr_30": "Music"
+    },
+    "Natural sounds": {
+        "snr_5": "Sounds of things",
+        "snr_10": "Sounds of things",
+        "snr_15": "Sounds of things",
+        "snr_20": "Sounds of things",
+        "snr_25": "Channel, environment and background",
+        "snr_30": "Channel, environment and background"
+    },
+    "Human sounds": {
+        "snr_5": "Source-ambiguous sounds",
+        "snr_10": "Source-ambiguous sounds",
+        "snr_15": "Source-ambiguous sounds",
+        "snr_20": "Source-ambiguous sounds",
+        "snr_25": "Source-ambiguous sounds",
+        "snr_30": "Source-ambiguous sounds"
+    },
+    "Source-ambiguous sounds": {
+        "snr_5": "Channel, environment and background",
+        "snr_10": "Channel, environment and background",
+        "snr_15": "Channel, environment and background",
+        "snr_20": "Sounds of things",
+        "snr_25": "Sounds of things",
+        "snr_30": "Sounds of things"
+    }
+}
