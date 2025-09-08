@@ -8,3 +8,15 @@
     color: rgb(101, 117, 139);
     font-size: 1.1rem;
 }
+
+.about-section .note-text{
+    font-size: 0.9rem;
+}
+
+.about-section hr{
+    width: 100%;
+    height: 0.1rem;
+    border: none;
+    background-color: #e5e7eb;
+    margin-top: 70px;
+}

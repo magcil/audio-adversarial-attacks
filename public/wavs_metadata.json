@@ -1,0 +1,974 @@
+[
+    {
+        "path": "audio/AudioSet/AST/Animal/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Animal/SNR_10",
+        "filename": "7I2yJgXKncw.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Animal/SNR_15",
+        "filename": "7I2yJgXKncw.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Animal/SNR_20",
+        "filename": "7I2yJgXKncw.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Animal/SNR_25",
+        "filename": "7I2yJgXKncw.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Animal/SNR_30",
+        "filename": "7I2yJgXKncw.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Animal/SNR_5",
+        "filename": "7I2yJgXKncw.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/SNR_10",
+        "filename": "yj1gvfSoWjs.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/SNR_15",
+        "filename": "yj1gvfSoWjs.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/SNR_20",
+        "filename": "yj1gvfSoWjs.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/SNR_25",
+        "filename": "yj1gvfSoWjs.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/SNR_30",
+        "filename": "yj1gvfSoWjs.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Channel, environment and background/SNR_5",
+        "filename": "yj1gvfSoWjs.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/SNR_10",
+        "filename": "fzJz0-7i0D0.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/SNR_15",
+        "filename": "fzJz0-7i0D0.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/SNR_20",
+        "filename": "fzJz0-7i0D0.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/SNR_25",
+        "filename": "fzJz0-7i0D0.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/SNR_30",
+        "filename": "fzJz0-7i0D0.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Human sounds/SNR_5",
+        "filename": "fzJz0-7i0D0.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/SNR_10",
+        "filename": "gTyJljSywC4.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/SNR_15",
+        "filename": "gTyJljSywC4.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/SNR_20",
+        "filename": "gTyJljSywC4.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/SNR_25",
+        "filename": "gTyJljSywC4.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/SNR_30",
+        "filename": "gTyJljSywC4.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Music/SNR_5",
+        "filename": "gTyJljSywC4.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/SNR_10",
+        "filename": "1Z8MIXXDPls.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/SNR_15",
+        "filename": "1Z8MIXXDPls.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/SNR_20",
+        "filename": "1Z8MIXXDPls.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/SNR_25",
+        "filename": "1Z8MIXXDPls.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/SNR_30",
+        "filename": "1Z8MIXXDPls.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Natural sounds/SNR_5",
+        "filename": "1Z8MIXXDPls.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/SNR_10",
+        "filename": "pKD7zaozwWU.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/SNR_15",
+        "filename": "pKD7zaozwWU.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/SNR_20",
+        "filename": "pKD7zaozwWU.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/SNR_25",
+        "filename": "pKD7zaozwWU.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/SNR_30",
+        "filename": "pKD7zaozwWU.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Sounds of things/SNR_5",
+        "filename": "pKD7zaozwWU.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/SNR_10",
+        "filename": "HscHTSXOcAI.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/SNR_15",
+        "filename": "HscHTSXOcAI.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/SNR_20",
+        "filename": "HscHTSXOcAI.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/SNR_25",
+        "filename": "HscHTSXOcAI.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/SNR_30",
+        "filename": "HscHTSXOcAI.wav"
+    },
+    {
+        "path": "audio/AudioSet/AST/Source-ambiguous sounds/SNR_5",
+        "filename": "HscHTSXOcAI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/SNR_10",
+        "filename": "gPSCHPuRSyM.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/SNR_15",
+        "filename": "gPSCHPuRSyM.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/SNR_20",
+        "filename": "gPSCHPuRSyM.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/SNR_25",
+        "filename": "gPSCHPuRSyM.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/SNR_30",
+        "filename": "gPSCHPuRSyM.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Animal/SNR_5",
+        "filename": "gPSCHPuRSyM.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/SNR_10",
+        "filename": "kTtE3iA98VI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/SNR_15",
+        "filename": "kTtE3iA98VI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/SNR_20",
+        "filename": "kTtE3iA98VI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/SNR_25",
+        "filename": "kTtE3iA98VI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/SNR_30",
+        "filename": "kTtE3iA98VI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Channel, environment and background/SNR_5",
+        "filename": "kTtE3iA98VI.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/SNR_10",
+        "filename": "BXWWHXp00ls.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/SNR_15",
+        "filename": "BXWWHXp00ls.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/SNR_20",
+        "filename": "BXWWHXp00ls.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/SNR_25",
+        "filename": "BXWWHXp00ls.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/SNR_30",
+        "filename": "BXWWHXp00ls.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Human sounds/SNR_5",
+        "filename": "BXWWHXp00ls.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/SNR_10",
+        "filename": "QuE2PtLM9Wc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/SNR_15",
+        "filename": "QuE2PtLM9Wc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/SNR_20",
+        "filename": "QuE2PtLM9Wc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/SNR_25",
+        "filename": "QuE2PtLM9Wc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/SNR_30",
+        "filename": "QuE2PtLM9Wc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Music/SNR_5",
+        "filename": "QuE2PtLM9Wc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/SNR_10",
+        "filename": "yOq3d33TSic.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/SNR_15",
+        "filename": "yOq3d33TSic.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/SNR_20",
+        "filename": "yOq3d33TSic.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/SNR_25",
+        "filename": "yOq3d33TSic.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/SNR_30",
+        "filename": "yOq3d33TSic.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Natural sounds/SNR_5",
+        "filename": "yOq3d33TSic.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/SNR_10",
+        "filename": "0DJP7ywh7nc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/SNR_15",
+        "filename": "0DJP7ywh7nc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/SNR_20",
+        "filename": "0DJP7ywh7nc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/SNR_25",
+        "filename": "0DJP7ywh7nc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/SNR_30",
+        "filename": "0DJP7ywh7nc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Sounds of things/SNR_5",
+        "filename": "0DJP7ywh7nc.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/SNR_10",
+        "filename": "F8pIbmfQ7ec.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/SNR_15",
+        "filename": "F8pIbmfQ7ec.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/SNR_20",
+        "filename": "F8pIbmfQ7ec.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/SNR_25",
+        "filename": "F8pIbmfQ7ec.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/SNR_30",
+        "filename": "F8pIbmfQ7ec.wav"
+    },
+    {
+        "path": "audio/AudioSet/BEATs/Source-ambiguous sounds/SNR_5",
+        "filename": "F8pIbmfQ7ec.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/SNR_10",
+        "filename": "sZhHm6NN5cU.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/SNR_15",
+        "filename": "sZhHm6NN5cU.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/SNR_20",
+        "filename": "sZhHm6NN5cU.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/SNR_25",
+        "filename": "sZhHm6NN5cU.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/SNR_30",
+        "filename": "sZhHm6NN5cU.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Animal/SNR_5",
+        "filename": "sZhHm6NN5cU.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/SNR_10",
+        "filename": "IA83Z5UD7J8.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/SNR_15",
+        "filename": "IA83Z5UD7J8.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/SNR_20",
+        "filename": "IA83Z5UD7J8.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/SNR_25",
+        "filename": "IA83Z5UD7J8.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/SNR_30",
+        "filename": "IA83Z5UD7J8.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Channel, environment and background/SNR_5",
+        "filename": "IA83Z5UD7J8.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/SNR_10",
+        "filename": "D7TB8b2t3QE.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/SNR_15",
+        "filename": "D7TB8b2t3QE.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/SNR_20",
+        "filename": "D7TB8b2t3QE.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/SNR_25",
+        "filename": "D7TB8b2t3QE.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/SNR_30",
+        "filename": "D7TB8b2t3QE.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Human sounds/SNR_5",
+        "filename": "D7TB8b2t3QE.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/SNR_10",
+        "filename": "egFZqcEnVpk.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/SNR_15",
+        "filename": "egFZqcEnVpk.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/SNR_20",
+        "filename": "egFZqcEnVpk.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/SNR_25",
+        "filename": "egFZqcEnVpk.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/SNR_30",
+        "filename": "egFZqcEnVpk.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Music/SNR_5",
+        "filename": "egFZqcEnVpk.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/SNR_10",
+        "filename": "YFhfCrHUL6U.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/SNR_15",
+        "filename": "YFhfCrHUL6U.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/SNR_20",
+        "filename": "YFhfCrHUL6U.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/SNR_25",
+        "filename": "YFhfCrHUL6U.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/SNR_30",
+        "filename": "YFhfCrHUL6U.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Natural sounds/SNR_5",
+        "filename": "YFhfCrHUL6U.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/SNR_10",
+        "filename": "S3dobukAML0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/SNR_15",
+        "filename": "S3dobukAML0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/SNR_20",
+        "filename": "S3dobukAML0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/SNR_25",
+        "filename": "S3dobukAML0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/SNR_30",
+        "filename": "S3dobukAML0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Sounds of things/SNR_5",
+        "filename": "S3dobukAML0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/Original"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/SNR_10",
+        "filename": "PmLUdiALKj0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/SNR_15",
+        "filename": "PmLUdiALKj0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/SNR_20",
+        "filename": "PmLUdiALKj0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/SNR_25",
+        "filename": "PmLUdiALKj0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/SNR_30",
+        "filename": "PmLUdiALKj0.wav"
+    },
+    {
+        "path": "audio/AudioSet/PaSST/Source-ambiguous sounds/SNR_5",
+        "filename": "PmLUdiALKj0.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/Original"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/SNR_10",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/SNR_15",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/SNR_20",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/SNR_25",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/SNR_30",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Animals/SNR_5",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/Original"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/SNR_10",
+        "filename": "2-78781-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/SNR_15",
+        "filename": "2-78781-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/SNR_20",
+        "filename": "2-78781-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/SNR_25",
+        "filename": "2-78781-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/SNR_30",
+        "filename": "2-78781-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Exterior/urban noises/SNR_5",
+        "filename": "2-78781-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/Original"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/SNR_10",
+        "filename": "2-52001-B-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/SNR_15",
+        "filename": "2-52001-B-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/SNR_20",
+        "filename": "2-52001-B-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/SNR_25",
+        "filename": "2-52001-B-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/SNR_30",
+        "filename": "2-52001-B-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Human, non-speech sounds/SNR_5",
+        "filename": "2-52001-B-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/Original"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/SNR_10",
+        "filename": "2-118817-A-32.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/SNR_15",
+        "filename": "2-118817-A-32.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/SNR_20",
+        "filename": "2-118817-A-32.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/SNR_25",
+        "filename": "2-118817-A-32.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/SNR_30",
+        "filename": "2-118817-A-32.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Interior/domestic sounds/SNR_5",
+        "filename": "2-118817-A-32.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/Original"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/SNR_10",
+        "filename": "2-83270-A-13.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/SNR_15",
+        "filename": "2-83270-A-13.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/SNR_20",
+        "filename": "2-83270-A-13.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/SNR_25",
+        "filename": "2-83270-A-13.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/SNR_30",
+        "filename": "2-83270-A-13.wav"
+    },
+    {
+        "path": "audio/ESC-50/AST/Natural soundscapes & water sounds/SNR_5",
+        "filename": "2-83270-A-13.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/Original"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/SNR_10",
+        "filename": "4-133047-B-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/SNR_15",
+        "filename": "4-133047-B-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/SNR_20",
+        "filename": "4-133047-B-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/SNR_25",
+        "filename": "4-133047-B-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/SNR_30",
+        "filename": "4-133047-B-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Animals/SNR_5",
+        "filename": "4-133047-B-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/Original"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/SNR_10",
+        "filename": "4-80761-A-42.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/SNR_15",
+        "filename": "4-80761-A-42.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/SNR_20",
+        "filename": "4-80761-A-42.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/SNR_25",
+        "filename": "4-80761-A-42.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/SNR_30",
+        "filename": "4-80761-A-42.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Exterior urban noises/SNR_5",
+        "filename": "4-80761-A-42.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/Original"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/SNR_10",
+        "filename": "4-180337-A-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/SNR_15",
+        "filename": "4-180337-A-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/SNR_20",
+        "filename": "4-180337-A-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/SNR_25",
+        "filename": "4-180337-A-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/SNR_30",
+        "filename": "4-180337-A-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Human, non-speech sounds/SNR_5",
+        "filename": "4-180337-A-28.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/Original"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/SNR_10",
+        "filename": "4-160036-B-33.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/SNR_15",
+        "filename": "4-160036-B-33.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/SNR_20",
+        "filename": "4-160036-B-33.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/SNR_25",
+        "filename": "4-160036-B-33.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/SNR_30",
+        "filename": "4-160036-B-33.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Interior domestic sounds/SNR_5",
+        "filename": "4-160036-B-33.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/Original"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/SNR_10",
+        "filename": "4-188293-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/SNR_15",
+        "filename": "4-188293-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/SNR_20",
+        "filename": "4-188293-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/SNR_25",
+        "filename": "4-188293-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/SNR_30",
+        "filename": "4-188293-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/BEATs/Natural soundscapes & water sounds/SNR_5",
+        "filename": "4-188293-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/SNR_10",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/SNR_15",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/SNR_20",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/SNR_25",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/SNR_30",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/SNR_5",
+        "filename": "2-110010-A-5.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Animals/original"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/SNR_10",
+        "filename": "2-106849-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/SNR_15",
+        "filename": "2-106849-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/SNR_20",
+        "filename": "2-106849-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/SNR_25",
+        "filename": "2-106849-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/SNR_30",
+        "filename": "2-106849-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/SNR_5",
+        "filename": "2-106849-A-47.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Exterior urban noises/original"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/SNR_10",
+        "filename": "2-82071-A-27.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/SNR_15",
+        "filename": "2-82071-A-27.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/SNR_20",
+        "filename": "2-82071-A-27.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/SNR_25",
+        "filename": "2-82071-A-27.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/SNR_30",
+        "filename": "2-82071-A-27.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/SNR_5",
+        "filename": "2-82071-A-27.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Human, non-speech sounds/original"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/SNR_10",
+        "filename": "2-152964-A-31.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/SNR_15",
+        "filename": "2-152964-A-31.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/SNR_20",
+        "filename": "2-152964-A-31.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/SNR_25",
+        "filename": "2-152964-A-31.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/SNR_30",
+        "filename": "2-152964-A-31.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/SNR_5",
+        "filename": "2-152964-A-31.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Interior domestic sounds/original"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/SNR_10",
+        "filename": "2-139748-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/SNR_15",
+        "filename": "2-139748-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/SNR_20",
+        "filename": "2-139748-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/SNR_25",
+        "filename": "2-139748-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/SNR_30",
+        "filename": "2-139748-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/SNR_5",
+        "filename": "2-139748-B-15.wav"
+    },
+    {
+        "path": "audio/ESC-50/PaSST/Natural soundscapes & water sounds/original"
+    }
+]

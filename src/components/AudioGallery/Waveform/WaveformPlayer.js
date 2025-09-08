@@ -19,17 +19,12 @@ const formWaveSurferOptions = (ref) => ({
   barGap: 3,
 });
 
-export default function WaveformPlayer({ audioFile, title, description }) {
+export default function WaveformPlayer({ audioFile, filename,title, description }) {
 	const waveformRef = useRef(null);
 	const wavesurfer = useRef(null);
 	const [volume, setVolume] = useState(0.5);
 	const [playing, setPlaying] = useState(false);
-
-	// Get Filename
-	let filename = audioFile.split('/').pop(); 
-	filename = filename.split('_')[0]; 
 	
-	console.log(audioFile)
 	useEffect(() => {
 		if (!waveformRef.current) return;
 

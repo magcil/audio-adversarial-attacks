@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./AudioGallery.css";
 import WaveformPlayer from "../Waveform/WaveformPlayer";
 import DropdownMenu from "../../DropdownMenu/DropdownMenu";
@@ -10,16 +10,40 @@ import filter3 from "../../Images/Filters/filter3.svg"
 // Initialize filters data
 const models = ['BEATs', 'PaSST', 'AST'];
 const SNRs = [5, 10, 15, 20, 25, 30];
-const Classes = [ "Sounds of things", "Animal", "Music", "Human sounds", "Source-ambiguous sounds"
+const Audioset_Classes = [ "Sounds of things", "Animal", "Music", "Human sounds", "Source-ambiguous sounds"
     ,"Natural sounds","Channel, environment and background"];
+const ESC_Classes = ["Animals", "Natural soundscapes & water sounds", "Human, non-speech sounds", "Interior/domestic sounds", "Exterior/urban noises"]
+const datasets = ['AudioSet', 'ESC-50'];    
 
-const datasets = ['AusioSet', 'ESC-50'];    
 
 const AudioGallery = () => {
+    const [metadata, setMetadata] = useState([]);
     const [selectedModel, setselectedModel] = useState('BEATs');
     const [selectedSNR, setselectedSNR] = useState(20);
     const [Class, setClass] = useState('Music');
     const [dataset, setDataset] = useState('AudioSet');
+
+    // Hook to reinitialize the dataset filters.
+    useEffect(() => {
+        if (dataset === "AudioSet") {
+            setClass(Audioset_Classes[0]);
+        } else {
+            setClass(ESC_Classes[0]);
+        }
+    }, [dataset]);
+
+
+    useEffect(() => {
+        fetch(`${process.env.PUBLIC_URL}/wavs_metadata.json`)
+        .then(res => res.json())
+        .then(data => setMetadata(data))
+        .catch(err => console.error("Failed to load metadata", err));
+    }, []);
+    
+
+    let filepath =  `audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}`;
+    let match = metadata.find(item => item.path === filepath);
+    let filename = match?.filename || null;
 
     return (
         <div className="audio-section">
@@ -69,7 +93,7 @@ const AudioGallery = () => {
                             <span className="filters-tag"> Class </span>
                             <DropdownMenu
                                 title="Classes"
-                                options={Classes}
+                                options={dataset === "AudioSet" ? Audioset_Classes : ESC_Classes}
                                 value={Class}
                                 onChange={setClass}
                                 leadingIcon={<img src={filter3} alt="Class Filter icon" />}>
@@ -80,9 +104,10 @@ const AudioGallery = () => {
                 </div>
             </div>
             <div className="waveforms-div">
-                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${selectedModel}/${Class}/SNR_${selectedSNR}/adversary.wav`} title = "Original Audio" description= "Clean audio sample with no adversarial perturbations"></WaveformPlayer>
-                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${selectedModel}/${Class}/Original/original.wav`}  title = "Adversarial Example" description= "Adversarial Example using PSO recognized as: Cat"></WaveformPlayer>
+                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/Original/original.wav`} filename = {filename} title = "Original Audio" description= "Clean audio sample with no adversarial perturbations"></WaveformPlayer>
+                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}/adversary.wav`}  filename = {filename} title = "Adversarial Example" description= "Adversarial Example using PSO"></WaveformPlayer>
             </div>
+            
         </div>
   );
 };

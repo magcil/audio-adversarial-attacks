@@ -1,0 +1,14 @@
+[
+  {
+    "path": "AudioSet/BEATs/Animal",
+    "filename": "original.wav",
+    "predictedClass": "dog",
+    "confidence": 0.87
+  },
+  {
+    "path": "datasetA/modelX/class2",
+    "filename": "original.wav",
+    "predictedClass": "cat",
+    "confidence": 0.92
+  }
+]
