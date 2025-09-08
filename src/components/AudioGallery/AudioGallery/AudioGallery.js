@@ -109,7 +109,7 @@ const AudioGallery = () => {
             </div>
             <div className="waveforms-div">
                 <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/Original/original.wav`} filename = {filename} title = "Original Audio" description= "Clean audio sample with no adversarial perturbations"></WaveformPlayer>
-                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}/adversary.wav`}  filename = {filename} title = "Adversarial Example" description= "Adversarial Example using PSO"  predictedClass={predictedClass}></WaveformPlayer>
+                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}/adversary.wav`}  filename = {filename} title = "Adversarial Example" description= "Adversarial Example using PSO test"  predictedClass={predictedClass}></WaveformPlayer>
             </div>
             
         </div>
