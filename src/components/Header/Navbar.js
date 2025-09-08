@@ -15,7 +15,7 @@ const Navbar = () => {
       <a className="navbar_logo" href="/"><img src={mylogo} alt="Logo" /></a>
       <ul className={`navbar_menu ${isOpen ? "active" : ""}`}>
         <li><a href="#home" onClick={() => setIsOpen(false)}>Home</a></li>
-        <li><a href="#contact" onClick={() => setIsOpen(false)}>Project Overview</a></li>
+        {/* <li><a href="#contact" onClick={() => setIsOpen(false)}>Project Overview</a></li> */}
         <li><a href="https://github.com/magcil/audio-adversarial-attacks" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Github</a></li>
         {/* <li><a href="https://github.com/magcil/audio-adversarial-attacks" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Paper</a></li> */}
       </ul>

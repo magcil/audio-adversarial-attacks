@@ -12,7 +12,7 @@ const models = ['BEATs', 'PaSST', 'AST'];
 const SNRs = [5, 10, 15, 20, 25, 30];
 const Audioset_Classes = [ "Sounds of things", "Animal", "Music", "Human sounds", "Source-ambiguous sounds"
     ,"Natural sounds","Channel, environment and background"];
-const ESC_Classes = ["Animals", "Natural soundscapes & water sounds", "Human, non-speech sounds", "Interior/domestic sounds", "Exterior/urban noises"]
+const ESC_Classes = ["Animals", "Natural soundscapes & water sounds", "Human, non-speech sounds", "Interior domestic sounds", "Exterior urban noises"]
 const datasets = ['AudioSet', 'ESC-50'];    
 
 
@@ -44,6 +44,10 @@ const AudioGallery = () => {
     let filepath =  `audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}`;
     let match = metadata.find(item => item.path === filepath);
     let filename = match?.filename || null;
+    let predictedClass = match?.class || null;
+
+    console.log(filepath)
+
 
     return (
         <div className="audio-section">
@@ -105,7 +109,7 @@ const AudioGallery = () => {
             </div>
             <div className="waveforms-div">
                 <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/Original/original.wav`} filename = {filename} title = "Original Audio" description= "Clean audio sample with no adversarial perturbations"></WaveformPlayer>
-                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}/adversary.wav`}  filename = {filename} title = "Adversarial Example" description= "Adversarial Example using PSO"></WaveformPlayer>
+                <WaveformPlayer audioFile={process.env.PUBLIC_URL + `/audio/${dataset}/${selectedModel}/${Class}/SNR_${selectedSNR}/adversary.wav`}  filename = {filename} title = "Adversarial Example" description= "Adversarial Example using PSO"  predictedClass={predictedClass}></WaveformPlayer>
             </div>
             
         </div>

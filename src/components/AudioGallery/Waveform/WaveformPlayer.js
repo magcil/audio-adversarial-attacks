@@ -19,7 +19,7 @@ const formWaveSurferOptions = (ref) => ({
   barGap: 3,
 });
 
-export default function WaveformPlayer({ audioFile, filename,title, description }) {
+export default function WaveformPlayer({ audioFile, filename,title, description, predictedClass}) {
 	const waveformRef = useRef(null);
 	const wavesurfer = useRef(null);
 	const [volume, setVolume] = useState(0.5);
@@ -76,6 +76,7 @@ export default function WaveformPlayer({ audioFile, filename,title, description 
 			<h3>{title}</h3>
 			<p>{description}</p>
 			<p>Filename : {filename}</p>
+			{predictedClass && <p>Predicted Class: <b>{predictedClass}</b></p>}
 		</div>
 
 		<div className="waveform" ref={waveformRef}></div>
