@@ -76,6 +76,7 @@ export default function WaveformPlayer({ audioFile, filename,title, description,
 			<h3>{title}</h3>
 			<p>{description}</p>
 			<p>Filename : {filename}</p>
+			
 			{predictedClass && <p>Predicted Class: <b>{predictedClass}</b></p>}
 		</div>
 
