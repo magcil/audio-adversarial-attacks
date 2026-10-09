@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Audio adversarial attacks on sound event classifiers"
+authors:
+  - family-names: Nikou
+    given-names: Christos
+    affiliation: 'MagCIL, Institute of Informatics and Telecommunications, NCSR "Demokritos"'
+  - family-names: Theiou
+    given-names: Vasilis
+    affiliation: 'MagCIL, Institute of Informatics and Telecommunications, NCSR "Demokritos"'
+  - family-names: Vlachos
+    given-names: Stefanos
+    affiliation: 'MagCIL, Institute of Informatics and Telecommunications, NCSR "Demokritos"'
+  - family-names: Sgouropoulos
+    given-names: Christos
+    affiliation: 'MagCIL, Institute of Informatics and Telecommunications, NCSR "Demokritos"'
+  - family-names: Sgouropoulos
+    given-names: Dimitris
+  - family-names: Giannakopoulos
+    given-names: Theodoros
+    affiliation: 'MagCIL, Institute of Informatics and Telecommunications, NCSR "Demokritos"'
+repository-code: "https://github.com/magcil/audio-adversarial-attacks"
+url: "https://magcil.github.io"
+preferred-citation:
+  type: conference-paper
+  title: "On the Robustness of State-of-the-Art Transformers for Sound Event Classification Against Black Box Adversarial Attacks"
+  authors:
+    - family-names: Nikou
+      given-names: Christos
+    - family-names: Theiou
+      given-names: Vasilis
+    - family-names: Vlachos
+      given-names: Stefanos
+    - family-names: Sgouropoulos
+      given-names: Christos
+    - family-names: Sgouropoulos
+      given-names: Dimitris
+    - family-names: Giannakopoulos
+      given-names: Theodoros
+  collection-title: "2025 33rd European Signal Processing Conference (EUSIPCO)"
+  year: 2025
+  doi: 10.23919/EUSIPCO63237.2025.11226779
